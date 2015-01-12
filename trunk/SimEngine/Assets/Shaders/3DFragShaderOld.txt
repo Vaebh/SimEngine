@@ -1,0 +1,16 @@
+#version 150
+in vec3 Color;
+in vec2 Texcoord;
+
+out vec4 outColor;
+
+uniform sampler2D texKitten;
+uniform sampler2D texPuppy;
+uniform vec3 tintColor;
+
+void main()
+{
+	vec4 colKitten = texture(texKitten, Texcoord);
+	vec4 colPuppy = texture(texPuppy, vec2(Texcoord.x, 1- Texcoord.y));
+	outColor = vec4(tintColor, 1) * vec4(Color, 1.0) * mix(colPuppy, colKitten, 0.4);
+}

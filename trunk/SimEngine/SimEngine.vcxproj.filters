@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Code">
+      <UniqueIdentifier>{069bc1dd-6969-485e-9262-2f6ecbffba01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Application">
+      <UniqueIdentifier>{5ceb2ccc-c39b-4f44-99a8-b13c6278b3b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Collision">
+      <UniqueIdentifier>{a718ff2e-6f09-4098-8e10-0871fe74934a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Events">
+      <UniqueIdentifier>{4d08c5f3-30ee-4fe4-96c8-5ca56af498bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Foundation">
+      <UniqueIdentifier>{7e9af834-1526-42ec-aeac-be13626785d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Game">
+      <UniqueIdentifier>{5f061c8a-12b8-4fd9-a21e-0a52868ad596}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Input">
+      <UniqueIdentifier>{492ca6b6-f6b6-48bf-953b-10e8409bc91c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\OpenGL">
+      <UniqueIdentifier>{3cacbbb0-5ecb-4fc3-bd6f-38deffb87f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Rendering">
+      <UniqueIdentifier>{20068ea5-c1b0-4f13-b93b-c7c99f0e105a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Sound">
+      <UniqueIdentifier>{130e8e80-f897-470f-9a77-88699e351ca5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Structure">
+      <UniqueIdentifier>{d19daf86-f36b-4e80-a9be-00e2c21982a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Utils">
+      <UniqueIdentifier>{e6b098bb-f3ca-4db8-8071-133a1b2fd2f8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Code\Application\main.cpp">
+      <Filter>Code\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Collision\BounceComponent.cpp">
+      <Filter>Code\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Collision\CollisionComponent.cpp">
+      <Filter>Code\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Collision\CollisionSystem.cpp">
+      <Filter>Code\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Collision\FragileCollisionComponent.cpp">
+      <Filter>Code\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Events\EventCallback.cpp">
+      <Filter>Code\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Events\EventMessenger.cpp">
+      <Filter>Code\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\BlockManager.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\BreakoutFactory.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\ComponentBallController.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\ComponentBallModel.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\FollowMouseComponent.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\StateLevelOne.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\StateVictory.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Input\InputManager.cpp">
+      <Filter>Code\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\OpenGL\GLUtils.cpp">
+      <Filter>Code\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\AnimatedSpriteComponent.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\RenderableComponent.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\RenderSystem.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\Shader.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\SpriteComponent.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\Test3DComponent.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\TextureManager.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Sound\AudioSystem.cpp">
+      <Filter>Code\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Sound\Sound.cpp">
+      <Filter>Code\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Structure\Component.cpp">
+      <Filter>Code\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Structure\GameObject.cpp">
+      <Filter>Code\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Structure\Scene.cpp">
+      <Filter>Code\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Structure\StateManager.cpp">
+      <Filter>Code\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Structure\System.cpp">
+      <Filter>Code\Structure</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Code\Application\Game.h">
+      <Filter>Code\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Collision\BounceComponent.h">
+      <Filter>Code\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Collision\CollisionComponent.h">
+      <Filter>Code\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Collision\CollisionSystem.h">
+      <Filter>Code\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Collision\FragileCollisionComponent.h">
+      <Filter>Code\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Events\EventCallback.h">
+      <Filter>Code\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Events\EventMessenger.h">
+      <Filter>Code\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Foundation\Foundation.h">
+      <Filter>Code\Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Foundation\StringUtils.h">
+      <Filter>Code\Foundation</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\BlockManager.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\BreakoutFactory.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\ComponentBallController.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\ComponentBallModel.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\FollowMouseComponent.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\StateLevelOne.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\StateVictory.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Input\InputManager.h">
+      <Filter>Code\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\OpenGL\GLIncludes.h">
+      <Filter>Code\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\OpenGL\GLUtils.h">
+      <Filter>Code\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Buffer.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\RenderableComponent.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\RenderSystem.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Shader.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\SpriteBatcher.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\SpriteComponent.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Test3DComponent.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Texture.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\TextureManager.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Sound\AudioSystem.h">
+      <Filter>Code\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Sound\Sound.h">
+      <Filter>Code\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\Component.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\GameObject.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\Rectangle.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\Scene.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\State.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\StateManager.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\System.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\Vectors.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utils\MathUtils.h">
+      <Filter>Code\Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
