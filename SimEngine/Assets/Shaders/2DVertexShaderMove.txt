@@ -1,0 +1,15 @@
+#version 150
+in vec2 texcoord;
+in vec4 position;
+
+out vec2 Texcoord;
+
+uniform mat4 move;
+uniform vec2 spriteOffset;
+uniform int currentFrame;
+
+void main()
+{
+	Texcoord = texcoord * spriteOffset + vec2(min(spriteOffset.x * currentFrame, 1.0f), 0.f);
+	gl_Position = move * position;
+}
