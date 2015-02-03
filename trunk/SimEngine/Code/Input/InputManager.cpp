@@ -114,13 +114,13 @@ void InputManager::HandleKeyInput(Key& inKey, const float inDT)
 	{
 		if(keyInputState == GLFW_PRESS && mPreviousEvent != mInputMap[inKey.mKeyCode].first)
 		{
-			EventMessenger::GetSingleton()->BroadcastEvent(mInputMap[inKey.mKeyCode].first);
+			//EventMessenger::GetSingleton()->BroadcastEvent(mInputMap[inKey.mKeyCode].first);
 			mPreviousEvent = mInputMap[inKey.mKeyCode].first;
 			inKey.mPreviousState = keyInputState;
 		}
 		else if(keyInputState == GLFW_RELEASE && mPreviousEvent != mInputMap[inKey.mKeyCode].second)
 		{
-     		EventMessenger::GetSingleton()->BroadcastEvent(mInputMap[inKey.mKeyCode].second);
+     		//EventMessenger::GetSingleton()->BroadcastEvent(mInputMap[inKey.mKeyCode].second);
 			mPreviousEvent = mInputMap[inKey.mKeyCode].second;
 			inKey.mPreviousState = keyInputState;
 		}
