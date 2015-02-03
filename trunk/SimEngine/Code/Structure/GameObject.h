@@ -1,13 +1,24 @@
 #ifndef GAMEOBJECT_SIMENGINE
 #define GAMEOBJECT_SIMENGINE
 
+class State;
+
 #include "../Structure/Component.h"
 //#include "../Structure/Scene.h"
 #include "../Structure/Vectors.h"
 
+/*#include "../Rendering/RenderSystem.h"
+#include "../Sound/AudioSystem.h"
+#include "../Collision/CollisionSystem.h"*/
+
+//#include "../Structure/State.h"
+//#include "../Input/InputManager.h"
+#include "../Camera/CameraManager.h"
+
 #include <vector>
 #include <string>
 
+class ISystem;
 class IComponent;
 
 class GameObject
@@ -35,6 +46,18 @@ public:
 	template<class ComponentType>
 	ComponentType* GetComponent();
 
+	//inline const RenderSystem* GetRenderSystem() {return m_renderSystem;}
+
+	/*inline const StateManager* GetStateManager() {return m_stateManager;}
+
+	inline const InputManager* GetInputManager() {return m_inputManager;}
+
+	inline const AudioSystem* GetAudioSystem() {return m_audioSystem;}
+
+	inline const CameraManager* GetCameraManager() {return m_cameraManager;}
+
+	inline const CollisionSystem* GetCollisionSystem() {return m_collisionSystem;}*/
+
 public:
 	unsigned const int mIndex;
 	Vector3 mScale;
@@ -48,6 +71,14 @@ private:
 
 	Vector3 mPosition;
 	std::string mName;
+
+	// Add getters for all of these
+	/*RenderSystem* m_renderSystem;
+	StateManager* m_stateManager;
+	InputManager* m_inputManager;
+	AudioSystem* m_audioSystem;
+	CameraManager* m_cameraManager;
+	CollisionSystem* m_collisionSystem;*/
 };
 
 template<class ComponentType>
