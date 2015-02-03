@@ -12,29 +12,14 @@
 
 #include "../Rendering/Test3DComponent.h"
 
+#include "../Structure/GameObjectFactory.h"
+
 #include <iostream>
 
 using namespace std;
 
 int main(void)
 {
-    const int years = 10;
-    int savings = 0;
-    float investmentReturn = 0.04;
-    
-    float savedIncomePerMonth = 5000.f;
-    float yearlyIncome = savedIncomePerMonth * 12;
-    
-    for(int i = 1; i <= years; ++i)
-    {
-        if(savings > 3000)
-            savings += savings * investmentReturn;
-        
-        savings += yearlyIncome;
-        
-        cout << "year " << i << " savings: " << savings << endl;
-    }
-    
 	InputManager* inputSystem = new InputManager(RenderSystem::GetSingleton()->mWindow);
 
 	AudioSystem* audioSystem = new AudioSystem();
