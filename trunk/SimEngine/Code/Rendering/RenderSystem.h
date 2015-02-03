@@ -1,10 +1,14 @@
 #ifndef RENDERSYSTEM_SIMENGINE
 #define RENDERSYSTEM_SIMENGINE
 
+#include "../Camera/Camera.h"
+#include "../Camera/CameraManager.h"
 #include "../OpenGL/GLIncludes.h"
 #include "../Rendering/RenderableComponent.h"
 #include "../Structure/System.h"
 #include <vector>
+
+class GameObject;
 
 class RenderSystem : public ISystem
 {
