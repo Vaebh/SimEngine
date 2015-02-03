@@ -131,19 +131,27 @@ void RenderSystem::Draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
-	Shader* spriteShader = NULL;
-
 	glActiveTexture(GL_TEXTURE0);
 
 	for(uint32_t i = 0; i < mComponents.size(); ++i)
 	{
 		if(mComponents[i]->IsVisible())
 		{
-			//if(spriteShader == NULL)
+			glUseProgram(mComponents[i]->GetShader().GetProgramID());
+
+			// This is bad, should be done in the actual draw methods for each component
+			// Maybe in default renderableComponent draw?
+			//if(mComponents[i]->GetOwner()->GetCameraManager()->GetActiveCamera().m_viewMatrixChanged)
 			{
-                Shader sprShader(mComponents[i]->GetShader());
-				spriteShader = &(sprShader);
-				glUseProgram(spriteShader->GetProgramID());
+				/*GLint uniView = glGetUniformLocation(mComponents[i]->GetShader().GetProgramID(), "view");
+
+				glm::mat4 viewMatrix = glm::lookAt(
+					ZERO,
+					Vector3(1.5f, 1.5f, 1.5f),
+					glm::vec3(0.0f, 1.0f, 0.0f)
+				);
+				glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(viewMatrix));*/
+				//glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(mComponents[i]->GetOwner()->GetCameraManager()->GetActiveCamera().GetViewMatrix()));
 			}
 
 			mComponents[i]->Draw();
@@ -151,4 +159,6 @@ void RenderSystem::Draw()
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 	}
+
+	//mComponents[i]->GetOwner()->GetCameraManager()->GetActiveCamera().ViewMatrixChanged();
 }

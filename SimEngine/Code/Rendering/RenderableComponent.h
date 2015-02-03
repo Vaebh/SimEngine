@@ -21,6 +21,9 @@ public:
 protected:
 	Shader mShader;
 	bool mVisible;
+
+	// Should probably just be in one place, maybe a pointer to the camera instead?
+	glm::mat4 m_viewMatrix;
 };
 
 #endif

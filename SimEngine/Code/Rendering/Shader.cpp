@@ -106,7 +106,9 @@ bool Shader::ShaderCompilationCheck(const GLuint vertexShader, const GLuint frag
 			cout << "Fragment shader compilation FAILED" << endl;
 			#endif
 		}
-                
+
+		cout << "Invalid shaders" << endl;
+
 		return false;
 	}
 }

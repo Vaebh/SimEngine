@@ -11,7 +11,7 @@ public:
 	Shader(const std::string& inName, const std::string& vertexShaderSrc, const std::string& fragShaderSrc);
 	~Shader();
 
-	inline GLuint GetProgramID() {return mShaderProgram;}
+	inline const GLuint GetProgramID() {return mShaderProgram;}
 	GLint GetAttributeLocation(const char* inAttributeName);
 
 	void CreateShaderProgram(const std::string& vertexShaderSrc, const std::string& fragShaderSrc);
