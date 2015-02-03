@@ -37,6 +37,9 @@
     <Filter Include="Code\Utils">
       <UniqueIdentifier>{e6b098bb-f3ca-4db8-8071-133a1b2fd2f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Camera">
+      <UniqueIdentifier>{246e6b6e-0bc4-4a13-954d-e06d5d3717bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Application\main.cpp">
@@ -128,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="Code\Structure\System.cpp">
       <Filter>Code\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Camera\Camera.cpp">
+      <Filter>Code\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Application\Application.cpp">
+      <Filter>Code\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Structure\Window.cpp">
+      <Filter>Code\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Structure\GameObjectFactory.cpp">
+      <Filter>Code\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Camera\CameraManager.cpp">
+      <Filter>Code\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +268,27 @@
     </ClInclude>
     <ClInclude Include="Code\Utils\MathUtils.h">
       <Filter>Code\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera\Camera.h">
+      <Filter>Code\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera\CameraManager.h">
+      <Filter>Code\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\GameObjectFactory.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Application\Application.h">
+      <Filter>Code\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Structure\Window.h">
+      <Filter>Code\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Events\EventTypes.h">
+      <Filter>Code\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\RenderableMeshComponent.h">
+      <Filter>Code\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

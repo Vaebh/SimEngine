@@ -11,13 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\Application\Application.h" />
     <ClInclude Include="Code\Application\Game.h" />
+    <ClInclude Include="Code\Camera\Camera.h" />
+    <ClInclude Include="Code\Camera\CameraManager.h" />
     <ClInclude Include="Code\Collision\BounceComponent.h" />
     <ClInclude Include="Code\Collision\CollisionComponent.h" />
     <ClInclude Include="Code\Collision\CollisionSystem.h" />
     <ClInclude Include="Code\Collision\FragileCollisionComponent.h" />
     <ClInclude Include="Code\Events\EventCallback.h" />
     <ClInclude Include="Code\Events\EventMessenger.h" />
+    <ClInclude Include="Code\Events\EventTypes.h" />
     <ClInclude Include="Code\Foundation\Foundation.h" />
     <ClInclude Include="Code\Foundation\StringUtils.h" />
     <ClInclude Include="Code\Game\BlockManager.h" />
@@ -33,6 +37,7 @@
     <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h" />
     <ClInclude Include="Code\Rendering\Buffer.h" />
     <ClInclude Include="Code\Rendering\RenderableComponent.h" />
+    <ClInclude Include="Code\Rendering\RenderableMeshComponent.h" />
     <ClInclude Include="Code\Rendering\RenderSystem.h" />
     <ClInclude Include="Code\Rendering\Shader.h" />
     <ClInclude Include="Code\Rendering\SpriteBatcher.h" />
@@ -44,16 +49,21 @@
     <ClInclude Include="Code\Sound\Sound.h" />
     <ClInclude Include="Code\Structure\Component.h" />
     <ClInclude Include="Code\Structure\GameObject.h" />
+    <ClInclude Include="Code\Structure\GameObjectFactory.h" />
     <ClInclude Include="Code\Structure\Rectangle.h" />
     <ClInclude Include="Code\Structure\Scene.h" />
     <ClInclude Include="Code\Structure\State.h" />
     <ClInclude Include="Code\Structure\StateManager.h" />
     <ClInclude Include="Code\Structure\System.h" />
     <ClInclude Include="Code\Structure\Vectors.h" />
+    <ClInclude Include="Code\Structure\Window.h" />
     <ClInclude Include="Code\Utils\MathUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Code\Application\Application.cpp" />
     <ClCompile Include="Code\Application\main.cpp" />
+    <ClCompile Include="Code\Camera\Camera.cpp" />
+    <ClCompile Include="Code\Camera\CameraManager.cpp" />
     <ClCompile Include="Code\Collision\BounceComponent.cpp" />
     <ClCompile Include="Code\Collision\CollisionComponent.cpp" />
     <ClCompile Include="Code\Collision\CollisionSystem.cpp" />
@@ -80,9 +90,11 @@
     <ClCompile Include="Code\Sound\Sound.cpp" />
     <ClCompile Include="Code\Structure\Component.cpp" />
     <ClCompile Include="Code\Structure\GameObject.cpp" />
+    <ClCompile Include="Code\Structure\GameObjectFactory.cpp" />
     <ClCompile Include="Code\Structure\Scene.cpp" />
     <ClCompile Include="Code\Structure\StateManager.cpp" />
     <ClCompile Include="Code\Structure\System.cpp" />
+    <ClCompile Include="Code\Structure\Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{855CDD7B-66F5-4E24-B298-11F397FCAF2A}</ProjectGuid>
