@@ -3,6 +3,8 @@
 
 #include "../Structure/GameObject.h"
 
+class GameObject;
+
 class IState
 {
 public:
