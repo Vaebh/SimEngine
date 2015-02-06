@@ -12,7 +12,7 @@ public:
 
 	void AddToScene(GameObject* inGameObject);
 	void RemoveFromScene(GameObject* inGameObject);
-	void Update(float inDT);
+	void Update(float in_dt);
 
 private:
 	std::vector<GameObject*> mGameObjects;

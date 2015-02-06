@@ -105,7 +105,7 @@ void InputManager::AddKey(const GLint inKeyCode, const uint32_t inPressedEventTy
 	mInputMap[inKeyCode].second = inReleasedEventType;
 }
 
-void InputManager::HandleKeyInput(Key& inKey, const float inDT)
+void InputManager::HandleKeyInput(Key& inKey, const float in_dt)
 {
 	int keyInputState = glfwGetKey(mWindow, inKey.mKeyCode);
 
@@ -127,15 +127,15 @@ void InputManager::HandleKeyInput(Key& inKey, const float inDT)
 	}
 }
 
-void InputManager::HandleKeyboardInput(const float inDT)
+void InputManager::HandleKeyboardInput(const float in_dt)
 {
 	for(int i = 0; i < mKeys.size(); ++i)
 	{
-		HandleKeyInput(mKeys[i], inDT);
+		HandleKeyInput(mKeys[i], in_dt);
 	}
 }
 
-void InputManager::Update(const float inDT)
+void InputManager::Update(const float in_dt)
 {
-	HandleKeyboardInput(inDT);
+	HandleKeyboardInput(in_dt);
 }

@@ -8,29 +8,29 @@ using std::endl;
 #define DEBUG_PRINTING 1
 
 Shader::Shader() :
-mShaderProgram(0)
+m_shaderProgram(0)
 {
   
 }
 
-Shader::Shader(const std::string& inName, const std::string& vertexShaderSrc, const std::string& fragShaderSrc) :
-mShaderProgram(0),
-mName(inName)
+Shader::Shader(const std::string& in_name, const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc) :
+m_shaderProgram(0),
+m_name(in_name)
 {
-	CreateShaderProgram(vertexShaderSrc, fragShaderSrc);
+	CreateShaderProgram(in_vertexShaderSrc, in_fragShaderSrc);
 }
 
 Shader::~Shader()
 {
-	if(mShaderProgram)
+	if(m_shaderProgram)
 	{
-		glDeleteProgram(mShaderProgram);
+		glDeleteProgram(m_shaderProgram);
 	}
 }
 
-GLint Shader::GetAttributeLocation(const char * inAttributeName)
+GLint Shader::GetAttributeLocation(const char* in_attributeName)
 {
-  return glGetAttribLocation(GetProgramID(), inAttributeName);
+  return glGetAttribLocation(GetProgramID(), in_attributeName);
 }
 
 //-------------------------------------------------------------------------------------
@@ -41,12 +41,12 @@ GLint Shader::GetAttributeLocation(const char * inAttributeName)
 //
 // @return - The index for the shader program we've just created
 //-------------------------------------------------------------------------------------
-void Shader::CreateShaderProgram(const std::string& vertexShaderSrc, const std::string& fragShaderSrc)
+void Shader::CreateShaderProgram(const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc)
 {
-	GLuint vertexShader = CreateShaderFromFile(vertexShaderSrc, GL_VERTEX_SHADER);
-	GLuint fragShader = CreateShaderFromFile(fragShaderSrc, GL_FRAGMENT_SHADER);
+	GLuint vertexShader = CreateShaderFromFile(in_vertexShaderSrc, GL_VERTEX_SHADER);
+	GLuint fragShader = CreateShaderFromFile(in_fragShaderSrc, GL_FRAGMENT_SHADER);
 
-	if(!ShaderCompilationCheck(vertexShader, fragShader, mName))
+	if(!ShaderCompilationCheck(vertexShader, fragShader, m_name))
 	{
 		if(vertexShader != 0)
 			DeleteShader(vertexShader);
@@ -57,20 +57,20 @@ void Shader::CreateShaderProgram(const std::string& vertexShaderSrc, const std::
 	}
 
 	// Actually create the shader program
-	mShaderProgram = glCreateProgram();
-	glAttachShader(mShaderProgram, vertexShader);
-	glAttachShader(mShaderProgram, fragShader);
+	m_shaderProgram = glCreateProgram();
+	glAttachShader(m_shaderProgram, vertexShader);
+	glAttachShader(m_shaderProgram, fragShader);
 
 	// Telling the program which buffer the fragment shader is writing to
-	glBindFragDataLocation(mShaderProgram, 0, "outColor");
-	glLinkProgram(mShaderProgram);
+	glBindFragDataLocation(m_shaderProgram, 0, "outColor");
+	glLinkProgram(m_shaderProgram);
 
 	// Detach and delete the shaders
 	DeleteShader(vertexShader);
 	DeleteShader(fragShader);
 
 	#if DEBUG_PRINTING == 1
-	if(glIsProgram(mShaderProgram) == GL_TRUE)
+	if(glIsProgram(m_shaderProgram) == GL_TRUE)
 		cout << "isProgram success" << endl;
 	else
 		cout << "isProgram fail" << endl;
@@ -79,16 +79,16 @@ void Shader::CreateShaderProgram(const std::string& vertexShaderSrc, const std::
 	return;
 }
 
-bool Shader::ShaderCompilationCheck(const GLuint vertexShader, const GLuint fragmentShader, const std::string shaderName) const
+bool Shader::ShaderCompilationCheck(const GLuint in_vertexShader, const GLuint in_fragmentShader, const std::string in_shaderName) const
 {
 	GLint vertexStatus, fragmentStatus;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &vertexStatus);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &fragmentStatus);
+	glGetShaderiv(in_vertexShader, GL_COMPILE_STATUS, &vertexStatus);
+	glGetShaderiv(in_fragmentShader, GL_COMPILE_STATUS, &fragmentStatus);
         
 	if(vertexStatus == GL_TRUE && fragmentStatus == GL_TRUE)
 	{
 		#if DEBUG_PRINTING == 1
-		cout << shaderName + " shader compilation SUCCESS" << endl;
+		cout << in_shaderName + " shader compilation SUCCESS" << endl;
 		#endif
 		return true;
 	}
@@ -113,10 +113,10 @@ bool Shader::ShaderCompilationCheck(const GLuint vertexShader, const GLuint frag
 	}
 }
 
-GLuint Shader::CreateShaderFromFile(const std::string& path, const GLenum& shaderType)
+GLuint Shader::CreateShaderFromFile(const std::string& in_path, const GLenum& in_shaderType)
 {
 	// Get the shader
-	std::string shaderSrcString = LoadShaderFromFile(path);
+	std::string shaderSrcString = LoadShaderFromFile(in_path);
 
 	if(shaderSrcString.empty())
 	{
@@ -126,19 +126,19 @@ GLuint Shader::CreateShaderFromFile(const std::string& path, const GLenum& shade
 	const GLchar* shaderSrc = shaderSrcString.c_str();
 
 	// Loading Vertex Shader
-	GLuint shader = glCreateShader(shaderType);
+	GLuint shader = glCreateShader(in_shaderType);
 	glShaderSource(shader, 1, &shaderSrc, NULL);
 	glCompileShader(shader);
 
 	return shader;
 }
 
-std::string Shader::LoadShaderFromFile(const std::string& path) const
+std::string Shader::LoadShaderFromFile(const std::string& in_path) const
 {
 	std::string shaderSrc = "";
 	std::ifstream myFile;
 
-	myFile.open(path);
+	myFile.open(in_path);
 	if(myFile.is_open() && !myFile.bad())
 	{
 		return shaderSrc.assign(std::istreambuf_iterator<char>(myFile), std::istreambuf_iterator<char>());
@@ -147,8 +147,8 @@ std::string Shader::LoadShaderFromFile(const std::string& path) const
 	return "";
 }
 
-void Shader::DeleteShader(GLuint inShader)
+void Shader::DeleteShader(GLuint in_shader)
 {
-	glDetachShader(mShaderProgram, inShader);
-	glDeleteShader(inShader);
+	glDetachShader(m_shaderProgram, in_shader);
+	glDeleteShader(in_shader);
 }

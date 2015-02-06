@@ -2,8 +2,8 @@
 #include "../Rendering/RenderSystem.h"
 
 IRenderableComponent::IRenderableComponent() : 
-mVisible(true),
-mShader()
+m_visible(true),
+m_shader()
 {
 
 }
@@ -15,7 +15,7 @@ IRenderableComponent::~IRenderableComponent()
 
 // TODO - Make an application class which I can request access to systems from, having a singleton for each system is not good
 
-void IRenderableComponent::OnAttached(GameObject* inGameObject)
+void IRenderableComponent::OnAttached(GameObject* in_gameObject)
 {
 	RenderSystem::GetSingleton()->AddComponent(this);
 }

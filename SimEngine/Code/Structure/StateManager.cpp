@@ -56,8 +56,8 @@ const IState* StateManager::GetActiveState() const
 	return mStateHierarchy.back();
 }
 
-void StateManager::Update(float inDT)
+void StateManager::Update(float in_dt)
 {
 	if(mActiveState != NULL)
-		mActiveState->Update(inDT);
+		mActiveState->Update(in_dt);
 }

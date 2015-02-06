@@ -27,21 +27,21 @@ public:
 	GameObject();
 	~GameObject();
 
-	void Attach(IComponent* inComponent);
-	void Detach(IComponent* inComponent);
+	void Attach(IComponent* in_component);
+	void Detach(IComponent* in_component);
 
-	inline Vector3 GetPosition() const {return mPosition;}
-	inline void SetPosition(Vector3 inPosition) {mPosition = inPosition;}
-	void MovePosition(Vector3 inPosition);
+	inline Vector3 GetPosition() const {return m_position;}
+	inline void SetPosition(Vector3 in_position) {m_position = in_position;}
+	void MovePosition(Vector3 in_position);
 
-	void ScaleBy(Vector3 inScale) {mScale += inScale;}
+	void ScaleBy(Vector3 in_scale) {m_scale += in_scale;}
 
-	inline const std::string GetName() {return mName;}
-	inline void SetName(std::string inName) {mName = inName;}
+	inline const std::string GetName() {return m_name;}
+	inline void SetName(std::string in_name) {m_name = in_name;}
     
     //void SetOwningScene(Scene* inScene);
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 	template<class ComponentType>
 	ComponentType* GetComponent();
@@ -59,18 +59,18 @@ public:
 	inline const CollisionSystem* GetCollisionSystem() {return m_collisionSystem;}*/
 
 public:
-	unsigned const int mIndex;
-	Vector3 mScale;
-	Vector3 mRotationAngle;
-	Vector3 mVelocity;
+	unsigned const int m_index;
+	Vector3 m_scale;
+	glm::quat m_rotationQuat;
+	Vector3 m_velocity;
 
-	std::vector<IComponent*> mComponents;
+	std::vector<IComponent*> m_components;
 
 private:
-	static unsigned int mNumGameObjects;
+	static unsigned int m_numGameObjects;
 
-	Vector3 mPosition;
-	std::string mName;
+	Vector3 m_position;
+	std::string m_name;
 
 	// Add getters for all of these
 	/*RenderSystem* m_renderSystem;
@@ -84,9 +84,9 @@ private:
 template<class ComponentType>
 ComponentType* GameObject::GetComponent()
 {
-    for(uint32_t i = 0; i < mComponents.size(); ++i)
+    for(uint32_t i = 0; i < m_components.size(); ++i)
     {
-        ComponentType* soughtComp = dynamic_cast<ComponentType*>(mComponents[i]);
+        ComponentType* soughtComp = dynamic_cast<ComponentType*>(m_components[i]);
         
 		if(soughtComp != NULL)
 		{

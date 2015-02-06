@@ -8,24 +8,24 @@ class Shader
 {
 public:
 	Shader();
-	Shader(const std::string& inName, const std::string& vertexShaderSrc, const std::string& fragShaderSrc);
+	Shader(const std::string& inName, const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc);
 	~Shader();
 
-	inline const GLuint GetProgramID() {return mShaderProgram;}
-	GLint GetAttributeLocation(const char* inAttributeName);
+	inline const GLuint GetProgramID() {return m_shaderProgram;}
+	GLint GetAttributeLocation(const char* in_attributeName);
 
-	void CreateShaderProgram(const std::string& vertexShaderSrc, const std::string& fragShaderSrc);
-
-private:
-	GLuint CreateShaderFromFile(const std::string& path, const GLenum& shaderType);
-	std::string LoadShaderFromFile(const std::string& path) const;
-
-	bool ShaderCompilationCheck(const GLuint vertexShader, const GLuint fragmentShader, const std::string shaderName) const;
-	void DeleteShader(GLuint inShader);
+	void CreateShaderProgram(const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc);
 
 private:
-	std::string mName;
-	GLuint mShaderProgram;
+	GLuint CreateShaderFromFile(const std::string& in_path, const GLenum& in_shaderType);
+	std::string LoadShaderFromFile(const std::string& in_path) const;
+
+	bool ShaderCompilationCheck(const GLuint in_vertexShader, const GLuint in_fragmentShader, const std::string in_shaderName) const;
+	void DeleteShader(GLuint in_shader);
+
+private:
+	std::string m_name;
+	GLuint m_shaderProgram;
 };
 
 #endif

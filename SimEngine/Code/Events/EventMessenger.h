@@ -24,7 +24,7 @@ public:
 	void UnsubscribeToEvent(const uint32_t in_eventType, GameObject* in_target, MessageDelegate in_msgDel);
 
 	// TODO - Add delayed events, will likely need an event queue
-	//void Update(float inDT);
+	//void Update(float in_dt);
 
 private:
 	std::vector<MessageDelegate> GetEventDelegates(const uint32_t in_eventType, GameObject* in_target);

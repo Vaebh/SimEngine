@@ -24,7 +24,7 @@ public:
 	void RemoveComponent(IRenderableComponent* inRenderableComponent);
 	void SetFrameBufferTarget(GLuint inFrameBuffer = 0);
 
-	virtual void Update(float inDT);
+	virtual void Update(float in_dt);
 
 	void Draw();
 
@@ -34,7 +34,7 @@ public:
 private:
 	static RenderSystem* mRenderer;
 
-	std::vector<IRenderableComponent*> mComponents;
+	std::vector<IRenderableComponent*> m_components;
 };
 
 #endif

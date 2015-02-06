@@ -33,10 +33,10 @@ void Scene::RemoveFromScene(GameObject* inGameObject)
 	}
 }
 
-void Scene::Update(float inDT)
+void Scene::Update(float in_dt)
 {
     for(uint32_t i = 0; i < mGameObjects.size(); ++i)
     {
-        mGameObjects[i]->Update(inDT);
+        mGameObjects[i]->Update(in_dt);
     }
 }*/

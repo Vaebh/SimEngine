@@ -2,83 +2,83 @@
 #include "../Foundation/Foundation.h"
 #include <algorithm>
 
-unsigned int GameObject::mNumGameObjects = 0;
+unsigned int GameObject::m_numGameObjects = 0;
 
 GameObject::GameObject() :
-mIndex(mNumGameObjects++),
-mPosition(0),
-mScale(1.0, 1.0, 1.0),
-mRotationAngle(0),
-mVelocity(0)
+m_index(m_numGameObjects++),
+m_position(0),
+m_scale(1.0, 1.0, 1.0),
+m_rotationQuat(glm::quat()),
+m_velocity(0)
 {
 
 }
 
 GameObject::~GameObject()
 {
-    for(uint32_t i = 0; i < mComponents.size(); ++i)
+    for(uint32_t i = 0; i < m_components.size(); ++i)
     {
-        SAFE_DELETE(mComponents[i]);
+        SAFE_DELETE(m_components[i]);
     }
 
-	mComponents.clear();
+	m_components.clear();
 }
 
-void GameObject::Attach(IComponent* inComponent)
+void GameObject::Attach(IComponent* in_component)
 {
-	for(std::vector<IComponent*>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+	for(std::vector<IComponent*>::const_iterator it = m_components.begin(); it != m_components.end(); ++it)
 	{
 		// Check if we have this Component
-		if((*it) == inComponent)
+		if((*it) == in_component)
 		{
 			return;
 		}
 	}
 
-	inComponent->SetOwner(this);
-	inComponent->OnAttached(this);
-	mComponents.push_back(inComponent);
+	in_component->SetOwner(this);
+	in_component->OnAttached(this);
+	m_components.push_back(in_component);
 }
 
-void GameObject::Detach(IComponent* inComponent)
+void GameObject::Detach(IComponent* in_component)
 {
-	if(inComponent == NULL)
+	if(in_component == NULL)
 		return;
 
-	for(std::vector<IComponent*>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+	for(std::vector<IComponent*>::const_iterator it = m_components.begin(); it != m_components.end(); ++it)
 	{
 		// Check if we have this Component
-		if((*it) == inComponent)
+		if((*it) == in_component)
 		{
-			inComponent->SetOwner(NULL);
-			inComponent->OnDetached(this);
-			mComponents.erase(std::remove(mComponents.begin(), mComponents.end(), inComponent));
+			in_component->SetOwner(NULL);
+			in_component->OnDetached(this);
+			m_components.erase(std::remove(m_components.begin(), m_components.end(), in_component));
 			break;
 		}
 	}
 }
 
-void GameObject::MovePosition(Vector3 inPosition)
+void GameObject::MovePosition(Vector3 in_position)
 {
-	inPosition = GetPosition() + inPosition;
+	in_position = GetPosition() + in_position;
 
-	for(uint32_t i = 0; i < mComponents.size(); ++i)
+	for(uint32_t i = 0; i < m_components.size(); ++i)
     {
-		mComponents[i]->PrePositionSet(inPosition);
+		m_components[i]->PrePositionSet(in_position);
 	}
 
-	SetPosition(inPosition);
+	SetPosition(in_position);
 }
 
-void GameObject::Update(float inDT)
+void GameObject::Update(float in_dt)
 {
-	MovePosition(mVelocity * inDT);
+	MovePosition(m_velocity * in_dt);
 
-	for(std::vector<IComponent*>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+	for(std::vector<IComponent*>::const_iterator it = m_components.begin(); it != m_components.end(); ++it)
 	{
 		if(*it)
 		{
-			(*it)->Update(inDT);
+			(*it)->Update(in_dt);
 		}
 	}
 }

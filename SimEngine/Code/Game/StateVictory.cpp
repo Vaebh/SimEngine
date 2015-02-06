@@ -26,7 +26,7 @@ void StateVictory::HandleEvent(uint32_t inEventType, GameObject* inTarget)
 
 }
 
-void StateVictory::Update(float inDT)
+void StateVictory::Update(float in_dt)
 {
 	for(std::vector<GameObject*>::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
@@ -36,7 +36,7 @@ void StateVictory::Update(float inDT)
 		}
 		else
 		{
-			(*it)->Update(inDT);
+			(*it)->Update(in_dt);
 		}
 	}
 }

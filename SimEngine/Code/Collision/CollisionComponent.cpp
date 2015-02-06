@@ -50,11 +50,11 @@ Rectangle CollisionComponent::CreateBoundingBox(Vector3 inPosition)
 {
 	Rectangle newBoundingBox;
 
-	newBoundingBox.left = inPosition.x - mOwner->mScale.x / 2;
-	newBoundingBox.right = inPosition.x + mOwner->mScale.x / 2;
+	newBoundingBox.left = inPosition.x - mOwner->m_scale.x / 2;
+	newBoundingBox.right = inPosition.x + mOwner->m_scale.x / 2;
 
-	newBoundingBox.top = inPosition.y + mOwner->mScale.y / 2;
-	newBoundingBox.bottom = inPosition.y - mOwner->mScale.y / 2;
+	newBoundingBox.top = inPosition.y + mOwner->m_scale.y / 2;
+	newBoundingBox.bottom = inPosition.y - mOwner->m_scale.y / 2;
 
 	return newBoundingBox;
 }
@@ -64,7 +64,7 @@ void CollisionComponent::OnCollision(CollisionComponent* inComponent, Vector3 in
 	EventMessenger::GetSingleton()->RecordEvent(COLLISION, mOwner);
 }
 
-void CollisionComponent::Update(float inDT)
+void CollisionComponent::Update(float in_dt)
 {
 
 }

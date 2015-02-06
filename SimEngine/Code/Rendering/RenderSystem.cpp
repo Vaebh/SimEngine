@@ -88,7 +88,7 @@ void RenderSystem::AddComponent(IRenderableComponent* inRenderableComponent)
 {
 	if(inRenderableComponent)
 	{
-		mComponents.push_back(inRenderableComponent);
+		m_components.push_back(inRenderableComponent);
 	}
 }
 
@@ -98,27 +98,27 @@ void RenderSystem::RemoveComponent(IRenderableComponent* inRenderableComponent)
 	{
 		std::vector<IRenderableComponent*>::const_iterator it;
 
-		for(it = mComponents.begin(); it != mComponents.end(); ++it)
+		for(it = m_components.begin(); it != m_components.end(); ++it)
 		{
 			if((*it) == inRenderableComponent)
 			{
-				mComponents.erase(it);
+				m_components.erase(it);
 
 				// Downsize the vector
-				std::vector<IRenderableComponent*>(mComponents).swap(mComponents);
+				std::vector<IRenderableComponent*>(m_components).swap(m_components);
 				break;
 			}
 		}
 	}
 }
 
-void RenderSystem::Update(float inDT)
+void RenderSystem::Update(float in_dt)
 {
-	/*for(std::vector<IRenderableComponent*>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+	/*for(std::vector<IRenderableComponent*>::const_iterator it = m_components.begin(); it != m_components.end(); ++it)
 	{
 		if(*it)
 		{
-			(*it)->Update(inDT);
+			(*it)->Update(in_dt);
 		}
 	}*/
 }
@@ -133,17 +133,17 @@ void RenderSystem::Draw()
 
 	glActiveTexture(GL_TEXTURE0);
 
-	for(uint32_t i = 0; i < mComponents.size(); ++i)
+	for(uint32_t i = 0; i < m_components.size(); ++i)
 	{
-		if(mComponents[i]->IsVisible())
+		if(m_components[i]->IsVisible())
 		{
-			glUseProgram(mComponents[i]->GetShader().GetProgramID());
+			glUseProgram(m_components[i]->GetShader().GetProgramID());
 
 			// This is bad, should be done in the actual draw methods for each component
 			// Maybe in default renderableComponent draw?
-			//if(mComponents[i]->GetOwner()->GetCameraManager()->GetActiveCamera().m_viewMatrixChanged)
+			//if(m_components[i]->GetOwner()->GetCameraManager()->GetActiveCamera().m_viewMatrixChanged)
 			{
-				/*GLint uniView = glGetUniformLocation(mComponents[i]->GetShader().GetProgramID(), "view");
+				/*GLint uniView = glGetUniformLocation(m_components[i]->GetShader().GetProgramID(), "view");
 
 				glm::mat4 viewMatrix = glm::lookAt(
 					ZERO,
@@ -151,14 +151,14 @@ void RenderSystem::Draw()
 					glm::vec3(0.0f, 1.0f, 0.0f)
 				);
 				glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(viewMatrix));*/
-				//glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(mComponents[i]->GetOwner()->GetCameraManager()->GetActiveCamera().GetViewMatrix()));
+				//glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(m_components[i]->GetOwner()->GetCameraManager()->GetActiveCamera().GetViewMatrix()));
 			}
 
-			mComponents[i]->Draw();
+			m_components[i]->Draw();
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 	}
 
-	//mComponents[i]->GetOwner()->GetCameraManager()->GetActiveCamera().ViewMatrixChanged();
+	//m_components[i]->GetOwner()->GetCameraManager()->GetActiveCamera().ViewMatrixChanged();
 }

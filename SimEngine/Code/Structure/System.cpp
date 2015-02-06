@@ -6,13 +6,13 @@
 
 }*/
 
-void ISystem::Update(float inDT)
+void ISystem::Update(float in_dt)
 {
-	/*for(std::vector<IComponent>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+	/*for(std::vector<IComponent>::const_iterator it = m_components.begin(); it != m_components.end(); ++it)
 	{
 		if((*it) != NULL)
 		{
-			it->Update(inDT);
+			it->Update(in_dt);
 		}
 	}*/
 }

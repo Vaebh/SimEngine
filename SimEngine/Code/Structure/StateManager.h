@@ -16,7 +16,7 @@ public:
 	void PushState(IState* const inNewState);
 	void PopState();
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 private:
 	IState* mActiveState;

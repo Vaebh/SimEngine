@@ -12,7 +12,7 @@ public:
     IComponent();
 	virtual ~IComponent() {}
 
-	virtual void Update(float inDT) = 0;
+	virtual void Update(float in_dt) = 0;
 
 	inline GameObject* GetOwner() const {return mOwner;}
 	inline void SetOwner(GameObject* inNewOwner) {mOwner = inNewOwner;}

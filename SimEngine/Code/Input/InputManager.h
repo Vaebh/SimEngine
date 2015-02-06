@@ -22,14 +22,14 @@ public:
 	void Init();
 	void InitKeys();
 
-	virtual void Update(const float inDT);
+	virtual void Update(const float in_dt);
 
 	// Prints out mouse coordinates
 	static void mouseCallback(GLFWwindow* window, int button, int action, int mods);
 
 private:
-	void HandleKeyboardInput(const float inDT);
-	void HandleKeyInput(Key& inKey, const float inDT);
+	void HandleKeyboardInput(const float in_dt);
+	void HandleKeyInput(Key& inKey, const float in_dt);
 
 	void AddKey(const GLint inKeyCode, const uint32_t inPressedEventType, const uint32_t inReleasedEventType);
 

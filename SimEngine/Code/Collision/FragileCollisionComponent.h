@@ -10,7 +10,7 @@ public:
 
 	void OnCollision(CollisionComponent* inComponent, Vector3 inCollisionVector);
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 public:
 	bool mDead;

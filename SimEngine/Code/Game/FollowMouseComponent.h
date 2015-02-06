@@ -15,7 +15,7 @@ class FollowMouseComponent : public IComponent
 public:
 	FollowMouseComponent(AXIS inAxis);
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 	inline AXIS GetAxis() const {return mAxis;}
 

@@ -11,12 +11,12 @@ public:
 	//ISystem();
 	//virtual ~ISystem();
 
-	virtual void Update(float inDT) = 0;
+	virtual void Update(float in_dt) = 0;
 
 	//virtual std::string GetSystemID() = 0;
 
 //protected:
-	//std::vector<IComponent*> mComponents;
+	//std::vector<IComponent*> m_components;
 };
 
 #endif

@@ -12,7 +12,7 @@ public:
 	ComponentBallController(ComponentBallModel* inBallModel);
 	~ComponentBallController();
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 	void CheckForWindowCollision();
 

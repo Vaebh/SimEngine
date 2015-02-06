@@ -43,19 +43,19 @@ void AnimatedSpriteComponent::SendAnimInfo()
 {
     float spriteFrameDivisorX = 1.f / mNumFrames;
 
-	glUseProgram(mShader.GetProgramID());
+	glUseProgram(m_shader.GetProgramID());
       
 	glUniform2f(GetUVUniform(), spriteFrameDivisorX, 1.f);
     glUniform1i(GetFrameUniform(), mCurrentFrame);
 }
  
-void AnimatedSpriteComponent::Update(float inDT)
+void AnimatedSpriteComponent::Update(float in_dt)
 {
-	SpriteComponent::Update(inDT);
+	SpriteComponent::Update(in_dt);
 
 	if(mAnimating)
 	{
-		mAnimTimer += inDT;
+		mAnimTimer += in_dt;
       
 		if(mAnimTimer >= mAnimSpeed)
 		{
