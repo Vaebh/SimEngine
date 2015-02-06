@@ -14,7 +14,7 @@ void ComponentBallModel::OnAttached(GameObject* inGameObject)
 	mInitialPosition = inGameObject->GetPosition();
 }
 
-void ComponentBallModel::Update(float inDT)
+void ComponentBallModel::Update(float in_dt)
 {
 
 }

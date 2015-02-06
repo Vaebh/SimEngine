@@ -11,14 +11,14 @@ public:
 	void AddComponent(CollisionComponent* inCollisionComponent);
 	void RemoveComponent(CollisionComponent* inCollisionComponent);
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 	bool IsColliding(Rectangle inBoundingBox, CollisionComponent* inCollisionComponent);
 
 	static CollisionSystem* GetSingleton();
 
 private:
-	std::vector<CollisionComponent*> mComponents;
+	std::vector<CollisionComponent*> m_components;
 
 	static CollisionSystem* mColSystem;
 };

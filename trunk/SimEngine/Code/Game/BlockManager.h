@@ -13,7 +13,7 @@ public:
 	BlockManager(std::vector<GameObject*>& outGameObjects, std::string instrLevelLayout);
 	~BlockManager();
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 	inline bool AreAllBlocksDead() const {return mAllBlocksDead;}
 

@@ -13,7 +13,7 @@ public:
 
 	void Initialise();
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 	void PlaySoundEffect(const std::string& inSoundName);
     void PlayMusic(const std::string& inMusicName);

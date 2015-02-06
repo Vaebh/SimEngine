@@ -9,7 +9,7 @@ class CollisionComponent : public IComponent
 public:
 	CollisionComponent();
 	~CollisionComponent();
-	virtual void Update(float inDT);
+	virtual void Update(float in_dt);
 
 	void AddComponent(CollisionComponent* inCollisionComponent);
 	void RemoveComponent(CollisionComponent* inCollisionComponent);

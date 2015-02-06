@@ -21,7 +21,7 @@ void CollisionSystem::AddComponent(CollisionComponent* inCollisionComponent)
 {
 	if(inCollisionComponent)
 	{
-		mComponents.push_back(inCollisionComponent);
+		m_components.push_back(inCollisionComponent);
 	}
 }
 
@@ -31,14 +31,14 @@ void CollisionSystem::RemoveComponent(CollisionComponent* inCollisionComponent)
 	{
 		std::vector<CollisionComponent*>::const_iterator it;
 
-		for(it = mComponents.begin(); it != mComponents.end(); ++it)
+		for(it = m_components.begin(); it != m_components.end(); ++it)
 		{
 			if((*it) == inCollisionComponent)
 			{
-				mComponents.erase(it);
+				m_components.erase(it);
 
 				// Downsize the vector
-				std::vector<CollisionComponent*>(mComponents).swap(mComponents);
+				std::vector<CollisionComponent*>(m_components).swap(m_components);
 				break;
 			}
 		}
@@ -47,17 +47,17 @@ void CollisionSystem::RemoveComponent(CollisionComponent* inCollisionComponent)
 
 bool CollisionSystem::IsColliding(Rectangle inBoundingBox, CollisionComponent* inCollisionComponent)
 {
-    for(uint32_t i = 0; i < mComponents.size(); ++i)
+    for(uint32_t i = 0; i < m_components.size(); ++i)
 	{
-		if(mComponents[i] != inCollisionComponent && mComponents[i]->IsIntersecting(inBoundingBox))
+		if(m_components[i] != inCollisionComponent && m_components[i]->IsIntersecting(inBoundingBox))
 		{
-			Vector3 GameObject1Center = Vector3(inCollisionComponent->mOwner->GetPosition().x + inCollisionComponent->mOwner->mScale.x / 2, inCollisionComponent->mOwner->GetPosition().y + inCollisionComponent->mOwner->mScale.y / 2, 0.f);
-			Vector3 GameObject2Center = Vector3(mComponents[i]->mOwner->GetPosition().x + mComponents[i]->mOwner->mScale.x / 2, mComponents[i]->mOwner->GetPosition().y + mComponents[i]->mOwner->mScale.y / 2, 0.f);
+			Vector3 GameObject1Center = Vector3(inCollisionComponent->mOwner->GetPosition().x + inCollisionComponent->mOwner->m_scale.x / 2, inCollisionComponent->mOwner->GetPosition().y + inCollisionComponent->mOwner->m_scale.y / 2, 0.f);
+			Vector3 GameObject2Center = Vector3(m_components[i]->mOwner->GetPosition().x + m_components[i]->mOwner->m_scale.x / 2, m_components[i]->mOwner->GetPosition().y + m_components[i]->mOwner->m_scale.y / 2, 0.f);
 
-			Vector3 collisionVector = inCollisionComponent->mOwner->GetPosition() - mComponents[i]->mOwner->GetPosition();
+			Vector3 collisionVector = inCollisionComponent->mOwner->GetPosition() - m_components[i]->mOwner->GetPosition();
 
-			mComponents[i]->OnCollision(inCollisionComponent, collisionVector);
-			inCollisionComponent->OnCollision(mComponents[i], collisionVector);
+			m_components[i]->OnCollision(inCollisionComponent, collisionVector);
+			inCollisionComponent->OnCollision(m_components[i], collisionVector);
 			return true;
 		}
 	}
@@ -65,13 +65,13 @@ bool CollisionSystem::IsColliding(Rectangle inBoundingBox, CollisionComponent* i
 	return false;
 }
 
-void CollisionSystem::Update(float inDT)
+void CollisionSystem::Update(float in_dt)
 {
-	/*for(std::vector<CollisionComponent*>::const_iterator it = mComponents.begin(); it != mComponents.end(); ++it)
+	/*for(std::vector<CollisionComponent*>::const_iterator it = m_components.begin(); it != m_components.end(); ++it)
 	{
 		if(*it)
 		{
-			(*it)->Update(inDT);
+			(*it)->Update(in_dt);
 		}
 	}*/
 }

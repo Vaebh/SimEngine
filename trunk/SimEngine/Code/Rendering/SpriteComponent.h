@@ -21,7 +21,7 @@ public:
 
 protected:
 	virtual void Draw();
-	virtual void Update(float inDT);
+	virtual void Update(float in_dt);
 
 	inline GLuint GetMoveUniform() const {return mMoveUniform;}
 	inline GLuint GetUVUniform() const {return mUVUniform;}

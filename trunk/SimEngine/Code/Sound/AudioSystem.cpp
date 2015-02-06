@@ -66,7 +66,7 @@ bool AudioSystem::FMODErrorCheck(FMOD_RESULT inResult)
 	return true;
 }
 
-void AudioSystem::Update(float inDT)
+void AudioSystem::Update(float in_dt)
 {
 	FMODErrorCheck(mSystem->update());
 }

@@ -58,7 +58,7 @@ void StateLevelOne::HandleEvent(uint32_t inEventType, GameObject* inTarget)
 	}
 }
 
-void StateLevelOne::Update(float inDT)
+void StateLevelOne::Update(float in_dt)
 {
 	for(std::vector<GameObject*>::iterator it = mGameObjects.begin(); it != mGameObjects.end(); ++it)
 	{
@@ -68,13 +68,13 @@ void StateLevelOne::Update(float inDT)
 		}
 		else
 		{
-			(*it)->Update(inDT);
+			(*it)->Update(in_dt);
 		}
 	}
 
 	if(mBlockManager)
 	{
-		mBlockManager->Update(inDT);
+		mBlockManager->Update(in_dt);
 
 		if(mBlockManager->AreAllBlocksDead())
 		{

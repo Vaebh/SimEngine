@@ -24,15 +24,15 @@ void FragileCollisionComponent::OnCollision(CollisionComponent* inComponent, Vec
 	}
 }
 
-void FragileCollisionComponent::Update(float inDT)
+void FragileCollisionComponent::Update(float in_dt)
 {
 	if(mDying)
 	{
-		mOwner->ScaleBy(Vector3(-0.1f * inDT, -0.1f * inDT, 0.f));
+		mOwner->ScaleBy(Vector3(-0.1f * in_dt, -0.1f * in_dt, 0.f));
 		mBoundingBox = CreateBoundingBox(mOwner->GetPosition());
 	}
 
-	if(mOwner->mScale.x <= 0.001f)
+	if(mOwner->m_scale.x <= 0.001f)
 	{
 		mDead = true;
 	}

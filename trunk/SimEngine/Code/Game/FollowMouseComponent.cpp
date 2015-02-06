@@ -8,7 +8,7 @@ mAxis(inAxis)
 
 }
 
-void FollowMouseComponent::Update(float inDT)
+void FollowMouseComponent::Update(float in_dt)
 {
 	double mouseX, mouseY;
 

@@ -62,41 +62,42 @@ void SpriteComponent::SetShader(const std::string inVertexShaderSrc, const std::
 	if(inVertexShaderSrc.empty() || inFragShaderSrc.empty())
 		return;
 
-	mShader.CreateShaderProgram(inVertexShaderSrc, inFragShaderSrc);
+	m_shader.CreateShaderProgram(inVertexShaderSrc, inFragShaderSrc);
 
-	glUseProgram(mShader.GetProgramID());
+	glUseProgram(m_shader.GetProgramID());
 
 	glBindVertexArray(mVao);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
 
-	GLint posAttrib = glGetAttribLocation(mShader.GetProgramID(), "position");
+	GLint posAttrib = glGetAttribLocation(m_shader.GetProgramID(), "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 6*sizeof(float), 0);
                      
-	GLint texAttrib = glGetAttribLocation(mShader.GetProgramID(), "texcoord");
+	GLint texAttrib = glGetAttribLocation(m_shader.GetProgramID(), "texcoord");
 	glEnableVertexAttribArray(texAttrib);
 	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(4*sizeof(float)));
 
-	glUniform1i(glGetUniformLocation(mShader.GetProgramID(), "textureSprite"), 0);
+	glUniform1i(glGetUniformLocation(m_shader.GetProgramID(), "textureSprite"), 0);
 
-	mMoveUniform = glGetUniformLocation(mShader.GetProgramID(), "move");
-	mUVUniform = glGetUniformLocation(mShader.GetProgramID(), "spriteOffset");
-	mFrameUniform = glGetUniformLocation(mShader.GetProgramID(), "currentFrame");
-	mColourTintUniform = glGetUniformLocation(mShader.GetProgramID(), "uniformColour");
+	mMoveUniform = glGetUniformLocation(m_shader.GetProgramID(), "move");
+	mUVUniform = glGetUniformLocation(m_shader.GetProgramID(), "spriteOffset");
+	mFrameUniform = glGetUniformLocation(m_shader.GetProgramID(), "currentFrame");
+	mColourTintUniform = glGetUniformLocation(m_shader.GetProgramID(), "uniformColour");
 }
 
 glm::mat4 SpriteComponent::CalculateMatrix()
 {
 	glm::mat4 model;
-	model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->mScale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
+	//model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
 
+	model = glm::translate(model, GetOwner()->GetPosition());
 	return model;
 }
 
-void SpriteComponent::Update(float inDT)
+void SpriteComponent::Update(float in_dt)
 {
-	//mAnimTimer += inDT;
-	//IRenderableComponent::Update(inDT);
+	//mAnimTimer += in_dt;
+	//IRenderableComponent::Update(in_dt);
 }
 
 void SpriteComponent::Draw()

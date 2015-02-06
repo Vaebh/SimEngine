@@ -10,17 +10,17 @@ public:
 	IRenderableComponent();
 	~IRenderableComponent();
 
-	inline Shader GetShader() const {return mShader;}
-	inline bool IsVisible() const {return mVisible;}
+	inline Shader GetShader() const {return m_shader;}
+	inline bool IsVisible() const {return m_visible;}
 
-	virtual void Update(float inDT) = 0;
+	virtual void Update(float in_dt) = 0;
 	virtual void Draw() = 0;
 
-	virtual void OnAttached(GameObject* inGameObject);
+	virtual void OnAttached(GameObject* in_gameObject);
 
 protected:
-	Shader mShader;
-	bool mVisible;
+	Shader m_shader;
+	bool m_visible;
 
 	// Should probably just be in one place, maybe a pointer to the camera instead?
 	glm::mat4 m_viewMatrix;

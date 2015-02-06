@@ -9,7 +9,7 @@ class IState
 {
 public:
 	virtual ~IState() {}
-	virtual void Update(float inDT) = 0;
+	virtual void Update(float in_dt) = 0;
 
 protected:
 	std::vector<GameObject*> mGameObjects;

@@ -90,32 +90,32 @@ void Test3DComponent::SetShader(const std::string inVertexShaderSrc, const std::
 	if(inVertexShaderSrc.empty() || inFragShaderSrc.empty())
 		return;
 
-	mShader.CreateShaderProgram(inVertexShaderSrc, inFragShaderSrc);
+	m_shader.CreateShaderProgram(inVertexShaderSrc, inFragShaderSrc);
 
-	glUseProgram(mShader.GetProgramID());
+	glUseProgram(m_shader.GetProgramID());
 
 	glBindVertexArray(mVao);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
 
-	GLint posAttrib = glGetAttribLocation(mShader.GetProgramID(), "position");
+	GLint posAttrib = glGetAttribLocation(m_shader.GetProgramID(), "position");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
 
-	GLint texAttrib = glGetAttribLocation(mShader.GetProgramID(), "texcoord");
+	GLint texAttrib = glGetAttribLocation(m_shader.GetProgramID(), "texcoord");
     glEnableVertexAttribArray(texAttrib);
     glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
 
-	/*GLint posAttrib = glGetAttribLocation(mShader.GetProgramID(), "position");
+	/*GLint posAttrib = glGetAttribLocation(m_shader.GetProgramID(), "position");
 	glEnableVertexAttribArray(posAttrib);
 	glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 6*sizeof(float), 0);*/
                      
-	/*GLint texAttrib = glGetAttribLocation(mShader.GetProgramID(), "texcoord");
+	/*GLint texAttrib = glGetAttribLocation(m_shader.GetProgramID(), "texcoord");
 	glEnableVertexAttribArray(texAttrib);
 	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(4*sizeof(float)));*/
 
-	glUniform1i(glGetUniformLocation(mShader.GetProgramID(), "textureSprite"), 0);
+	glUniform1i(glGetUniformLocation(m_shader.GetProgramID(), "textureSprite"), 0);
 
-	mMoveUniform = glGetUniformLocation(mShader.GetProgramID(), "move");
+	mMoveUniform = glGetUniformLocation(m_shader.GetProgramID(), "move");
 
 	m_camCenter = Vector3(0.f, 0.f, 0.f);
 	m_camLookat = Vector3(1.5f, 1.5f, 1.5f);
@@ -127,18 +127,18 @@ void Test3DComponent::SetShader(const std::string inVertexShaderSrc, const std::
         glm::vec3(0.0f, 1.0f, 0.0f)
     );
 
-    GLint uniView = glGetUniformLocation(mShader.GetProgramID(), "view");
+    GLint uniView = glGetUniformLocation(m_shader.GetProgramID(), "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
     glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 10.0f);
-    GLint uniProj = glGetUniformLocation(mShader.GetProgramID(), "proj");
+    GLint uniProj = glGetUniformLocation(m_shader.GetProgramID(), "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
 glm::mat4 Test3DComponent::CalculateMatrix()
 {
 	//glm::mat4 model;
-	//model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->mScale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
+	//model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
 
 	// Calculate transformation
 	/*glm::mat4 model;
@@ -149,16 +149,25 @@ glm::mat4 Test3DComponent::CalculateMatrix()
 	);
 	glUniformMatrix4fv(mMoveUniform, 1, GL_FALSE, glm::value_ptr(model));*/
 
+	//glm::mat4 rotMatrix = glm::mat4_cast(GetOwner()->m_rotationQuat);
+
+	glm::mat4 identityMat = glm::mat4(1.0f);
+	glm::mat4 rotMatrix = glm::mat4_cast(GetOwner()->m_rotationQuat);
+	glm::mat4 transMatrix = glm::translate(identityMat, GetOwner()->GetPosition());
+	glm::mat4 viewMatrix = rotMatrix * glm::inverse(transMatrix);
+
+	//glm::rotate(GetOwner()->m_rotationQuat, 90.f, Vector3(0, 1, 0));
+
 	glm::mat4 model;
-	model = glm::translate(model, GetOwner()->GetPosition());
+	model = glm::scale(model, GetOwner()->m_scale) * rotMatrix * glm::translate(model, GetOwner()->GetPosition());
 
 	return model;
 }
 
-void Test3DComponent::Update(float inDT)
+void Test3DComponent::Update(float in_dt)
 {
-	//mAnimTimer += inDT;
-	//IRenderableComponent::Update(inDT);
+	//mAnimTimer += in_dt;
+	//IRenderableComponent::Update(in_dt);
 
 	Vector3 camDir = m_camCenter - m_camLookat;
 
@@ -186,7 +195,7 @@ void Test3DComponent::Update(float inDT)
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
 
-		GLint uniView = glGetUniformLocation(mShader.GetProgramID(), "view");
+		GLint uniView = glGetUniformLocation(m_shader.GetProgramID(), "view");
 		glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 	}
 
@@ -204,7 +213,7 @@ void Test3DComponent::Update(float inDT)
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);
 
-		GLint uniView = glGetUniformLocation(mShader.GetProgramID(), "view");
+		GLint uniView = glGetUniformLocation(m_shader.GetProgramID(), "view");
 		glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 	}
 
@@ -223,10 +232,50 @@ void Test3DComponent::Update(float inDT)
 		mOwner->SetPosition(mOwner->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
 	}
 
+	static bool thing = false;
+	static float angle = 10.f;
+
+	static float scale = 1.0f;
+
+	static bool thing2 = false;
+
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
+		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
+		//if(!thing)
+			//GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, angle, Vector3(0, 1, 0));
+		
+
+		thing = true;
 	}
+
+	if(thing && glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_RELEASE)
+	{
+		thing = false;
+		//angle += 10.0f;
+
+		scale += 0.1f;
+
+		GetOwner()->m_scale.x = scale;
+		GetOwner()->m_scale.y = scale;
+		GetOwner()->m_scale.z = scale;
+	}
+
+	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+		thing2 = true;
+	if(thing2 && glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_SPACE) == GLFW_RELEASE)
+	{
+		thing2 = false;
+
+		scale -= 0.1f;
+	}
+
+	GetOwner()->m_scale.x = scale;
+	GetOwner()->m_scale.y = scale;
+	GetOwner()->m_scale.z = scale;
+
+
+	GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
 }
 
 void Test3DComponent::Draw()

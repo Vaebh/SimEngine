@@ -11,7 +11,7 @@ public:
 	StateVictory();
 	~StateVictory();
 
-	virtual void Update(float inDT);
+	virtual void Update(float in_dt);
 
 	void HandleEvent(uint32_t inEventType, GameObject* inTarget);
 

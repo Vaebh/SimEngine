@@ -18,7 +18,7 @@ public:
 
 	void OnAttached(GameObject* inGameObject);
 
-	void Update(float inDT);
+	void Update(float in_dt);
 
 private:
 	bool mMovementEnabled;

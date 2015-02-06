@@ -33,8 +33,8 @@ private:
 
 	Vector3 m_camCenter;
 	Vector3 m_camLookat;
-};
 
+	TextureData m_textureData;
 };
 
 #endif

@@ -7,7 +7,7 @@ class AnimatedSpriteComponent : public SpriteComponent
 {
 public:
 	AnimatedSpriteComponent(const std::string inTexture = "sample.png", int inNumFrames = 1, float inAnimationSpeed = 1.f, bool inbLooping = true);
-	virtual void Update(float inDT);
+	virtual void Update(float in_dt);
 	void Draw();
 
 	void Play(bool inbLooping);

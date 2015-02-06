@@ -73,21 +73,21 @@ void BounceComponent::OnCollision(CollisionComponent* inComponent, Vector3 inCol
 		dirVec = Y_UNIT_NEGATIVE;
 	}
 
-	if(mOwner->mVelocity != Vector3())
+	if(mOwner->m_velocity != Vector3())
 	{
 		// Reflect the balls velocity based on what side of the bounding box it hits
-		Vector3 velocityNorm = glm::normalize(mOwner->mVelocity);
-		mOwner->mVelocity = (-2 * (glm::dot(velocityNorm, dirVec)) * dirVec - velocityNorm);
+		Vector3 velocityNorm = glm::normalize(mOwner->m_velocity);
+		mOwner->m_velocity = (-2 * (glm::dot(velocityNorm, dirVec)) * dirVec - velocityNorm);
 	}
 
 	// Add offset vector so bounces further from the center deflect more
 	inCollisionVector *= 4;
-	mOwner->mVelocity += inCollisionVector;
+	mOwner->m_velocity += inCollisionVector;
 
-	mOwner->mVelocity = glm::normalize(mOwner->mVelocity) * mBounceSpeed;
+	mOwner->m_velocity = glm::normalize(mOwner->m_velocity) * mBounceSpeed;
 }
 
-void BounceComponent::Update(float inDT)
+void BounceComponent::Update(float in_dt)
 {
-	CollisionComponent::Update(inDT);
+	CollisionComponent::Update(in_dt);
 }
