@@ -18,6 +18,8 @@ public:
 
 	virtual void OnAttached(GameObject* in_gameObject);
 
+	virtual glm::mat4 CalculateModelMatrix() = 0;
+
 protected:
 	Shader m_shader;
 	bool m_visible;
