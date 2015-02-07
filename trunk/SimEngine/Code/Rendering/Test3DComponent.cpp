@@ -135,7 +135,7 @@ void Test3DComponent::SetShader(const std::string inVertexShaderSrc, const std::
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
-glm::mat4 Test3DComponent::CalculateMatrix()
+glm::mat4 Test3DComponent::CalculateModelMatrix()
 {
 	//glm::mat4 model;
 	//model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
@@ -283,5 +283,5 @@ void Test3DComponent::Draw()
     glBindTexture(GL_TEXTURE_2D, *(mTextureData.textureID));
 
 	// Calculate transformation
-    glUniformMatrix4fv(mMoveUniform, 1, GL_FALSE, glm::value_ptr(CalculateMatrix()));
+    glUniformMatrix4fv(mMoveUniform, 1, GL_FALSE, glm::value_ptr(CalculateModelMatrix()));
 }

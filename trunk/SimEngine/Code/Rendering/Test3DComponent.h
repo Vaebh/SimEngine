@@ -25,7 +25,7 @@ protected:
 
 private:
 	void Initialise();
-	glm::mat4 CalculateMatrix();
+	glm::mat4 CalculateModelMatrix();
 
 	void SetShader(const std::string inVertexShaderSrc, const std::string inFragShaderSrc);
 

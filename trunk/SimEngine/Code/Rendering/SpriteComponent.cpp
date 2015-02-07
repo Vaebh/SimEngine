@@ -62,12 +62,12 @@ void SpriteComponent::SetShader(const std::string inVertexShaderSrc, const std::
 	if(inVertexShaderSrc.empty() || inFragShaderSrc.empty())
 		return;
 
+	glBindVertexArray(mVao);
+    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+
 	m_shader.CreateShaderProgram(inVertexShaderSrc, inFragShaderSrc);
 
 	glUseProgram(m_shader.GetProgramID());
-
-	glBindVertexArray(mVao);
-    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
 
 	GLint posAttrib = glGetAttribLocation(m_shader.GetProgramID(), "position");
 	glEnableVertexAttribArray(posAttrib);
@@ -85,12 +85,12 @@ void SpriteComponent::SetShader(const std::string inVertexShaderSrc, const std::
 	mColourTintUniform = glGetUniformLocation(m_shader.GetProgramID(), "uniformColour");
 }
 
-glm::mat4 SpriteComponent::CalculateMatrix()
+glm::mat4 SpriteComponent::CalculateModelMatrix()
 {
 	glm::mat4 model;
 	//model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
 
-	model = glm::translate(model, GetOwner()->GetPosition());
+	model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale);
 	return model;
 }
 
@@ -100,17 +100,34 @@ void SpriteComponent::Update(float in_dt)
 	//IRenderableComponent::Update(in_dt);
 }
 
+
+/* TODO
+Right now Sprites are being drawn as a square in the actual world. They should
+instead be drawn last of all on top of everything else, so objects in the world
+can't slice through them. This is done by disabling depth testing before drawing any sprites.
+
+Obviously this would be needlessly expensive if meshes and sprites were mixed
+up in the rendering order, so all sprites should be drawn last, in a batch.
+*/
 void SpriteComponent::Draw()
 {
-    glBindTexture(GL_TEXTURE_2D, *(mTextureData.textureID));
+	// Bind shader program
+	glUseProgram(m_shader.GetProgramID());
 
-	// Calculate transformation
-    glUniformMatrix4fv(mMoveUniform, 1, GL_FALSE, glm::value_ptr(CalculateMatrix()));
+	// Set shader uniforms
+	glUniformMatrix4fv(mMoveUniform, 1, GL_FALSE, glm::value_ptr(CalculateModelMatrix()));
 
-    float spriteFrameDivisorU = 1.f / mNumFrames;
+	float spriteFrameDivisorU = 1.f / mNumFrames;
 
 	glUniform2f(mUVUniform, spriteFrameDivisorU, 1.f);
 	glUniform1i(mFrameUniform, mCurrentFrame);
 
 	glUniform4f(mColourTintUniform, mColourTint.x, mColourTint.y, mColourTint.z, mColourTint.w);
+
+	// Bind the texture
+	glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, *(mTextureData.textureID));
+
+	// Bind vertex array
+	glBindVertexArray(mVao);
 }

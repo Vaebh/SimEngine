@@ -4,10 +4,10 @@
 #include "../Rendering/RenderableComponent.h"
 #include <string>
 
-class RenderableMeshComponent : IRenderableComponent
+class RenderableMeshComponent : public IRenderableComponent
 {
 public:
-	RenderableMeshComponent();
+	RenderableMeshComponent(std::string in_tex);
 	~RenderableMeshComponent();
 
 protected:
@@ -21,7 +21,7 @@ protected:
 
 private:
 	void Initialise();
-	glm::mat4 CalculateMatrix();
+	glm::mat4 CalculateModelMatrix();
 
 	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
 

@@ -7,6 +7,14 @@
 
 #include <iostream>
 
+/*
+TODO
+This needs to be changed from only working with a pre-set cube to
+working with any model/set of vertices that I give it.
+
+For this reason I need to get model loading working as well
+*/
+
 const GLfloat vertices[] = 
 {
 	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
@@ -57,13 +65,13 @@ const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/3DFragShade
 
 using namespace std;
 
-RenderableMeshComponent::RenderableMeshComponent() :
+RenderableMeshComponent::RenderableMeshComponent(std::string in_tex) :
 IRenderableComponent()
 {
 	Initialise();
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 
-	m_textureData = LoadImage("bros.png");
+	m_textureData = LoadImage(in_tex.c_str());
 }
 
 RenderableMeshComponent::~RenderableMeshComponent()
@@ -76,9 +84,11 @@ RenderableMeshComponent::~RenderableMeshComponent()
 
 void RenderableMeshComponent::Initialise()
 {
+	// Generate vertex array and vertex buffer
 	glGenVertexArrays(1, &m_vao);
 	glGenBuffers(1, &m_vbo);
 
+	// Bind and send data to buffer
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 }
@@ -88,13 +98,17 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
 	if(in_vertexShaderSrc.empty() || in_fragShaderSrc.empty())
 		return;
 
-	m_shader.CreateShaderProgram(in_vertexShaderSrc, in_fragShaderSrc);
-
-	glUseProgram(m_shader.GetProgramID());
-
+	// Bind vertex array
 	glBindVertexArray(m_vao);
+
+	// Bind vertex buffer
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
+	// Create and activate shader
+	m_shader.CreateShaderProgram(in_vertexShaderSrc, in_fragShaderSrc);
+	glUseProgram(m_shader.GetProgramID());
+
+	// Link the vertex attributes to the data
 	GLint posAttrib = glGetAttribLocation(m_shader.GetProgramID(), "position");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
@@ -125,10 +139,15 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
 
-glm::mat4 RenderableMeshComponent::CalculateMatrix()
+glm::mat4 RenderableMeshComponent::CalculateModelMatrix()
 {
+	glm::mat4 transMatrix = glm::translate(glm::mat4(1), GetOwner()->GetPosition());
+	glm::mat4 inverseTransMatrix = glm::inverse(transMatrix);
+
+	glm::mat4 rotMatrix = transMatrix * glm::mat4_cast(GetOwner()->m_rotationQuat) * inverseTransMatrix;
+
 	glm::mat4 model = glm::mat4(1);
-	model = glm::scale(model, GetOwner()->m_scale) * glm::mat4_cast(GetOwner()->m_rotationQuat) * glm::translate(model, GetOwner()->GetPosition());
+	model = glm::scale(model, GetOwner()->m_scale) * rotMatrix * glm::translate(model, GetOwner()->GetPosition());
 
 	return model;
 }
@@ -137,29 +156,39 @@ void RenderableMeshComponent::Update(float in_dt)
 {
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, -0.01f, 0.f));
+		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, -0.0001f, 0.f));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, 0.01f, 0.f));
+		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, 0.0001f, 0.f));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_Z) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
+		mOwner->SetPosition(mOwner->GetPosition() + Vector3(-0.0001f, 0.f, 0.f));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
+		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0001f, 0.f, 0.f));
 	}
+
+	GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
 }
 
 void RenderableMeshComponent::Draw()
 {
+	// Bind shader program
+	glUseProgram(m_shader.GetProgramID());
+
+	// Set shader uniforms
+    glUniformMatrix4fv(m_modelUniform, 1, GL_FALSE, glm::value_ptr(CalculateModelMatrix()));
+
+	// Bind the texture
+	glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, *(m_textureData.textureID));
 
-	// Calculate transformation
-    glUniformMatrix4fv(m_modelUniform, 1, GL_FALSE, glm::value_ptr(CalculateMatrix()));
+	// Bind vertex array
+	glBindVertexArray(m_vao);
 }

@@ -11,6 +11,8 @@
 #include "../Structure/StateManager.h"
 
 #include "../Rendering/Test3DComponent.h"
+#include "../Rendering/RenderableMeshComponent.h"
+#include "../Rendering/SpriteComponent.h"
 
 #include "../Structure/GameObjectFactory.h"
 
@@ -31,13 +33,28 @@ int main(void)
 	//stateManager->PushState(new StateLevelOne());
 
 
+	// 3D Objects
 	GameObject* const theCube = new GameObject();
+	theCube->m_scale = Vector3(0.5f, 0.5f, 0.5f);
+	
+	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png");
+	theCube->Attach(rendMeshComp);
 
-	Test3DComponent* const test3DComp = new Test3DComponent();
-	theCube->Attach(test3DComp);
+	GameObject* const theCube2 = new GameObject();
+	theCube2->MovePosition(Vector3(0.f, 0.f, 1.2f));
+	theCube2->m_scale = Vector3(0.5f, 0.5f, 0.5f);
+	
+	RenderableMeshComponent* const rendMeshComp2 = new RenderableMeshComponent("sample.png");
+	theCube2->Attach(rendMeshComp2);
 
-	theCube->SetName("Cube");
+	// Sprite Object
+	GameObject* const spriteObject = new GameObject();
+	spriteObject->SetName("ball");
+	spriteObject->SetPosition(Vector3(-0.2, -0.4, 0));
+	spriteObject->m_scale = Vector3(0.9, 0.6, 0);
 
+	SpriteComponent* const spriteComp = new SpriteComponent("sample2.png");
+	spriteObject->Attach(spriteComp);
 
 
 	double olddelta = 0;
@@ -72,37 +89,9 @@ int main(void)
 			stateManager->PushState(new StateLevelOne());
 		}*/
 
-		/*if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_W) == GLFW_PRESS)
-		{
-			theCube->SetPosition(theCube->GetPosition() + Vector3(0.0f, 0.f, 0.01f));
-		}
-
-		if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_S) == GLFW_PRESS)
-		{
-			theCube->SetPosition(theCube->GetPosition() + Vector3(0.0f, 0.f, -0.01f));
-		}
-
-		if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_A) == GLFW_PRESS)
-		{
-			theCube->SetPosition(theCube->GetPosition() + Vector3(0.0f, -0.01f, 0.f));
-		}
-
-		if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_D) == GLFW_PRESS)
-		{
-			theCube->SetPosition(theCube->GetPosition() + Vector3(0.0f, 0.01f, 0.f));
-		}
-
-		if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_Z) == GLFW_PRESS)
-		{
-			theCube->SetPosition(theCube->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
-		}
-
-		if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
-		{
-			theCube->SetPosition(theCube->GetPosition() + Vector3(0.01f, 0.f, 0.f));
-		}*/
-
 		theCube->Update(delta);
+		theCube2->Update(delta);
+		spriteObject->Update(delta);
 
 		if(stateChange)
 			timer += delta;

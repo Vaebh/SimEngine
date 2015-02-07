@@ -123,6 +123,11 @@ void RenderSystem::Update(float in_dt)
 	}*/
 }
 
+/*
+TODO
+- Batch sprites, notes above SpriteComponent.cpp's Draw function
+- Create and use Materials
+*/
 void RenderSystem::Draw()
 {
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -131,13 +136,11 @@ void RenderSystem::Draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
-	glActiveTexture(GL_TEXTURE0);
-
 	for(uint32_t i = 0; i < m_components.size(); ++i)
 	{
 		if(m_components[i]->IsVisible())
 		{
-			glUseProgram(m_components[i]->GetShader().GetProgramID());
+			//glUseProgram(m_components[i]->GetShader().GetProgramID());
 
 			// This is bad, should be done in the actual draw methods for each component
 			// Maybe in default renderableComponent draw?
@@ -156,7 +159,27 @@ void RenderSystem::Draw()
 
 			m_components[i]->Draw();
 
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			/*
+			This obviously needs to be replaced with one draw call which takes the number
+			of indices to be drawn from the component being drawn. Should probably make a Material
+			class to hold this and a variety of other information. Every RenderableComponent
+			should have a Material.
+			*/
+			if(m_components[i]->GetOwner()->GetName() == "ball")
+			{
+				glDisable(GL_DEPTH_TEST);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			}
+			else
+			{
+				glEnable(GL_DEPTH_TEST);
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
+
+			// Unbind everthing
+			glBindVertexArray(0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUseProgram(0);
 		}
 	}
 
