@@ -7,7 +7,7 @@
 class RenderableMeshComponent : public IRenderableComponent
 {
 public:
-	RenderableMeshComponent(std::string in_tex);
+	RenderableMeshComponent(std::string in_tex, std::vector<GLfloat> in_vertexData, int in_numVertices);
 	~RenderableMeshComponent();
 
 protected:
@@ -20,7 +20,7 @@ protected:
 	inline GLuint GetModelUniform() const {return m_modelUniform;}
 
 private:
-	void Initialise();
+	void Initialise(std::vector<GLfloat> in_vertexData);
 	glm::mat4 CalculateModelMatrix();
 
 	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);

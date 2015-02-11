@@ -65,13 +65,15 @@ const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/3DFragShade
 
 using namespace std;
 
-RenderableMeshComponent::RenderableMeshComponent(std::string in_tex) :
+RenderableMeshComponent::RenderableMeshComponent(std::string in_tex, std::vector<GLfloat> in_vertexData, int in_numVertices) :
 IRenderableComponent()
 {
-	Initialise();
+	Initialise(in_vertexData);
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 
 	m_textureData = LoadImage(in_tex.c_str());
+
+	m_numVertices = in_numVertices;
 }
 
 RenderableMeshComponent::~RenderableMeshComponent()
@@ -82,7 +84,7 @@ RenderableMeshComponent::~RenderableMeshComponent()
     //glDeleteVertexArrays(1, &mVao);
 }
 
-void RenderableMeshComponent::Initialise()
+void RenderableMeshComponent::Initialise(std::vector<GLfloat> in_vertexData)
 {
 	// Generate vertex array and vertex buffer
 	glGenVertexArrays(1, &m_vao);
@@ -90,7 +92,7 @@ void RenderableMeshComponent::Initialise()
 
 	// Bind and send data to buffer
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, in_vertexData.size() * sizeof(GLfloat), &in_vertexData[0], GL_STATIC_DRAW);
 }
 
 void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc)
@@ -134,7 +136,7 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
     GLint uniView = glGetUniformLocation(m_shader.GetProgramID(), "view");
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
-    glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 10.0f);
+    glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 100.0f);
     GLint uniProj = glGetUniformLocation(m_shader.GetProgramID(), "proj");
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 }
@@ -156,25 +158,30 @@ void RenderableMeshComponent::Update(float in_dt)
 {
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, -0.0001f, 0.f));
+		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, -0.0001f, 0.f));
+		mOwner->m_scale = mOwner->m_scale + Vector3(0.00001f, 0.00001f, 0.00001f);
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, 0.0001f, 0.f));
+		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, 0.0001f, 0.f));
+		mOwner->m_scale = mOwner->m_scale - Vector3(0.00001f, 0.00001f, 0.00001f);
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_Z) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(-0.0001f, 0.f, 0.f));
+		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
+		GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 0, 1));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0001f, 0.f, 0.f));
+		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
+
+		GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
 	}
 
-	GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
+	//GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
 }
 
 void RenderableMeshComponent::Draw()

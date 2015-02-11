@@ -173,7 +173,7 @@ void RenderSystem::Draw()
 			else
 			{
 				glEnable(GL_DEPTH_TEST);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
+				glDrawArrays(GL_TRIANGLES, 0, m_components[i]->m_numVertices);
 			}
 
 			// Unbind everthing
