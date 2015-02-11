@@ -150,6 +150,12 @@
     <ClCompile Include="Code\Rendering\RenderableMeshComponent.cpp">
       <Filter>Code\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Utils\ModelLoader.cpp">
+      <Filter>Code\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Foundation\StringUtils.cpp">
+      <Filter>Code\Foundation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Application\Game.h">
@@ -292,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="Code\Rendering\RenderableMeshComponent.h">
       <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utils\ModelLoader.h">
+      <Filter>Code\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
