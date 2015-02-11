@@ -18,6 +18,8 @@
 
 #include <iostream>
 
+#include "../Utils/ModelLoader.h"
+
 using namespace std;
 
 int main(void)
@@ -31,31 +33,38 @@ int main(void)
 
 	//StateManager* stateManager = StateManager::GetSingleton();
 	//stateManager->PushState(new StateLevelOne());
+	const std::string imagePath = "../SimEngine/Assets/Models/";
 
+	std::vector<Vector3> tempVertices;
+	std::vector<Vector2> tempUVs;
+	std::vector<Vector3> tempNormals;
+	LoadOBJ(imagePath + "thor.obj", tempVertices, tempUVs, tempNormals);
+
+	std::vector<GLfloat> vertexData;
+	ConstructVertexData(vertexData, tempVertices, tempUVs, tempNormals);
 
 	// 3D Objects
 	GameObject* const theCube = new GameObject();
-	theCube->m_scale = Vector3(0.5f, 0.5f, 0.5f);
+	theCube->m_scale = Vector3(0.25f, 0.25f, 0.25f);
 	
-	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png");
+	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png", vertexData, tempVertices.size());
 	theCube->Attach(rendMeshComp);
 
-	GameObject* const theCube2 = new GameObject();
+	/*GameObject* const theCube2 = new GameObject();
 	theCube2->MovePosition(Vector3(0.f, 0.f, 1.2f));
 	theCube2->m_scale = Vector3(0.5f, 0.5f, 0.5f);
 	
 	RenderableMeshComponent* const rendMeshComp2 = new RenderableMeshComponent("sample.png");
-	theCube2->Attach(rendMeshComp2);
+	theCube2->Attach(rendMeshComp2);*/
 
 	// Sprite Object
-	GameObject* const spriteObject = new GameObject();
+	/*GameObject* const spriteObject = new GameObject();
 	spriteObject->SetName("ball");
 	spriteObject->SetPosition(Vector3(-0.2, -0.4, 0));
 	spriteObject->m_scale = Vector3(0.9, 0.6, 0);
 
 	SpriteComponent* const spriteComp = new SpriteComponent("sample2.png");
-	spriteObject->Attach(spriteComp);
-
+	spriteObject->Attach(spriteComp);*/
 
 	double olddelta = 0;
 	double delta = 0;
@@ -76,7 +85,7 @@ int main(void)
 		if(fpsTimer > 0.5)
 		{
 			fpsTimer = 0;
-			cout << "FPS: " << 1 / delta << endl;
+			//cout << "FPS: " << 1 / delta << endl;
 		}
 
 		// Stupid test code
@@ -90,8 +99,8 @@ int main(void)
 		}*/
 
 		theCube->Update(delta);
-		theCube2->Update(delta);
-		spriteObject->Update(delta);
+		//theCube2->Update(delta);
+		//spriteObject->Update(delta);
 
 		if(stateChange)
 			timer += delta;

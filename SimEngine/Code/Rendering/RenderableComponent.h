@@ -20,6 +20,8 @@ public:
 
 	virtual glm::mat4 CalculateModelMatrix() = 0;
 
+	int m_numVertices;
+
 protected:
 	Shader m_shader;
 	bool m_visible;
