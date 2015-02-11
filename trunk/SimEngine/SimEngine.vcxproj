@@ -58,6 +58,7 @@
     <ClInclude Include="Code\Structure\Vectors.h" />
     <ClInclude Include="Code\Structure\Window.h" />
     <ClInclude Include="Code\Utils\MathUtils.h" />
+    <ClInclude Include="Code\Utils\ModelLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Application\Application.cpp" />
@@ -70,6 +71,7 @@
     <ClCompile Include="Code\Collision\FragileCollisionComponent.cpp" />
     <ClCompile Include="Code\Events\EventCallback.cpp" />
     <ClCompile Include="Code\Events\EventMessenger.cpp" />
+    <ClCompile Include="Code\Foundation\StringUtils.cpp" />
     <ClCompile Include="Code\Game\BlockManager.cpp" />
     <ClCompile Include="Code\Game\BreakoutFactory.cpp" />
     <ClCompile Include="Code\Game\ComponentBallController.cpp" />
@@ -96,6 +98,7 @@
     <ClCompile Include="Code\Structure\StateManager.cpp" />
     <ClCompile Include="Code\Structure\System.cpp" />
     <ClCompile Include="Code\Structure\Window.cpp" />
+    <ClCompile Include="Code\Utils\ModelLoader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{855CDD7B-66F5-4E24-B298-11F397FCAF2A}</ProjectGuid>
