@@ -51,6 +51,10 @@ bool LoadOBJ(std::string in_path, std::vector<Vector3>& out_vertices, std::vecto
 			currentLine = buffer;
 			parsedText = ParseText(currentLine, " ");
 
+			std::istringstream ss(currentLine);
+			std::istream_iterator<std::string> begin(ss), end;
+			std::vector<std::string> objTokens(begin, end);
+
 			if(parsedText.front() == "v")
 			{
 				if(parsedText.size() >= 4)
