@@ -1,18 +1,30 @@
-//
-//  Buffer.h
-//  OpenGL Attempt1
-//
-//  Created by Simon McDonnell on 25/08/2014.
-//  Copyright (c) 2014 ___SimonMcDonnell___. All rights reserved.
-//
+#ifndef BUFFER_SIMENGINE
+#define BUFFER_SIMENGINE
+
+#include "../OpenGL/GLIncludes.h"
 
 // Fill this out with the relevant OpenGL buffer information and methods
-// Should handle binding and releasing buffer data, Vao's, Vbo's, etc
+// Should handle binding and releasing buffer data, Vbo, etc
 // Should work for both 2 and 3 dimensional objects
 
-#ifndef OpenGL_Attempt1_Buffer_h
-#define OpenGL_Attempt1_Buffer_h
+class Buffer
+{
+public:
+	Buffer();
+	~Buffer();
 
+	void Create();
+	void Destroy();
 
+	void Bind();
+	void Unbind();
+
+private:
+	GLvoid* m_dataPtr;
+	GLsizeiptr m_dataSize;
+
+	GLenum m_usage;
+	GLenum m_target;
+};
 
 #endif

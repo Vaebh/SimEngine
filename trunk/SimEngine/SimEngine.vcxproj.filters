@@ -302,5 +302,8 @@
     <ClInclude Include="Code\Utils\ModelLoader.h">
       <Filter>Code\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Rendering\VertexAttribute.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
