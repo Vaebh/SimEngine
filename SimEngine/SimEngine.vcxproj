@@ -45,6 +45,7 @@
     <ClInclude Include="Code\Rendering\Test3DComponent.h" />
     <ClInclude Include="Code\Rendering\Texture.h" />
     <ClInclude Include="Code\Rendering\TextureManager.h" />
+    <ClInclude Include="Code\Rendering\VertexAttribute.h" />
     <ClInclude Include="Code\Sound\AudioSystem.h" />
     <ClInclude Include="Code\Sound\Sound.h" />
     <ClInclude Include="Code\Structure\Component.h" />
