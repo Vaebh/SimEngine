@@ -52,11 +52,12 @@ public:
 
 	inline const InputManager* GetInputManager() {return m_inputManager;}
 
-	inline const AudioSystem* GetAudioSystem() {return m_audioSystem;}
+	inline const AudioSystem* GetAudioSystem() {return m_audioSystem;}*/
 
 	inline const CameraManager* GetCameraManager() {return m_cameraManager;}
+	inline void SetCameraManager(CameraManager* in_cameraManager) {m_cameraManager = in_cameraManager;}
 
-	inline const CollisionSystem* GetCollisionSystem() {return m_collisionSystem;}*/
+	//inline const CollisionSystem* GetCollisionSystem() {return m_collisionSystem;}
 
 public:
 	unsigned const int m_index;
@@ -76,9 +77,9 @@ private:
 	/*RenderSystem* m_renderSystem;
 	StateManager* m_stateManager;
 	InputManager* m_inputManager;
-	AudioSystem* m_audioSystem;
+	AudioSystem* m_audioSystem;*/
 	CameraManager* m_cameraManager;
-	CollisionSystem* m_collisionSystem;*/
+	//CollisionSystem* m_collisionSystem;
 };
 
 template<class ComponentType>

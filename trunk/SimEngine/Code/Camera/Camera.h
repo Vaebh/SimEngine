@@ -17,8 +17,10 @@ public:
 
 	inline const glm::mat4 GetViewMatrix() const {return m_viewMatrix;}
 
-	inline bool HasViewMatrixChanged() {return m_viewMatrixChanged;}
+	inline bool HasViewMatrixChanged() const {return m_viewMatrixChanged;}
 	inline void ViewMatrixChanged() {m_viewMatrixChanged = !m_viewMatrixChanged;}
+
+	void Update(float in_dt);
 
 private:
 	void CalculateViewMatrix();

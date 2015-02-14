@@ -19,6 +19,8 @@ public:
 
 	GameObject* CreateGameObject();
 
+	void SetCameraManager(CameraManager* in_cameraManager) {m_cameraManager = in_cameraManager;}
+
 private:
 	RenderSystem* m_renderSystem;
 	StateManager* m_stateManager;
