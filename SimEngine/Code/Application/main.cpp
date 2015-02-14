@@ -48,7 +48,7 @@ int main(void)
 
 	GameObjectFactory* gameObjFactory = new GameObjectFactory(RenderSystem::GetSingleton(), stateManager, inputSystem, audioSystem, camManager, CollisionSystem::GetSingleton());
 
-	const std::string imagePath = "../SimEngine/Assets/Models/";
+	/*const std::string imagePath = "../SimEngine/Assets/Models/";
 
 	std::vector<Vector3> tempVertices;
 	std::vector<Vector2> tempUVs;
@@ -56,13 +56,13 @@ int main(void)
 	LoadOBJ(imagePath + "thor.obj", tempVertices, tempUVs, tempNormals);
 
 	std::vector<GLfloat> vertexData;
-	ConstructVertexData(vertexData, tempVertices, tempUVs, tempNormals);
+	ConstructVertexData(vertexData, tempVertices, tempUVs, tempNormals);*/
 
 	// 3D Objects
 	GameObject* const theCube = gameObjFactory->CreateGameObject();
 	theCube->SetScale(Vector3(0.25f, 0.25f, 0.25f));
 	
-	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png", vertexData, tempVertices.size());
+	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png", "wrong.obj");
 	theCube->Attach(rendMeshComp);
 
 	MessageDelegate mesDel = new EventCallbackFree(&HandleEvent);

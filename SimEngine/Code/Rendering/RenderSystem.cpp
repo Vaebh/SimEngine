@@ -156,7 +156,7 @@ void RenderSystem::Draw()
 			else
 			{
 				glEnable(GL_DEPTH_TEST);
-				glDrawArrays(GL_TRIANGLES, 0, m_components[i]->m_numVertices);
+				glDrawArrays(GL_TRIANGLES, 0, m_components[i]->GetVAO().GetNumVertices());
 			}
 
 			// Unbind everthing

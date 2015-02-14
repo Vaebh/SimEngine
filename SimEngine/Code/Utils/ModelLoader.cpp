@@ -10,6 +10,9 @@
 
 bool ConstructVertexData(std::vector<GLfloat>& out_vertexData, const std::vector<Vector3>& in_vertices, const std::vector<Vector2>& in_uvs, const std::vector<Vector3>& in_normals)
 {
+	if(in_vertices.empty())
+		return false;
+
 	for(int i = 0; i < in_vertices.size(); ++i)
 	{
 		out_vertexData.push_back(in_vertices[i].x);
@@ -49,16 +52,18 @@ bool LoadOBJ(std::string in_path, std::vector<Vector3>& out_vertices, std::vecto
 		while(myFile.getline(buffer, 4096))
 		{
 			currentLine = buffer;
-			parsedText = ParseText(currentLine, " ");
 
 			std::istringstream ss(currentLine);
 			std::istream_iterator<std::string> begin(ss), end;
-			std::vector<std::string> objTokens(begin, end);
+			parsedText = std::vector<std::string>(begin, end);
+
+			if(parsedText.empty())
+				continue;
 
 			if(parsedText.front() == "v")
 			{
 				if(parsedText.size() >= 4)
-					tempVertices.push_back(Vector3(StringToNumber<float>(parsedText[2]), StringToNumber<float>(parsedText[3]), StringToNumber<float>(parsedText[4])));
+					tempVertices.push_back(Vector3(StringToNumber<float>(parsedText[1]), StringToNumber<float>(parsedText[2]), StringToNumber<float>(parsedText[3])));
 			}
 			else if(parsedText.front() == "vt")
 			{
@@ -111,12 +116,13 @@ bool LoadOBJ(std::string in_path, std::vector<Vector3>& out_vertices, std::vecto
 	else
 	{
 		std::cout << "File " << in_path << " does not exist!" << std::endl;
+		return false;
 	}
 
 	return true;
 }
 
-bool LoadOBJ2(std::string in_path, std::vector<Vector3>& out_vertices, std::vector<Vector2>& out_uvs, std::vector<Vector3>& out_normals)
+bool LoadOBJRegex(std::string in_path, std::vector<Vector3>& out_vertices, std::vector<Vector2>& out_uvs, std::vector<Vector3>& out_normals)
 {
 	const uint32_t BUFFER_SIZE = 4096;
 	char buffer[BUFFER_SIZE];

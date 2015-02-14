@@ -2,12 +2,11 @@
 #define RENDERABLE_MESH_COMPONENT
 
 #include "../Rendering/RenderableComponent.h"
-#include <string>
 
 class RenderableMeshComponent : public IRenderableComponent
 {
 public:
-	RenderableMeshComponent(std::string in_tex, std::vector<GLfloat> in_vertexData, int in_numVertices);
+	RenderableMeshComponent(const char* in_textureName, const char* in_meshName);
 	~RenderableMeshComponent();
 
 protected:
@@ -20,11 +19,13 @@ protected:
 	inline GLuint GetModelUniform() const {return m_modelUniform;}
 
 private:
-	void Initialise(std::vector<GLfloat> in_vertexData);
+	void Initialise(const char* in_meshName);
 	glm::mat4 CalculateModelMatrix();
 
 	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
 	void SetUniforms();
+
+	bool LoadModel(const char* in_fileName, std::vector<GLfloat>& out_vertexData);
 
 private:
 	GLuint m_modelUniform;

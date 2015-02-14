@@ -21,11 +21,16 @@ public:
 	inline Buffer& GetVertexBuffer() {return m_vertexBuffer;}
 	inline void SetVertexBuffer(Buffer in_vertexBuffer) {m_vertexBuffer = in_vertexBuffer;}
 
+	inline const GLuint GetNumVertices() const {return m_numVertices;}
+	inline void SetNumVertices(GLuint in_numVertices) {m_numVertices = in_numVertices;}
+
 	void SetVertexAttributes();
 
 private:
 	GLuint m_id;
 	Buffer m_vertexBuffer;
+
+	GLuint m_numVertices;
 };
 
 #endif

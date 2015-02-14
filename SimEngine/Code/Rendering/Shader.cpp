@@ -5,7 +5,7 @@
 using std::cout;
 using std::endl;
 
-#define DEBUG_PRINTING 1
+#define DEBUG_PRINTING 0
 
 Shader::Shader() :
 m_shaderProgram(0)

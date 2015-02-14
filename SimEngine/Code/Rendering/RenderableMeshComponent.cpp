@@ -7,41 +7,48 @@
 
 #include "../Camera/CameraManager.h"
 
+#include "../Utils/ModelLoader.h"
+
 #include <iostream>
 
-const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/3DVertexShader.txt";
-const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/3DFragShader.txt";
+namespace
+{
+	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/3DVertexShader.txt";
+	const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/3DFragShader.txt";
+
+	const std::string modelPath = "../SimEngine/Assets/Models/";
+	const char* defaultModel = "cube.obj";
+}
 
 using namespace std;
 
-RenderableMeshComponent::RenderableMeshComponent(std::string in_tex, std::vector<GLfloat> in_vertexData, int in_numVertices) :
+RenderableMeshComponent::RenderableMeshComponent(const char* in_textureName, const char* in_meshName) :
 IRenderableComponent(),
 m_modelUniform(0),
 m_viewUniform(0)
 {
-	m_textureData = LoadImage(in_tex.c_str());
+	m_textureData = LoadImage(in_textureName);
 
-	m_numVertices = in_numVertices;
-
-	Initialise(in_vertexData);
+	Initialise(in_meshName);
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 }
 
 RenderableMeshComponent::~RenderableMeshComponent()
 {
-	// TODO - Make some kind of sprite managery class, maybe SpriteBatch, and have it store and bind the vao and vbo as they're the same for every sprite
-	// Also maybe use the same shader program for all sprites
-    //glDeleteBuffers(1, &mVbo);
-    //glDeleteVertexArrays(1, &mVao);
+	m_vao.Destroy();
 }
 
-void RenderableMeshComponent::Initialise(std::vector<GLfloat> in_vertexData)
+void RenderableMeshComponent::Initialise(const char* in_meshName)
 {
 	// Bind and send data to buffer
 	m_vertexBuffer = &(m_vao.GetVertexBuffer());
 
+	std::vector<GLfloat> vertexData;
+
+	assert(LoadModel(in_meshName, vertexData));
+
 	m_vertexBuffer->Bind();
-	m_vertexBuffer->SetData(in_vertexData.size() * sizeof(GLfloat), &in_vertexData[0]);
+	m_vertexBuffer->SetData(vertexData.size() * sizeof(GLfloat), &vertexData[0]);
 }
 
 void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc)
@@ -91,6 +98,30 @@ void RenderableMeshComponent::SetUniforms()
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
 	glUniform1i(m_shader.GetUniformLocation("textureSprite"), 0);
+}
+
+bool RenderableMeshComponent::LoadModel(const char* in_fileName, std::vector<GLfloat>& out_vertexData)
+{
+	// Load model
+	std::vector<Vector3> tempVertices;
+	std::vector<Vector2> tempUVs;
+	std::vector<Vector3> tempNormals;
+
+	// Try to load model
+	if(!LoadOBJ(modelPath + in_fileName, tempVertices, tempUVs, tempNormals))
+	{
+		std::cout << "Attempting to load default mesh" << std::endl;
+		if(!LoadOBJ(modelPath + defaultModel, tempVertices, tempUVs, tempNormals))
+			return false;
+	}
+
+	// Format the data
+	ConstructVertexData(out_vertexData, tempVertices, tempUVs, tempNormals);
+
+	// Set draw count
+	m_vao.SetNumVertices(tempVertices.size());
+
+	return true;
 }
 
 void RenderableMeshComponent::Update(float in_dt)
