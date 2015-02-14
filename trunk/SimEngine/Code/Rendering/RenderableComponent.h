@@ -26,7 +26,7 @@ public:
 
 	inline void SetVisible(bool in_isVisible) {m_visible = in_isVisible;}
 
-	int m_numVertices;
+	inline const VertexArray& GetVAO() const {return m_vao;}
 
 protected:
 	virtual void SetUniforms() = 0;

@@ -4,7 +4,6 @@
 IRenderableComponent::IRenderableComponent() : 
 m_visible(true),
 m_shader(),
-m_numVertices(0),
 m_vertexBuffer(NULL)
 {
 
