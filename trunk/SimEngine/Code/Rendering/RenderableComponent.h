@@ -1,10 +1,12 @@
 #ifndef RENDERABLECOMPONENT_SIMENGINE
 #define RENDERABLECOMPONENT_SIMENGINE
 
-#include "../Structure/Component.h"
+class Buffer;
+
 #include "../Rendering/Shader.h"
-#include "../Rendering/Buffer.h"
 #include "../Rendering/VertexArray.h"
+
+#include "../Structure/Component.h"
 
 class IRenderableComponent : public IComponent
 {
@@ -21,6 +23,8 @@ public:
 	virtual void OnAttached(GameObject* in_gameObject);
 
 	virtual glm::mat4 CalculateModelMatrix() = 0;
+
+	inline void SetVisible(bool in_isVisible) {m_visible = in_isVisible;}
 
 	int m_numVertices;
 

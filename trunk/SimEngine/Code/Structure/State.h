@@ -1,7 +1,7 @@
 #ifndef STATE_SIMENGINE
 #define STATE_SIMENGINE
 
-#include "../Structure/GameObject.h"
+#include <vector>
 
 class GameObject;
 

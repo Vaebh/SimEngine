@@ -1,5 +1,10 @@
 #include "../Collision/CollisionSystem.h"
+#include "../Collision/CollisionComponent.h"
 #include "../Foundation/Foundation.h"
+
+// TODO - This whole system probably needs to be reworked, it also needs to support 3D collisions
+
+
 
 // TODO - DECIDE WHERE COLLISION IS HAPPENING AND HOW TO USE IT TO PREVENT MOVEMENT
 // TODO - ADD POSITION MANIPULATION METHODS TO GAMEOBJECT AND HAVE THEM CHECK COLLISION FIRST
@@ -51,8 +56,8 @@ bool CollisionSystem::IsColliding(Rectangle inBoundingBox, CollisionComponent* i
 	{
 		if(m_components[i] != inCollisionComponent && m_components[i]->IsIntersecting(inBoundingBox))
 		{
-			Vector3 GameObject1Center = Vector3(inCollisionComponent->mOwner->GetPosition().x + inCollisionComponent->mOwner->m_scale.x / 2, inCollisionComponent->mOwner->GetPosition().y + inCollisionComponent->mOwner->m_scale.y / 2, 0.f);
-			Vector3 GameObject2Center = Vector3(m_components[i]->mOwner->GetPosition().x + m_components[i]->mOwner->m_scale.x / 2, m_components[i]->mOwner->GetPosition().y + m_components[i]->mOwner->m_scale.y / 2, 0.f);
+			Vector3 GameObject1Center = Vector3(inCollisionComponent->mOwner->GetPosition().x + inCollisionComponent->mOwner->GetScale().x / 2, inCollisionComponent->mOwner->GetPosition().y + inCollisionComponent->mOwner->GetScale().y / 2, 0.f);
+			Vector3 GameObject2Center = Vector3(m_components[i]->mOwner->GetPosition().x + m_components[i]->mOwner->GetScale().x / 2, m_components[i]->mOwner->GetPosition().y + m_components[i]->mOwner->GetScale().y / 2, 0.f);
 
 			Vector3 collisionVector = inCollisionComponent->mOwner->GetPosition() - m_components[i]->mOwner->GetPosition();
 

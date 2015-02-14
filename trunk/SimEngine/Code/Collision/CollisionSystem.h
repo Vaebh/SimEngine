@@ -1,8 +1,10 @@
 #ifndef COLLISION_SYSTEM_SIMENGINE
 #define COLLISION_SYSTEM_SIMENGINE
 
+class CollisionComponent;
+
 #include "../Structure/System.h"
-#include "../Collision/CollisionComponent.h"
+#include "../Structure/Rectangle.h"
 
 class CollisionSystem : public ISystem
 {

@@ -3,13 +3,6 @@
 
 #include "../Structure/GameObject.h"
 
-#include "../Rendering/RenderSystem.h"
-#include "../Structure/StateManager.h"
-#include "../Input/InputManager.h"
-#include "../Sound/AudioSystem.h"
-#include "../Camera/CameraManager.h"
-#include "../Collision/CollisionSystem.h"
-
 class GameObjectFactory
 {
 public:
@@ -18,8 +11,6 @@ public:
 		AudioSystem* in_audioSystem, CameraManager* in_cameraManager, CollisionSystem* in_collisionSystem);
 
 	GameObject* CreateGameObject();
-
-	void SetCameraManager(CameraManager* in_cameraManager) {m_cameraManager = in_cameraManager;}
 
 private:
 	RenderSystem* m_renderSystem;

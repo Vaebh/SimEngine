@@ -1,12 +1,15 @@
 #ifndef EVENT_MESSENGER_SIMENGINE
 #define EVENT_MESSENGER_SIMENGINE
 
-#include "../Structure/Component.h"
-#include "../Foundation/Foundation.h"
-#include "../Events/EventCallback.h"
+class GameObject;
+
 #include "../Events/EventTypes.h"
-#include <utility>
+#include "../Events/EventCallback.h"
+#include "../Foundation/Foundation.h"
+
 #include <map>
+#include <vector>
+#include <utility>
 
 typedef IEventCallback* MessageDelegate;
 

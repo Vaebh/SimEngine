@@ -1,8 +1,9 @@
 #ifndef EVENT_CALLBACK_SIMENGINE
 #define EVENT_CALLBACK_SIMENGINE
 
+class GameObject;
+
 #include "../Foundation/Foundation.h"
-#include "../Structure/GameObject.h"
 #include <iostream>
 
 // =======================================

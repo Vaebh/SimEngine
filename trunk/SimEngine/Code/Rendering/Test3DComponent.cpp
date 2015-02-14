@@ -152,14 +152,14 @@ glm::mat4 Test3DComponent::CalculateModelMatrix()
 	//glm::mat4 rotMatrix = glm::mat4_cast(GetOwner()->m_rotationQuat);
 
 	glm::mat4 identityMat = glm::mat4(1.0f);
-	glm::mat4 rotMatrix = glm::mat4_cast(GetOwner()->m_rotationQuat);
+	glm::mat4 rotMatrix = glm::mat4_cast(GetOwner()->GetRotation());
 	glm::mat4 transMatrix = glm::translate(identityMat, GetOwner()->GetPosition());
 	glm::mat4 viewMatrix = rotMatrix * glm::inverse(transMatrix);
 
 	//glm::rotate(GetOwner()->m_rotationQuat, 90.f, Vector3(0, 1, 0));
 
 	glm::mat4 model;
-	model = glm::scale(model, GetOwner()->m_scale) * rotMatrix * glm::translate(model, GetOwner()->GetPosition());
+	model = glm::scale(model, GetOwner()->GetScale()) * rotMatrix * glm::translate(model, GetOwner()->GetPosition());
 
 	return model;
 }
@@ -256,9 +256,7 @@ void Test3DComponent::Update(float in_dt)
 
 		scale += 0.1f;
 
-		GetOwner()->m_scale.x = scale;
-		GetOwner()->m_scale.y = scale;
-		GetOwner()->m_scale.z = scale;
+		GetOwner()->SetScale(Vector3(scale));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
@@ -270,12 +268,9 @@ void Test3DComponent::Update(float in_dt)
 		scale -= 0.1f;
 	}
 
-	GetOwner()->m_scale.x = scale;
-	GetOwner()->m_scale.y = scale;
-	GetOwner()->m_scale.z = scale;
+	GetOwner()->SetScale(Vector3(scale));
 
-
-	GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
+	GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 1, 0)));
 }
 
 void Test3DComponent::Draw()

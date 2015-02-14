@@ -5,6 +5,8 @@
 #include "../Rendering/RenderableMeshComponent.h"
 #include "../Rendering/RenderSystem.h"
 
+#include "../Camera/CameraManager.h"
+
 #include <iostream>
 
 const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/3DVertexShader.txt";
@@ -71,10 +73,10 @@ glm::mat4 RenderableMeshComponent::CalculateModelMatrix()
 	glm::mat4 transMatrix = glm::translate(glm::mat4(1), GetOwner()->GetPosition());
 	glm::mat4 inverseTransMatrix = glm::inverse(transMatrix);
 
-	glm::mat4 rotMatrix = transMatrix * glm::mat4_cast(GetOwner()->m_rotationQuat) * inverseTransMatrix;
+	glm::mat4 rotMatrix = transMatrix * glm::mat4_cast(GetOwner()->GetRotation()) * inverseTransMatrix;
 
 	glm::mat4 model = glm::mat4(1);
-	model = glm::scale(model, GetOwner()->m_scale) * rotMatrix * glm::translate(model, GetOwner()->GetPosition());
+	model = glm::scale(model, GetOwner()->GetScale()) * rotMatrix * glm::translate(model, GetOwner()->GetPosition());
 
 	return model;
 }
@@ -96,26 +98,26 @@ void RenderableMeshComponent::Update(float in_dt)
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
 		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, -0.0001f, 0.f));
-		mOwner->m_scale = mOwner->m_scale + Vector3(0.00001f, 0.00001f, 0.00001f);
+		mOwner->SetScale(mOwner->GetScale() + Vector3(0.00001f, 0.00001f, 0.00001f));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, 0.0001f, 0.f));
-		mOwner->m_scale = mOwner->m_scale - Vector3(0.00001f, 0.00001f, 0.00001f);
+		mOwner->SetScale(mOwner->GetScale() - Vector3(0.00001f, 0.00001f, 0.00001f));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_Z) == GLFW_PRESS)
 	{
 		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
-		GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 0, 1));
+		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 0, 1)));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
 	{
 		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
 
-		GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
+		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 1, 0)));
 	}
 
 	//GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));

@@ -14,13 +14,22 @@
 #include "../Rendering/RenderableMeshComponent.h"
 #include "../Rendering/SpriteComponent.h"
 
+#include "../Utils/ModelLoader.h"
+
 #include "../Structure/GameObjectFactory.h"
+#include "../Events/EventMessenger.h"
+#include "../Camera/CameraManager.h"
+
+#include "../Collision/CollisionSystem.h"
 
 #include <iostream>
 
-#include "../Utils/ModelLoader.h"
-
 using namespace std;
+
+void HandleEvent(uint32_t inEventType, GameObject* inTarget)
+{
+	inTarget->GetComponent<RenderableMeshComponent>()->SetVisible(false);
+}
 
 int main(void)
 {
@@ -31,14 +40,13 @@ int main(void)
 
 	//audioSystem->PlayMusic("Tank.mp3");
 
-	//StateManager* stateManager = StateManager::GetSingleton();
+	StateManager* stateManager = StateManager::GetSingleton();
 	//stateManager->PushState(new StateLevelOne());
 
 	Camera* defaultCam = new Camera();
 	CameraManager* camManager = new CameraManager(defaultCam);
 
-	GameObjectFactory* gameObjFactory = new GameObjectFactory();
-	gameObjFactory->SetCameraManager(camManager);
+	GameObjectFactory* gameObjFactory = new GameObjectFactory(RenderSystem::GetSingleton(), stateManager, inputSystem, audioSystem, camManager, CollisionSystem::GetSingleton());
 
 	const std::string imagePath = "../SimEngine/Assets/Models/";
 
@@ -52,10 +60,13 @@ int main(void)
 
 	// 3D Objects
 	GameObject* const theCube = gameObjFactory->CreateGameObject();
-	theCube->m_scale = Vector3(0.25f, 0.25f, 0.25f);
+	theCube->SetScale(Vector3(0.25f, 0.25f, 0.25f));
 	
 	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png", vertexData, tempVertices.size());
 	theCube->Attach(rendMeshComp);
+
+	MessageDelegate mesDel = new EventCallbackFree(&HandleEvent);
+	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_SPACE_PRESS, theCube, mesDel);
 
 	/*GameObject* const theCube2 = new GameObject();
 	theCube2->MovePosition(Vector3(0.f, 0.f, 1.2f));
@@ -104,6 +115,19 @@ int main(void)
 			stateManager->PopState();
 			stateManager->PushState(new StateLevelOne());
 		}*/
+
+		static bool keyPressed = false;
+
+		if(!keyPressed && glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
+		{
+			keyPressed = true;
+			EventMessenger::GetSingleton()->RecordEvent(INPUT_SPACE_PRESS, theCube);
+		}
+
+		if(keyPressed && glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_SPACE) == GLFW_RELEASE)
+		{
+			keyPressed = false;
+		}
 
 		if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_COMMA) == GLFW_PRESS)
 		{

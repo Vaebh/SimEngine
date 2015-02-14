@@ -45,6 +45,7 @@
     <ClInclude Include="Code\Rendering\Test3DComponent.h" />
     <ClInclude Include="Code\Rendering\Texture.h" />
     <ClInclude Include="Code\Rendering\TextureManager.h" />
+    <ClInclude Include="Code\Rendering\VertexArray.h" />
     <ClInclude Include="Code\Rendering\VertexAttribute.h" />
     <ClInclude Include="Code\Sound\AudioSystem.h" />
     <ClInclude Include="Code\Sound\Sound.h" />
@@ -83,6 +84,7 @@
     <ClCompile Include="Code\Input\InputManager.cpp" />
     <ClCompile Include="Code\OpenGL\GLUtils.cpp" />
     <ClCompile Include="Code\Rendering\AnimatedSpriteComponent.cpp" />
+    <ClCompile Include="Code\Rendering\Buffer.cpp" />
     <ClCompile Include="Code\Rendering\RenderableComponent.cpp" />
     <ClCompile Include="Code\Rendering\RenderableMeshComponent.cpp" />
     <ClCompile Include="Code\Rendering\RenderSystem.cpp" />
@@ -90,6 +92,8 @@
     <ClCompile Include="Code\Rendering\SpriteComponent.cpp" />
     <ClCompile Include="Code\Rendering\Test3DComponent.cpp" />
     <ClCompile Include="Code\Rendering\TextureManager.cpp" />
+    <ClCompile Include="Code\Rendering\VertexArray.cpp" />
+    <ClCompile Include="Code\Rendering\VertexAttribute.cpp" />
     <ClCompile Include="Code\Sound\AudioSystem.cpp" />
     <ClCompile Include="Code\Sound\Sound.cpp" />
     <ClCompile Include="Code\Structure\Component.cpp" />
