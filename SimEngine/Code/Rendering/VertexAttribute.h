@@ -9,7 +9,7 @@ public:
 	VertexAttribute();
 	VertexAttribute(GLuint in_index, GLint in_size, GLenum in_type, GLboolean in_normalised, GLsizei in_stride, GLvoid* in_offset);
 
-	void Enable(GLuint in_index);
+	void Enable();
 	void Set();
 
 private:

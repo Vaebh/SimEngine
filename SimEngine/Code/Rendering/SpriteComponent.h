@@ -28,6 +28,8 @@ protected:
 	inline GLuint GetFrameUniform() const {return mFrameUniform;}
 	inline GLuint GetColourTintUniform() const {return mColourTintUniform;}
 
+	void SetUniforms();
+
 private:
 	void Initialise();
 	glm::mat4 CalculateModelMatrix();

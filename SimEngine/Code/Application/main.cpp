@@ -33,6 +33,13 @@ int main(void)
 
 	//StateManager* stateManager = StateManager::GetSingleton();
 	//stateManager->PushState(new StateLevelOne());
+
+	Camera* defaultCam = new Camera();
+	CameraManager* camManager = new CameraManager(defaultCam);
+
+	GameObjectFactory* gameObjFactory = new GameObjectFactory();
+	gameObjFactory->SetCameraManager(camManager);
+
 	const std::string imagePath = "../SimEngine/Assets/Models/";
 
 	std::vector<Vector3> tempVertices;
@@ -44,7 +51,7 @@ int main(void)
 	ConstructVertexData(vertexData, tempVertices, tempUVs, tempNormals);
 
 	// 3D Objects
-	GameObject* const theCube = new GameObject();
+	GameObject* const theCube = gameObjFactory->CreateGameObject();
 	theCube->m_scale = Vector3(0.25f, 0.25f, 0.25f);
 	
 	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png", vertexData, tempVertices.size());
@@ -97,6 +104,11 @@ int main(void)
 			stateManager->PopState();
 			stateManager->PushState(new StateLevelOne());
 		}*/
+
+		if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_COMMA) == GLFW_PRESS)
+		{
+			defaultCam->SetPosition(defaultCam->GetPosition() + Vector3(0.0001f, 0.f, 0.f));
+		}
 
 		theCube->Update(delta);
 		//theCube2->Update(delta);

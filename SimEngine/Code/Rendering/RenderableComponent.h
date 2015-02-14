@@ -3,6 +3,8 @@
 
 #include "../Structure/Component.h"
 #include "../Rendering/Shader.h"
+#include "../Rendering/Buffer.h"
+#include "../Rendering/VertexArray.h"
 
 class IRenderableComponent : public IComponent
 {
@@ -10,7 +12,7 @@ public:
 	IRenderableComponent();
 	~IRenderableComponent();
 
-	inline Shader GetShader() const {return m_shader;}
+	inline const Shader& GetShader() const {return m_shader;}
 	inline bool IsVisible() const {return m_visible;}
 
 	virtual void Update(float in_dt) = 0;
@@ -23,7 +25,14 @@ public:
 	int m_numVertices;
 
 protected:
+	virtual void SetUniforms() = 0;
+
+protected:
 	Shader m_shader;
+
+	VertexArray m_vao;
+	Buffer* m_vertexBuffer;
+
 	bool m_visible;
 
 	// Should probably just be in one place, maybe a pointer to the camera instead?

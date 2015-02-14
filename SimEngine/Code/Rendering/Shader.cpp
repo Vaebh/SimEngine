@@ -33,6 +33,16 @@ GLint Shader::GetAttributeLocation(const char* in_attributeName)
   return glGetAttribLocation(GetProgramID(), in_attributeName);
 }
 
+void Shader::Use()
+{
+	glUseProgram(GetProgramID());
+}
+
+GLint Shader::GetUniformLocation(char* in_uniformName) const
+{
+	return glGetUniformLocation(GetProgramID(), in_uniformName);
+}
+
 //-------------------------------------------------------------------------------------
 // CreateShaderProgram
 //

@@ -131,3 +131,8 @@ void SpriteComponent::Draw()
 	// Bind vertex array
 	glBindVertexArray(mVao);
 }
+
+void SpriteComponent::SetUniforms()
+{
+
+}

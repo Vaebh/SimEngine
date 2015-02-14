@@ -10,14 +10,16 @@ class CameraManager
 {
 public:
 	CameraManager();
-	CameraManager(Camera in_defaultCamera);
+	CameraManager(Camera* in_defaultCamera);
 
-	const int AddCamera(Camera in_newCamera, bool in_makeActive = false);
+	const int AddCamera(Camera* in_newCamera, bool in_makeActive = false);
 
 	const Camera* GetActiveCamera() const;
 	const Camera* GetCameraAtIndex(int in_camIndex) const;
 
 	void SetActiveCamera(const int in_index);
+
+	void Update(float in_dt);
 
 private:
 	int m_activeCamIndex;

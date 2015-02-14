@@ -31,8 +31,13 @@ void Camera::CalculateViewMatrix()
 {
 	// Update the view matrix
 	m_viewMatrix = glm::lookAt(
-		m_target,
 		m_position,
+		m_target,
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	);
+}
+
+void Camera::Update(float in_dt)
+{
+
 }

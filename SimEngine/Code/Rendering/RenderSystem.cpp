@@ -140,23 +140,6 @@ void RenderSystem::Draw()
 	{
 		if(m_components[i]->IsVisible())
 		{
-			//glUseProgram(m_components[i]->GetShader().GetProgramID());
-
-			// This is bad, should be done in the actual draw methods for each component
-			// Maybe in default renderableComponent draw?
-			//if(m_components[i]->GetOwner()->GetCameraManager()->GetActiveCamera().m_viewMatrixChanged)
-			{
-				/*GLint uniView = glGetUniformLocation(m_components[i]->GetShader().GetProgramID(), "view");
-
-				glm::mat4 viewMatrix = glm::lookAt(
-					ZERO,
-					Vector3(1.5f, 1.5f, 1.5f),
-					glm::vec3(0.0f, 1.0f, 0.0f)
-				);
-				glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(viewMatrix));*/
-				//glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(m_components[i]->GetOwner()->GetCameraManager()->GetActiveCamera().GetViewMatrix()));
-			}
-
 			m_components[i]->Draw();
 
 			/*

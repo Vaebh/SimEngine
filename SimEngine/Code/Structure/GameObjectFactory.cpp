@@ -16,5 +16,8 @@ m_collisionSystem(in_collisionSystem)
 
 GameObject* GameObjectFactory::CreateGameObject()
 {
-	return nullptr;
+	GameObject* newObject = new GameObject();
+	newObject->SetCameraManager(m_cameraManager);
+
+	return newObject;
 }

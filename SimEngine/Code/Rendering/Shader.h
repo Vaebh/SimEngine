@@ -11,10 +11,13 @@ public:
 	Shader(const std::string& inName, const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc);
 	~Shader();
 
-	inline const GLuint GetProgramID() {return m_shaderProgram;}
+	inline const GLuint GetProgramID() const {return m_shaderProgram;}
 	GLint GetAttributeLocation(const char* in_attributeName);
 
 	void CreateShaderProgram(const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc);
+
+	void Use();
+	GLint GetUniformLocation(char* in_uniformName) const;
 
 private:
 	GLuint CreateShaderFromFile(const std::string& in_path, const GLenum& in_shaderType);

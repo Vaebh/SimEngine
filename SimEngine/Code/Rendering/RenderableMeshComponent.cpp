@@ -7,73 +7,22 @@
 
 #include <iostream>
 
-/*
-TODO
-This needs to be changed from only working with a pre-set cube to
-working with any model/set of vertices that I give it.
-
-For this reason I need to get model loading working as well
-*/
-
-const GLfloat vertices[] = 
-{
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-
-	0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-	0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-	0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f
-};
-
 const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/3DVertexShader.txt";
 const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/3DFragShader.txt";
 
 using namespace std;
 
 RenderableMeshComponent::RenderableMeshComponent(std::string in_tex, std::vector<GLfloat> in_vertexData, int in_numVertices) :
-IRenderableComponent()
+IRenderableComponent(),
+m_modelUniform(0),
+m_viewUniform(0)
 {
-	Initialise(in_vertexData);
-	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
-
 	m_textureData = LoadImage(in_tex.c_str());
 
 	m_numVertices = in_numVertices;
+
+	Initialise(in_vertexData);
+	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 }
 
 RenderableMeshComponent::~RenderableMeshComponent()
@@ -86,13 +35,11 @@ RenderableMeshComponent::~RenderableMeshComponent()
 
 void RenderableMeshComponent::Initialise(std::vector<GLfloat> in_vertexData)
 {
-	// Generate vertex array and vertex buffer
-	glGenVertexArrays(1, &m_vao);
-	glGenBuffers(1, &m_vbo);
-
 	// Bind and send data to buffer
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, in_vertexData.size() * sizeof(GLfloat), &in_vertexData[0], GL_STATIC_DRAW);
+	m_vertexBuffer = &(m_vao.GetVertexBuffer());
+
+	m_vertexBuffer->Bind();
+	m_vertexBuffer->SetData(in_vertexData.size() * sizeof(GLfloat), &in_vertexData[0]);
 }
 
 void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc)
@@ -101,44 +48,22 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
 		return;
 
 	// Bind vertex array
-	glBindVertexArray(m_vao);
+	m_vao.Bind();
 
 	// Bind vertex buffer
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    m_vertexBuffer->Bind();
 
 	// Create and activate shader
 	m_shader.CreateShaderProgram(in_vertexShaderSrc, in_fragShaderSrc);
-	glUseProgram(m_shader.GetProgramID());
+	m_shader.Use();
 
-	// Link the vertex attributes to the data
-	GLint posAttrib = glGetAttribLocation(m_shader.GetProgramID(), "position");
-    glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0);
+	// Add vertex attributes
+	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("position"), 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0) );
+	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("texcoord"), 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat))) );
 
-	GLint texAttrib = glGetAttribLocation(m_shader.GetProgramID(), "texcoord");
-    glEnableVertexAttribArray(texAttrib);
-    glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	m_vao.SetVertexAttributes();
 
-	glUniform1i(glGetUniformLocation(m_shader.GetProgramID(), "textureSprite"), 0);
-
-	m_modelUniform = glGetUniformLocation(m_shader.GetProgramID(), "move");
-
-	m_camCenter = Vector3(0.f, 0.f, 0.f);
-	m_camLookat = Vector3(1.5f, 1.5f, 1.5f);
-
-	// Set up projection
-    glm::mat4 view = glm::lookAt(
-        m_camLookat,
-        m_camCenter,
-        glm::vec3(0.0f, 1.0f, 0.0f)
-    );
-
-    GLint uniView = glGetUniformLocation(m_shader.GetProgramID(), "view");
-    glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
-
-    glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 100.0f);
-    GLint uniProj = glGetUniformLocation(m_shader.GetProgramID(), "proj");
-    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+	SetUniforms();
 }
 
 glm::mat4 RenderableMeshComponent::CalculateModelMatrix()
@@ -152,6 +77,18 @@ glm::mat4 RenderableMeshComponent::CalculateModelMatrix()
 	model = glm::scale(model, GetOwner()->m_scale) * rotMatrix * glm::translate(model, GetOwner()->GetPosition());
 
 	return model;
+}
+
+void RenderableMeshComponent::SetUniforms()
+{
+	m_modelUniform = m_shader.GetUniformLocation("model");
+    m_viewUniform = m_shader.GetUniformLocation("view");
+
+    glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 100.0f);
+    GLint uniProj = m_shader.GetUniformLocation("proj");
+    glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
+
+	glUniform1i(m_shader.GetUniformLocation("textureSprite"), 0);
 }
 
 void RenderableMeshComponent::Update(float in_dt)
@@ -187,15 +124,20 @@ void RenderableMeshComponent::Update(float in_dt)
 void RenderableMeshComponent::Draw()
 {
 	// Bind shader program
-	glUseProgram(m_shader.GetProgramID());
+	m_shader.Use();
 
 	// Set shader uniforms
     glUniformMatrix4fv(m_modelUniform, 1, GL_FALSE, glm::value_ptr(CalculateModelMatrix()));
+
+	if(GetOwner()->GetCameraManager()->GetActiveCamera()->HasViewMatrixChanged())
+	{
+		glUniformMatrix4fv(m_viewUniform, 1, GL_FALSE, glm::value_ptr(GetOwner()->GetCameraManager()->GetActiveCamera()->GetViewMatrix()));
+	}
 
 	// Bind the texture
 	glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, *(m_textureData.textureID));
 
 	// Bind vertex array
-	glBindVertexArray(m_vao);
+	m_vao.Bind();
 }
