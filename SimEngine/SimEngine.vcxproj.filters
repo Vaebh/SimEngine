@@ -156,6 +156,15 @@
     <ClCompile Include="Code\Foundation\StringUtils.cpp">
       <Filter>Code\Foundation</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Rendering\VertexAttribute.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\Buffer.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\VertexArray.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Application\Game.h">
@@ -303,6 +312,9 @@
       <Filter>Code\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Code\Rendering\VertexAttribute.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\VertexArray.h">
       <Filter>Code\Rendering</Filter>
     </ClInclude>
   </ItemGroup>

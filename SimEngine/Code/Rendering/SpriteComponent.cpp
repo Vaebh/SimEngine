@@ -90,7 +90,7 @@ glm::mat4 SpriteComponent::CalculateModelMatrix()
 	glm::mat4 model;
 	//model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
 
-	model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale);
+	model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->GetScale());
 	return model;
 }
 

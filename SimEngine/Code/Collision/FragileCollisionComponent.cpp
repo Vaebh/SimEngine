@@ -32,7 +32,7 @@ void FragileCollisionComponent::Update(float in_dt)
 		mBoundingBox = CreateBoundingBox(mOwner->GetPosition());
 	}
 
-	if(mOwner->m_scale.x <= 0.001f)
+	if(mOwner->GetScale().x <= 0.001f)
 	{
 		mDead = true;
 	}

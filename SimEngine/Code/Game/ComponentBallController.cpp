@@ -55,7 +55,7 @@ void ComponentBallController::LaunchBall()
 	if(!mBallModel->IsMovementEnabled())
 	{
 		// TODO - Hold this as part of the models construction
-		mOwner->m_velocity = Vector3(0.f, 0.9f, 0.f);
+		mOwner->SetVelocity(Vector3(0.f, 0.9f, 0.f));
 
 		mBallModel->EnableMovement(true);
 		mAiming = false;
@@ -64,20 +64,24 @@ void ComponentBallController::LaunchBall()
 
 void ComponentBallController::CheckForWindowCollision()
 {
+	Vector3 velocity = mOwner->GetVelocity();
+
 	if(mOwner->GetPosition().y >= 0.95f)
 	{
-		mOwner->m_velocity.y *= mOwner->m_velocity.y < 0 ? 1 : -1;
+		velocity *= mOwner->GetVelocity().y < 0 ? 1 : -1;
 	}
 
 	if(mOwner->GetPosition().x >= 0.95f)
 	{
-		mOwner->m_velocity.x *= mOwner->m_velocity.x < 0 ? 1 : -1;
+		velocity *= mOwner->GetVelocity().x < 0 ? 1 : -1;
 	}
 
 	if(mOwner->GetPosition().x <= -0.95f)
 	{
-		mOwner->m_velocity.x *= mOwner->m_velocity.x > 0 ? 1 : -1;
+		velocity *= mOwner->GetVelocity().x > 0 ? 1 : -1;
 	}
+
+	mOwner->SetVelocity(velocity);
 }
 
 void ComponentBallController::Update(float in_dt)
@@ -86,13 +90,13 @@ void ComponentBallController::Update(float in_dt)
 
 	if(mAiming && mAimingObject)
 	{
-		mOwner->SetPosition(Vector3(mAimingObject->GetPosition().x, mAimingObject->GetPosition().y + mAimingObject->m_scale.y, 0.f));
-		mOwner->m_velocity = Vector3();
+		mOwner->SetPosition(Vector3(mAimingObject->GetPosition().x, mAimingObject->GetPosition().y + mAimingObject->GetScale().y, 0.f));
+		mOwner->GetVelocity() = Vector3();
 	}
 
 	if(mBallModel->IsMovementEnabled() && (mOwner->GetPosition().y <= -1.2f || glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_C)))
 	{
-		mOwner->m_velocity = Vector3();
+		mOwner->GetVelocity() = Vector3();
 		mBallModel->EnableMovement(false);
 		mOwner->SetPosition(mBallModel->GetInitialPosition());
 

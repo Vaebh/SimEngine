@@ -1,7 +1,7 @@
 #include "../Foundation/Foundation.h"
 
 #include "../Rendering/RenderSystem.h"
-#include "../Rendering/Shader.h"
+#include "../Rendering/RenderableComponent.h"
 #include <iostream>
 
 RenderSystem* RenderSystem::mRenderer = NULL;

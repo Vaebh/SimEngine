@@ -8,8 +8,7 @@ GameObject::GameObject() :
 m_index(m_numGameObjects++),
 m_position(0),
 m_scale(1.0, 1.0, 1.0),
-m_rotationQuat(glm::quat()),
-m_velocity(0)
+m_rotationQuat(glm::quat())
 {
 
 }

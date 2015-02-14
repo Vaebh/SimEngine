@@ -50,11 +50,11 @@ Rectangle CollisionComponent::CreateBoundingBox(Vector3 inPosition)
 {
 	Rectangle newBoundingBox;
 
-	newBoundingBox.left = inPosition.x - mOwner->m_scale.x / 2;
-	newBoundingBox.right = inPosition.x + mOwner->m_scale.x / 2;
+	newBoundingBox.left = inPosition.x - mOwner->GetScale().x / 2;
+	newBoundingBox.right = inPosition.x + mOwner->GetScale().x / 2;
 
-	newBoundingBox.top = inPosition.y + mOwner->m_scale.y / 2;
-	newBoundingBox.bottom = inPosition.y - mOwner->m_scale.y / 2;
+	newBoundingBox.top = inPosition.y + mOwner->GetScale().y / 2;
+	newBoundingBox.bottom = inPosition.y - mOwner->GetScale().y / 2;
 
 	return newBoundingBox;
 }

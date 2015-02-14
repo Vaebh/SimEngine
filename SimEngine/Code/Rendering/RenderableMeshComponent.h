@@ -27,9 +27,6 @@ private:
 	void SetUniforms();
 
 private:
-	GLuint m_vao2;
-	GLuint m_vbo2;
-
 	GLuint m_modelUniform;
 	GLuint m_viewUniform;
 

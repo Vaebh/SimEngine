@@ -11,7 +11,7 @@ GameObject* CreateBall()
 {
 	GameObject* const theBall = new GameObject();
 	theBall->SetPosition(Vector3(-0.2, -0.7, 0));
-	theBall->m_scale = Vector3(0.1, 0.1, 0);
+	theBall->SetScale(Vector3(0.1, 0.1, 0));
 
 	AnimatedSpriteComponent* const animSpriteComp = new AnimatedSpriteComponent("ball2.png", 2, 1.f, true);
 	theBall->Attach(animSpriteComp);
@@ -34,7 +34,7 @@ GameObject* CreatePaddle()
 {
 	GameObject* const thePaddle = new GameObject();
 	thePaddle->SetPosition(Vector3(0, -0.89f, 0.f));
-	thePaddle->m_scale = Vector3(0.3, 0.17, 0);
+	thePaddle->SetScale(Vector3(0.3, 0.17, 0));
 
 	SpriteComponent* const animSpriteComp = new SpriteComponent("paddle.png", 1);
 	thePaddle->Attach(animSpriteComp);
@@ -54,7 +54,7 @@ GameObject* CreateBlock(Vector3 inPosition)
 {
 	GameObject* const theBlock = new GameObject();
 
-	theBlock->m_scale = Vector3(0.2, 0.2, 0);
+	theBlock->SetScale(Vector3(0.2, 0.2, 0));
 	theBlock->SetPosition(inPosition);
 
 	SpriteComponent* const animSpriteComp = new SpriteComponent("bros.png", 1);
