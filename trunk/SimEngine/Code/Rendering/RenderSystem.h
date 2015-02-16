@@ -4,7 +4,6 @@
 class IRenderableComponent;
 
 #include "../OpenGL/GLIncludes.h"
-//#include "../Rendering/RenderableComponent.h"
 #include "../Structure/System.h"
 #include <vector>
 
@@ -16,10 +15,6 @@ public:
 	RenderSystem();
 	~RenderSystem();
 
-	//const std::string GetSystemID();
-
-	static RenderSystem* GetSingleton();
-
 	void AddComponent(IRenderableComponent* inRenderableComponent);
 	void RemoveComponent(IRenderableComponent* inRenderableComponent);
 	void SetFrameBufferTarget(GLuint inFrameBuffer = 0);
@@ -28,12 +23,8 @@ public:
 
 	void Draw();
 
-public:
-	static GLFWwindow* mWindow;
-
 private:
-	static RenderSystem* mRenderer;
-
+	// TODO - Should change this to a list and change it to support actually removing elements when their GameObjects have been deleted.
 	std::vector<IRenderableComponent*> m_components;
 };
 

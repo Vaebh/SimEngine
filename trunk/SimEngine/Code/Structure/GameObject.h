@@ -4,6 +4,8 @@
 #include "../Structure/Component.h"
 #include "../Structure/Vectors.h"
 
+#include "../Interfaces/UpdateInterface.h"
+
 #include <vector>
 #include <string>
 
@@ -57,22 +59,22 @@ public:
 
 	#pragma region System Modules
 
-	inline const RenderSystem* GetRenderSystem() {return m_renderSystem;}
+	inline RenderSystem* GetRenderSystem() {return m_renderSystem;}
 	inline void SetRenderSystem(RenderSystem* in_renderSystem) {m_renderSystem = in_renderSystem;}
 
-	inline const StateManager* GetStateManager() {return m_stateManager;}
+	inline StateManager* GetStateManager() {return m_stateManager;}
 	inline void SetStateManager(StateManager* in_stateManager) {m_stateManager = in_stateManager;}
 
-	inline const InputManager* GetInputManager() {return m_inputManager;}
+	inline InputManager* GetInputManager() {return m_inputManager;}
 	inline void SetInputManager(InputManager* in_inputManager) {m_inputManager = in_inputManager;}
 
-	inline const AudioSystem* GetAudioSystem() {return m_audioSystem;}
+	inline AudioSystem* GetAudioSystem() {return m_audioSystem;}
 	inline void SetAudioSystem(AudioSystem* in_audioSystem) {m_audioSystem = in_audioSystem;}
 
-	inline const CameraManager* GetCameraManager() {return m_cameraManager;}
+	inline CameraManager* GetCameraManager() {return m_cameraManager;}
 	inline void SetCameraManager(CameraManager* in_cameraManager) {m_cameraManager = in_cameraManager;}
 
-	inline const CollisionSystem* GetCollisionSystem() {return m_collisionSystem;}
+	inline CollisionSystem* GetCollisionSystem() {return m_collisionSystem;}
 	inline void SetCollisionSystem(CollisionSystem* in_collisionSystem) {m_collisionSystem = in_collisionSystem;}
 
 	#pragma endregion

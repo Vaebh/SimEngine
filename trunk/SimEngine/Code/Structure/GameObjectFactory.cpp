@@ -1,4 +1,6 @@
 #include "../Structure/GameObjectFactory.h"
+#include "../Rendering/RenderSystem.h"
+#include "../Rendering/RenderableMeshComponent.h"
 
 GameObjectFactory::GameObjectFactory() {}
 
@@ -17,7 +19,24 @@ m_collisionSystem(in_collisionSystem)
 GameObject* GameObjectFactory::CreateGameObject()
 {
 	GameObject* newObject = new GameObject();
+
+	newObject->SetRenderSystem(m_renderSystem);
+	newObject->SetStateManager(m_stateManager);
+	newObject->SetInputManager(m_inputManager);
+	newObject->SetAudioSystem(m_audioSystem);
 	newObject->SetCameraManager(m_cameraManager);
+	newObject->SetCollisionSystem(m_collisionSystem);
+
+	return newObject;
+}
+
+GameObject* GameObjectFactory::Create3DGameObject(char* in_meshName, char* in_textureName)
+{
+	GameObject* newObject = CreateGameObject();
+	RenderableMeshComponent* rendMeshComp = new RenderableMeshComponent(in_meshName, in_textureName);
+
+	newObject->Attach(rendMeshComp);
+	m_renderSystem->AddComponent(rendMeshComp);
 
 	return newObject;
 }

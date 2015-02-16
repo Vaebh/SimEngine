@@ -173,12 +173,12 @@ void Test3DComponent::Update(float in_dt)
 
 	camDir = glm::normalize(camDir);
 
-	//std::cout << "x: " <<  mOwner->GetPosition().x << std::endl;
-	//std::cout << "y: " << mOwner->GetPosition().y << std::endl;
-	//std::cout << "z: " << mOwner->GetPosition().z << std::endl;
+	//std::cout << "x: " <<  m_owner->GetPosition().x << std::endl;
+	//std::cout << "y: " << m_owner->GetPosition().y << std::endl;
+	//std::cout << "z: " << m_owner->GetPosition().z << std::endl;
 
 
-	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_W) == GLFW_PRESS)
+	/*if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_W) == GLFW_PRESS)
 	{
 		m_camCenter = m_camCenter + camDir * 0.05f;
 		//m_camLookat = m_camLookat + camDir * 0.05f;
@@ -186,7 +186,7 @@ void Test3DComponent::Update(float in_dt)
 		std::cout << "camx: " <<  m_camCenter.x << std::endl;
 		std::cout << "camy: " << m_camCenter.y << std::endl;
 		std::cout << "camz: " << m_camCenter.z << std::endl;
-		mOwner->SetPosition(mOwner->GetPosition() + camDir * 0.05f);
+		m_owner->SetPosition(m_owner->GetPosition() + camDir * 0.05f);
 
 		// Set up projection
 		glm::mat4 view = glm::lookAt(
@@ -204,7 +204,7 @@ void Test3DComponent::Update(float in_dt)
 		m_camCenter = m_camCenter - camDir * 0.05f;
 		//m_camLookat = m_camLookat - camDir * 0.05f;
 
-		mOwner->SetPosition(mOwner->GetPosition() + camDir * -0.05f);
+		m_owner->SetPosition(m_owner->GetPosition() + camDir * -0.05f);
 
 		// Set up projection
 		glm::mat4 view = glm::lookAt(
@@ -219,18 +219,18 @@ void Test3DComponent::Update(float in_dt)
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, -0.01f, 0.f));
+		m_owner->SetPosition(m_owner->GetPosition() + Vector3(0.0f, -0.01f, 0.f));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.0f, 0.01f, 0.f));
+		m_owner->SetPosition(m_owner->GetPosition() + Vector3(0.0f, 0.01f, 0.f));
 	}
 
 	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_Z) == GLFW_PRESS)
 	{
-		mOwner->SetPosition(mOwner->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
-	}
+		m_owner->SetPosition(m_owner->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
+	}*/
 
 	static bool thing = false;
 	static float angle = 10.f;
@@ -239,9 +239,9 @@ void Test3DComponent::Update(float in_dt)
 
 	static bool thing2 = false;
 
-	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
+	/*if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
 	{
-		//mOwner->SetPosition(mOwner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
+		//m_owner->SetPosition(m_owner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
 		//if(!thing)
 			//GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, angle, Vector3(0, 1, 0));
 		
@@ -266,7 +266,7 @@ void Test3DComponent::Update(float in_dt)
 		thing2 = false;
 
 		scale -= 0.1f;
-	}
+	}*/
 
 	GetOwner()->SetScale(Vector3(scale));
 

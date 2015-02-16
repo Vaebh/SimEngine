@@ -7,15 +7,17 @@
 class Window
 {
 public:
-	Window(int in_width, int in_height);
+	Window(const char* in_name, int in_width, int in_height);
+	~Window();
 
 	inline const Vector2 GetDimensions() {return m_dimensions;}
 
-	inline const GLFWwindow* GetWindow() {return m_window;}
+	inline GLFWwindow* GetGLFWWindow() {return m_window;}
+
+	bool ShouldWindowClose() const;
 
 private:
 	GLFWwindow* m_window;
-	GLFWwindow* InitialiseWindow();
 
 	Vector2 m_dimensions;
 };

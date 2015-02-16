@@ -1,13 +1,14 @@
 #include "../Input/InputManager.h"
-#include <string>
+#include "../Events/EventMessenger.h"
 
+#include <string>
 #include <fstream>
 #include <iostream>
 
-InputManager::InputManager(GLFWwindow* inWindow) :
-mWindow(inWindow)
-,mPreviousEvent(0)
-,mPreviousKeyState(0)
+InputManager::InputManager(GLFWwindow* in_window) :
+m_window(in_window)
+,m_previousEvent(0)
+,m_previousKeyState(0)
 {
 	Init();
 	//LoadInput();
@@ -94,44 +95,46 @@ void InputManager::InitKeys()
 	AddKey(GLFW_KEY_UP, INPUT_UP_PRESS, INPUT_UP_RELEASE);
 }
 
-void InputManager::AddKey(const GLint inKeyCode, const uint32_t inPressedEventType, const uint32_t inReleasedEventType)
+void InputManager::AddKey(const GLint in_keyCode, const uint32_t in_pressedEventType, const uint32_t in_releasedEventType)
 {
 	Key theKey;
-	theKey.mKeyCode = inKeyCode;
-	theKey.mPreviousState = GLFW_RELEASE;
-	mKeys.push_back(theKey);
+	theKey.m_keyCode = in_keyCode;
+	theKey.m_previousState = GLFW_RELEASE;
+	m_keys.push_back(theKey);
 
-	mInputMap[inKeyCode].first = inPressedEventType;
-	mInputMap[inKeyCode].second = inReleasedEventType;
+	m_inputMap[in_keyCode].first = in_pressedEventType;
+	m_inputMap[in_keyCode].second = in_releasedEventType;
 }
 
-void InputManager::HandleKeyInput(Key& inKey, const float in_dt)
+void InputManager::HandleKeyInput(Key& in_key, const float in_dt)
 {
-	int keyInputState = glfwGetKey(mWindow, inKey.mKeyCode);
+	int keyInputState = glfwGetKey(m_window, in_key.m_keyCode);
 
-	if((keyInputState == GLFW_PRESS && inKey.mPreviousState != GLFW_PRESS) ||
-		keyInputState == GLFW_RELEASE && inKey.mPreviousState != GLFW_RELEASE)
+	if(keyInputState == GLFW_PRESS || // && in_key.m_previousState != GLFW_PRESS) ||
+		keyInputState == GLFW_RELEASE)// && in_key.m_previousState != GLFW_RELEASE)
 	{
-		if(keyInputState == GLFW_PRESS && mPreviousEvent != mInputMap[inKey.mKeyCode].first)
+		if(keyInputState == GLFW_PRESS)// && m_previousEvent != m_inputMap[in_key.m_keyCode].first)
 		{
-			//EventMessenger::GetSingleton()->BroadcastEvent(mInputMap[inKey.mKeyCode].first);
-			mPreviousEvent = mInputMap[inKey.mKeyCode].first;
-			inKey.mPreviousState = keyInputState;
+			//EventMessenger::GetSingleton()->BroadcastEvent(m_inputMap[inKey.m_keyCode].first);
+			EventMessenger::GetSingleton()->RecordEvent(m_inputMap[in_key.m_keyCode].first, NULL);
+			m_previousEvent = m_inputMap[in_key.m_keyCode].first;
+			in_key.m_previousState = keyInputState;
 		}
-		else if(keyInputState == GLFW_RELEASE && mPreviousEvent != mInputMap[inKey.mKeyCode].second)
+		else if(keyInputState == GLFW_RELEASE)// && m_previousEvent != m_inputMap[in_key.m_keyCode].second)
 		{
-     		//EventMessenger::GetSingleton()->BroadcastEvent(mInputMap[inKey.mKeyCode].second);
-			mPreviousEvent = mInputMap[inKey.mKeyCode].second;
-			inKey.mPreviousState = keyInputState;
+			EventMessenger::GetSingleton()->RecordEvent(m_inputMap[in_key.m_keyCode].second, NULL);
+     		//EventMessenger::GetSingleton()->BroadcastEvent(m_inputMap[inKey.m_keyCode].second);
+			m_previousEvent = m_inputMap[in_key.m_keyCode].second;
+			in_key.m_previousState = keyInputState;
 		}
 	}
 }
 
 void InputManager::HandleKeyboardInput(const float in_dt)
 {
-	for(int i = 0; i < mKeys.size(); ++i)
+	for(int i = 0; i < m_keys.size(); ++i)
 	{
-		HandleKeyInput(mKeys[i], in_dt);
+		HandleKeyInput(m_keys[i], in_dt);
 	}
 }
 

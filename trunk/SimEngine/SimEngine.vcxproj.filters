@@ -40,6 +40,9 @@
     <Filter Include="Code\Camera">
       <UniqueIdentifier>{246e6b6e-0bc4-4a13-954d-e06d5d3717bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Interfaces">
+      <UniqueIdentifier>{9381abad-f9aa-4cb0-9301-a7853f9c2367}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Application\main.cpp">
@@ -163,6 +166,9 @@
       <Filter>Code\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rendering\VertexArray.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Rendering\Uniform.cpp">
       <Filter>Code\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
@@ -315,6 +321,12 @@
       <Filter>Code\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Code\Rendering\VertexArray.h">
+      <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Interfaces\UpdateInterface.h">
+      <Filter>Code\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Uniform.h">
       <Filter>Code\Rendering</Filter>
     </ClInclude>
   </ItemGroup>

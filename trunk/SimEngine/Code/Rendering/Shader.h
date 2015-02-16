@@ -2,22 +2,30 @@
 #define SIMENGINE_SHADER
 
 #include "../OpenGL/GLIncludes.h"
+#include "../Rendering/Uniform.h"
+
 #include <string>
+#include <memory>
+#include <unordered_map>
 
 class Shader
 {
 public:
 	Shader();
-	Shader(const std::string& inName, const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc);
+	Shader(const std::string& in_name, const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc);
 	~Shader();
 
-	inline const GLuint GetProgramID() const {return m_shaderProgram;}
-	GLint GetAttributeLocation(const char* in_attributeName);
+	Uniform* operator[](const char* in_uniformName);
 
 	void CreateShaderProgram(const std::string& in_vertexShaderSrc, const std::string& in_fragShaderSrc);
 
 	void Use();
-	GLint GetUniformLocation(char* in_uniformName) const;
+
+	void AddUniform(const char* in_uniformName);
+
+	inline const GLuint GetProgramID() const {return m_shaderProgram;}
+	GLint GetAttributeLocation(const char* in_attributeName);
+	GLint GetUniformLocation(const char* in_uniformName) const;
 
 private:
 	GLuint CreateShaderFromFile(const std::string& in_path, const GLenum& in_shaderType);
@@ -29,6 +37,8 @@ private:
 private:
 	std::string m_name;
 	GLuint m_shaderProgram;
+
+	std::unordered_map < const char*, std::unique_ptr<Uniform> > m_uniforms;
 };
 
 #endif

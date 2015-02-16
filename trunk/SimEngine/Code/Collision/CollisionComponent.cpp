@@ -31,7 +31,7 @@ void CollisionComponent::PrePositionSet(Vector3 inNewPosition)
 
 	if(CollisionSystem::GetSingleton()->IsColliding(newBoundingBox, this))
 	{
-		inNewPosition = mOwner->GetPosition();
+		inNewPosition = m_owner->GetPosition();
 	}
 	else
 	{
@@ -50,18 +50,18 @@ Rectangle CollisionComponent::CreateBoundingBox(Vector3 inPosition)
 {
 	Rectangle newBoundingBox;
 
-	newBoundingBox.left = inPosition.x - mOwner->GetScale().x / 2;
-	newBoundingBox.right = inPosition.x + mOwner->GetScale().x / 2;
+	newBoundingBox.left = inPosition.x - m_owner->GetScale().x / 2;
+	newBoundingBox.right = inPosition.x + m_owner->GetScale().x / 2;
 
-	newBoundingBox.top = inPosition.y + mOwner->GetScale().y / 2;
-	newBoundingBox.bottom = inPosition.y - mOwner->GetScale().y / 2;
+	newBoundingBox.top = inPosition.y + m_owner->GetScale().y / 2;
+	newBoundingBox.bottom = inPosition.y - m_owner->GetScale().y / 2;
 
 	return newBoundingBox;
 }
 
 void CollisionComponent::OnCollision(CollisionComponent* inComponent, Vector3 inCollisionVector)
 {
-	EventMessenger::GetSingleton()->RecordEvent(COLLISION, mOwner);
+	EventMessenger::GetSingleton()->RecordEvent(COLLISION, m_owner);
 }
 
 void CollisionComponent::Update(float in_dt)

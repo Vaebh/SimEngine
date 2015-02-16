@@ -23,9 +23,6 @@ std::vector<MessageDelegate> EventMessenger::GetEventDelegates(const uint32_t in
 // Fires the delegates for the triggered event
 void EventMessenger::RecordEvent(const uint32_t in_eventType, GameObject* in_target, const float in_eventNotificationDelay)
 {
-	if(in_target == NULL)
-		return;
-
 	std::vector<MessageDelegate> delegates = GetEventDelegates(in_eventType, in_target);
 
 	for(int i = 0; i < delegates.size(); ++i)
@@ -36,7 +33,7 @@ void EventMessenger::RecordEvent(const uint32_t in_eventType, GameObject* in_tar
 
 void EventMessenger::SubscribeToEvent(const uint32_t in_eventType, GameObject* in_target, MessageDelegate in_msgDel)
 {
-	if(in_msgDel == NULL || in_target == NULL)
+	if(in_msgDel == NULL)
 		return;
 
 	std::pair<const uint32_t, GameObject*> keyPair = std::make_pair(in_eventType, in_target);
@@ -54,7 +51,7 @@ void EventMessenger::SubscribeToEvent(const uint32_t in_eventType, GameObject* i
 
 void EventMessenger::UnsubscribeToEvent(const uint32_t in_eventType, GameObject* in_target, MessageDelegate in_msgDel)
 {
-	if(in_msgDel == NULL || in_target == NULL)
+	if(in_msgDel == NULL)
 		return;
 
 	std::pair<const uint32_t, GameObject*> keyPair = std::make_pair(in_eventType, in_target);

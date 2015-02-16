@@ -1,4 +1,4 @@
-#include "../Foundation/Foundation.h"
+/*#include "../Foundation/Foundation.h"
 
 #include "../OpenGL/GLIncludes.h"
 #include "../OpenGL/GLUtils.h"
@@ -29,11 +29,13 @@ using namespace std;
 void HandleEvent(uint32_t inEventType, GameObject* inTarget)
 {
 	inTarget->GetComponent<RenderableMeshComponent>()->SetVisible(false);
-}
+}*/
+
+#include "../Application/Application.h"
 
 int main(void)
 {
-	InputManager* inputSystem = new InputManager(RenderSystem::GetSingleton()->mWindow);
+	/*InputManager* inputSystem = new InputManager(RenderSystem::GetSingleton()->mWindow);
 
 	AudioSystem* audioSystem = new AudioSystem();
 	audioSystem->Initialise();
@@ -59,10 +61,10 @@ int main(void)
 	ConstructVertexData(vertexData, tempVertices, tempUVs, tempNormals);*/
 
 	// 3D Objects
-	GameObject* const theCube = gameObjFactory->CreateGameObject();
+	/*GameObject* const theCube = gameObjFactory->CreateGameObject();
 	theCube->SetScale(Vector3(0.25f, 0.25f, 0.25f));
 	
-	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("bros.png", "wrong.obj");
+	RenderableMeshComponent* const rendMeshComp = new RenderableMeshComponent("wrong.obj", "bros.png");
 	theCube->Attach(rendMeshComp);
 
 	MessageDelegate mesDel = new EventCallbackFree(&HandleEvent);
@@ -84,7 +86,7 @@ int main(void)
 	SpriteComponent* const spriteComp = new SpriteComponent("sample2.png");
 	spriteObject->Attach(spriteComp);*/
 
-	double olddelta = 0;
+	/*double olddelta = 0;
 	double delta = 0;
 
 	float fpsTimer = 0;
@@ -116,7 +118,7 @@ int main(void)
 			stateManager->PushState(new StateLevelOne());
 		}*/
 
-		static bool keyPressed = false;
+		/*static bool keyPressed = false;
 
 		if(!keyPressed && glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
 		{
@@ -151,7 +153,7 @@ int main(void)
 
 		RenderSystem::GetSingleton()->Draw();
 
-		glfwSwapBuffers(RenderSystem::mWindow);
+		//glfwSwapBuffers(RenderSystem::mWindow);
 
 		// Check for new events
 		glfwPollEvents();
@@ -162,7 +164,9 @@ int main(void)
 	//SAFE_DELETE(stateManager);
 
 	glfwDestroyWindow(RenderSystem::GetSingleton()->mWindow);
-	glfwTerminate();
+	glfwTerminate();*/
+
+	Application application;
 
 	return 0;
 }

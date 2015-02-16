@@ -4,7 +4,8 @@
 
 StateManager* StateManager::mStateManager = NULL;
 
-StateManager::StateManager()
+StateManager::StateManager() :
+mActiveState(NULL)
 {
 }
 

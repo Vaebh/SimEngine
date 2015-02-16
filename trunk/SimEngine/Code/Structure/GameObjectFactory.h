@@ -12,6 +12,9 @@ public:
 
 	GameObject* CreateGameObject();
 
+	// Should pass in a vector of textures when support for it is implemented
+	GameObject* Create3DGameObject(char* in_meshName, char* in_textureName);
+
 private:
 	RenderSystem* m_renderSystem;
 	StateManager* m_stateManager;
