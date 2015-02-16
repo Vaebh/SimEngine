@@ -28,11 +28,11 @@ void FragileCollisionComponent::Update(float in_dt)
 {
 	if(mDying)
 	{
-		mOwner->ScaleBy(Vector3(-0.1f * in_dt, -0.1f * in_dt, 0.f));
-		mBoundingBox = CreateBoundingBox(mOwner->GetPosition());
+		m_owner->ScaleBy(Vector3(-0.1f * in_dt, -0.1f * in_dt, 0.f));
+		mBoundingBox = CreateBoundingBox(m_owner->GetPosition());
 	}
 
-	if(mOwner->GetScale().x <= 0.001f)
+	if(m_owner->GetScale().x <= 0.001f)
 	{
 		mDead = true;
 	}

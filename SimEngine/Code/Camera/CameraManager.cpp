@@ -24,6 +24,11 @@ const Camera* CameraManager::GetActiveCamera() const
 {
 	return m_cameraVector[m_activeCamIndex];
 }
+Camera* CameraManager::GetActiveCamera()
+{
+	return m_cameraVector[m_activeCamIndex];
+}
+
 const Camera* CameraManager::GetCameraAtIndex(int in_camIndex) const
 {
 	return m_cameraVector[in_camIndex];

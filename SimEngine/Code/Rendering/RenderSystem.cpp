@@ -2,80 +2,18 @@
 
 #include "../Rendering/RenderSystem.h"
 #include "../Rendering/RenderableComponent.h"
+
+#include "../Application/Application.h"
 #include <iostream>
-
-RenderSystem* RenderSystem::mRenderer = NULL;
-
-GLFWwindow* RenderSystem::mWindow;
-
-static void ErrorCallback(int error, const char* description)
-{
-    std::cout<< "GLFW ERROR: " << description << std::endl;
-}
-
-namespace
-{
-	// Should move this to somewhere more appropriate, Application.cpp maybe?
-	GLFWwindow* InitialiseWindow()
-	{
-		if (!glfwInit())
-			return NULL;
-        
-        glfwSetErrorCallback(ErrorCallback);
-    
-		//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-		//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-		GLFWwindow* window = glfwCreateWindow(640, 480, "Breakout Clone", NULL, NULL);
-        
-		if(!window)
-		{
-			glfwTerminate();
-            return NULL;
-		}
-  
-		glfwMakeContextCurrent(window);
-
-		glViewport(0, 0, 640, 480);
-
-		glewExperimental = GL_TRUE;
-		glewInit();
-
-		glEnable(GL_DEPTH_TEST);
-
-		return window;
-	}
-}
 
 RenderSystem::RenderSystem()
 {
-	if(!mWindow)
-	{
-		mWindow = InitialiseWindow();
-	}
+	m_components = std::vector<IRenderableComponent*>();
 }
 
 RenderSystem::~RenderSystem()
 {
 
-}
-
-RenderSystem* RenderSystem::GetSingleton()
-{
-	if(!mRenderer)
-	{
-		mRenderer = new RenderSystem();
-	}
-
-	return mRenderer;
 }
 
 void RenderSystem::SetFrameBufferTarget(GLuint inFrameBuffer)
@@ -166,5 +104,5 @@ void RenderSystem::Draw()
 		}
 	}
 
-	//m_components[i]->GetOwner()->GetCameraManager()->GetActiveCamera().ViewMatrixChanged();
+	glfwSwapBuffers(Application::GetApplication()->GetWindow()->GetGLFWWindow());
 }

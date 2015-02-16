@@ -32,6 +32,7 @@
     <ClInclude Include="Code\Game\StateLevelOne.h" />
     <ClInclude Include="Code\Game\StateVictory.h" />
     <ClInclude Include="Code\Input\InputManager.h" />
+    <ClInclude Include="Code\Interfaces\UpdateInterface.h" />
     <ClInclude Include="Code\OpenGL\GLIncludes.h" />
     <ClInclude Include="Code\OpenGL\GLUtils.h" />
     <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h" />
@@ -45,6 +46,7 @@
     <ClInclude Include="Code\Rendering\Test3DComponent.h" />
     <ClInclude Include="Code\Rendering\Texture.h" />
     <ClInclude Include="Code\Rendering\TextureManager.h" />
+    <ClInclude Include="Code\Rendering\Uniform.h" />
     <ClInclude Include="Code\Rendering\VertexArray.h" />
     <ClInclude Include="Code\Rendering\VertexAttribute.h" />
     <ClInclude Include="Code\Sound\AudioSystem.h" />
@@ -92,6 +94,7 @@
     <ClCompile Include="Code\Rendering\SpriteComponent.cpp" />
     <ClCompile Include="Code\Rendering\Test3DComponent.cpp" />
     <ClCompile Include="Code\Rendering\TextureManager.cpp" />
+    <ClCompile Include="Code\Rendering\Uniform.cpp" />
     <ClCompile Include="Code\Rendering\VertexArray.cpp" />
     <ClCompile Include="Code\Rendering\VertexAttribute.cpp" />
     <ClCompile Include="Code\Sound\AudioSystem.cpp" />

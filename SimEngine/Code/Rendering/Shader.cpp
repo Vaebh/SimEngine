@@ -2,9 +2,6 @@
 #include <iostream>
 #include <fstream>
 
-using std::cout;
-using std::endl;
-
 #define DEBUG_PRINTING 0
 
 Shader::Shader() :
@@ -28,6 +25,11 @@ Shader::~Shader()
 	}
 }
 
+Uniform* Shader::operator[](const char* in_uniformName)
+{
+	return m_uniforms[in_uniformName].get();
+}
+
 GLint Shader::GetAttributeLocation(const char* in_attributeName)
 {
   return glGetAttribLocation(GetProgramID(), in_attributeName);
@@ -38,9 +40,17 @@ void Shader::Use()
 	glUseProgram(GetProgramID());
 }
 
-GLint Shader::GetUniformLocation(char* in_uniformName) const
+GLint Shader::GetUniformLocation(const char* in_uniformName) const
 {
 	return glGetUniformLocation(GetProgramID(), in_uniformName);
+}
+
+void Shader::AddUniform(const char* in_uniformName)
+{
+	Uniform* newUniform = new Uniform(GetUniformLocation(in_uniformName));
+
+	std::unique_ptr<Uniform> uniquePtrUniform(newUniform);
+	m_uniforms[in_uniformName] = std::move(uniquePtrUniform);
 }
 
 //-------------------------------------------------------------------------------------
@@ -81,9 +91,9 @@ void Shader::CreateShaderProgram(const std::string& in_vertexShaderSrc, const st
 
 	#if DEBUG_PRINTING == 1
 	if(glIsProgram(m_shaderProgram) == GL_TRUE)
-		cout << "isProgram success" << endl;
+		std::cout << "isProgram success" << std::endl;
 	else
-		cout << "isProgram fail" << endl;
+		std::cout << "isProgram fail" << std::endl;
 	#endif
 
 	return;
@@ -98,7 +108,7 @@ bool Shader::ShaderCompilationCheck(const GLuint in_vertexShader, const GLuint i
 	if(vertexStatus == GL_TRUE && fragmentStatus == GL_TRUE)
 	{
 		#if DEBUG_PRINTING == 1
-		cout << in_shaderName + " shader compilation SUCCESS" << endl;
+		std::cout << in_shaderName + " shader compilation SUCCESS" << std::endl;
 		#endif
 		return true;
 	}
@@ -107,17 +117,17 @@ bool Shader::ShaderCompilationCheck(const GLuint in_vertexShader, const GLuint i
 		if(vertexStatus == GL_FALSE)
 		{
 			#if DEBUG_PRINTING == 1
-			cout << "Vertex shader compilation FAILED" << endl;
+			std::cout << "Vertex shader compilation FAILED" << std::endl;
 			#endif
 		}
 		if(fragmentStatus == GL_FALSE)
 		{
 			#if DEBUG_PRINTING == 1
-			cout << "Fragment shader compilation FAILED" << endl;
+			std::cout << "Fragment shader compilation FAILED" << std::endl;
 			#endif
 		}
 
-		cout << "Invalid shaders" << endl;
+		std::cout << "Invalid shaders" << std::endl;
 
 		return false;
 	}

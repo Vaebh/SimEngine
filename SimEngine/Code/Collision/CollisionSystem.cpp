@@ -56,10 +56,10 @@ bool CollisionSystem::IsColliding(Rectangle inBoundingBox, CollisionComponent* i
 	{
 		if(m_components[i] != inCollisionComponent && m_components[i]->IsIntersecting(inBoundingBox))
 		{
-			Vector3 GameObject1Center = Vector3(inCollisionComponent->mOwner->GetPosition().x + inCollisionComponent->mOwner->GetScale().x / 2, inCollisionComponent->mOwner->GetPosition().y + inCollisionComponent->mOwner->GetScale().y / 2, 0.f);
-			Vector3 GameObject2Center = Vector3(m_components[i]->mOwner->GetPosition().x + m_components[i]->mOwner->GetScale().x / 2, m_components[i]->mOwner->GetPosition().y + m_components[i]->mOwner->GetScale().y / 2, 0.f);
+			Vector3 GameObject1Center = Vector3(inCollisionComponent->m_owner->GetPosition().x + inCollisionComponent->m_owner->GetScale().x / 2, inCollisionComponent->m_owner->GetPosition().y + inCollisionComponent->m_owner->GetScale().y / 2, 0.f);
+			Vector3 GameObject2Center = Vector3(m_components[i]->m_owner->GetPosition().x + m_components[i]->m_owner->GetScale().x / 2, m_components[i]->m_owner->GetPosition().y + m_components[i]->m_owner->GetScale().y / 2, 0.f);
 
-			Vector3 collisionVector = inCollisionComponent->mOwner->GetPosition() - m_components[i]->mOwner->GetPosition();
+			Vector3 collisionVector = inCollisionComponent->m_owner->GetPosition() - m_components[i]->m_owner->GetPosition();
 
 			m_components[i]->OnCollision(inCollisionComponent, collisionVector);
 			inCollisionComponent->OnCollision(m_components[i], collisionVector);

@@ -12,13 +12,13 @@ void FollowMouseComponent::Update(float in_dt)
 {
 	double mouseX, mouseY;
 
-	glfwGetCursorPos(RenderSystem::mWindow, &mouseX, &mouseY);
+	//glfwGetCursorPos(RenderSystem::mWindow, &mouseX, &mouseY);
 
 	int width, height;
-	glfwGetFramebufferSize(RenderSystem::mWindow, &width, &height);
+	//glfwGetFramebufferSize(RenderSystem::mWindow, &width, &height);
 
-	float xPos = mOwner->GetPosition().x;
-	float yPos = mOwner->GetPosition().y;
+	float xPos = m_owner->GetPosition().x;
+	float yPos = m_owner->GetPosition().y;
 
 	if(mAxis == X_AXIS || mAxis == BOTH_AXIS)
 	{
@@ -30,5 +30,5 @@ void FollowMouseComponent::Update(float in_dt)
 		yPos = -(((mouseY * 2) / height) - 1);
 	}
 
-	mOwner->SetPosition(Vector3(xPos, yPos, mOwner->GetPosition().z));
+	m_owner->SetPosition(Vector3(xPos, yPos, m_owner->GetPosition().z));
 }

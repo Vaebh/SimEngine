@@ -2,22 +2,25 @@
 #define INPUT_MANAGER_SIMENGINE
 
 #include "../OpenGL/GLIncludes.h"
-#include <map>
-#include <list>
-#include "../Events/EventMessenger.h"
 #include "../Foundation/Foundation.h"
+
+#include <map>
+#include <vector>
 #include <utility>
+
+// TODO - Add a circular buffer that stores the last n actions, n being configurable.
+// TODO - Add the ability to poll the InputManager directly for input - eg if(keyIsDown)
 
 struct Key
 {
-	GLint mKeyCode;
-	GLint mPreviousState;
+	GLint m_keyCode;
+	GLint m_previousState;
 };
 
 class InputManager
 {
 public:
-	InputManager(GLFWwindow* inWindow);
+	InputManager(GLFWwindow* in_window);
 
 	void Init();
 	void InitKeys();
@@ -25,22 +28,21 @@ public:
 	virtual void Update(const float in_dt);
 
 	// Prints out mouse coordinates
-	static void mouseCallback(GLFWwindow* window, int button, int action, int mods);
+	static void mouseCallback(GLFWwindow* in_window, int in_button, int in_action, int in_mods);
 
 private:
 	void HandleKeyboardInput(const float in_dt);
 	void HandleKeyInput(Key& inKey, const float in_dt);
 
-	void AddKey(const GLint inKeyCode, const uint32_t inPressedEventType, const uint32_t inReleasedEventType);
+	void AddKey(const GLint in_keyCode, const uint32_t in_pressedEventType, const uint32_t in_releasedEventType);
 
 private:
-	GLFWwindow* mWindow;
-	GLint mPreviousKeyState;
-	uint32_t mPreviousEvent;
+	GLFWwindow* m_window;
+	GLint m_previousKeyState;
+	uint32_t m_previousEvent;
 
-	std::vector<Key> mKeys;
-	//replace vector with pair
-	std::map<GLint, std::pair<uint32_t, uint32_t>> mInputMap;
+	std::vector<Key> m_keys;
+	std::map<GLint, std::pair<uint32_t, uint32_t>> m_inputMap;
 };
 
 #endif

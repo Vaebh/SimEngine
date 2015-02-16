@@ -1,6 +1,6 @@
 #include "../Structure/Component.h"
 
-IComponent::IComponent() : mOwner(NULL)
+IComponent::IComponent() : m_owner(NULL)
 {
 
 }

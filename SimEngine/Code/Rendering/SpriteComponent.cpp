@@ -85,6 +85,11 @@ void SpriteComponent::SetShader(const std::string inVertexShaderSrc, const std::
 	mColourTintUniform = glGetUniformLocation(m_shader.GetProgramID(), "uniformColour");
 }
 
+void SpriteComponent::AddUniforms()
+{
+
+}
+
 glm::mat4 SpriteComponent::CalculateModelMatrix()
 {
 	glm::mat4 model;
@@ -130,9 +135,4 @@ void SpriteComponent::Draw()
 
 	// Bind vertex array
 	glBindVertexArray(mVao);
-}
-
-void SpriteComponent::SetUniforms()
-{
-
 }

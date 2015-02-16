@@ -1,34 +1,39 @@
 #ifndef APPLICATION_SIMENGINE
 #define APPLICATION_SIMENGINE
 
+class GameObjectFactory;
+
+class RenderSystem;
+class AudioSystem;
+class CollisionSystem;
+class StateManager;
+class InputManager;
+class CameraManager;
+
 #include "../Structure/Window.h"
-
-#include "../Structure/GameObjectFactory.h"
-
-#include "../Rendering/RenderSystem.h"
-#include "../Structure/StateManager.h"
-#include "../Input/InputManager.h"
-#include "../Sound/AudioSystem.h"
-#include "../Camera/CameraManager.h"
-#include "../Collision/CollisionSystem.h"
+#include <memory>
 
 class Application
 {
 public:
 	Application();
+	~Application();
+
+	static Application* GetApplication();
 
 	void InitialiseSystems();
 
 	void Update();
 
-	const Window* GetWindow();
+	inline Window* GetWindow() {return m_window.get();}
+	inline const Window* GetWindow() const {return m_window.get();}
 
-	static Application* GetApplication();
+	inline float GetDeltaTime() {return m_dt;}
 
 private:
-	std::unique_ptr<Window> m_window;
+	static Application* m_application;
 
-	GameObjectFactory m_gameObjectFactory;
+	std::unique_ptr<Window> m_window;
 
 	std::unique_ptr<RenderSystem> m_renderSystem;
 	std::unique_ptr<StateManager> m_stateManager;
@@ -37,7 +42,9 @@ private:
 	std::unique_ptr<CameraManager> m_cameraManager;
 	std::unique_ptr<CollisionSystem> m_collisionSystem;
 
-	static Application* m_application;
+	std::unique_ptr<GameObjectFactory> m_gameObjectFactory;
+
+	double m_dt;
 };
 
 #endif

@@ -3,6 +3,8 @@
 
 #include "../Structure/State.h"
 
+#include "../Interfaces/UpdateInterface.h"
+
 class StateManager
 {
 public:

@@ -15,6 +15,7 @@ public:
 	const int AddCamera(Camera* in_newCamera, bool in_makeActive = false);
 
 	const Camera* GetActiveCamera() const;
+	Camera* GetActiveCamera();
 	const Camera* GetCameraAtIndex(int in_camIndex) const;
 
 	void SetActiveCamera(const int in_index);

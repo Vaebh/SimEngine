@@ -29,7 +29,7 @@ public:
 	inline const VertexArray& GetVAO() const {return m_vao;}
 
 protected:
-	virtual void SetUniforms() = 0;
+	virtual void AddUniforms() = 0;
 
 protected:
 	Shader m_shader;

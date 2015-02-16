@@ -28,7 +28,7 @@ protected:
 	inline GLuint GetFrameUniform() const {return mFrameUniform;}
 	inline GLuint GetColourTintUniform() const {return mColourTintUniform;}
 
-	void SetUniforms();
+	void AddUniforms();
 
 private:
 	void Initialise();

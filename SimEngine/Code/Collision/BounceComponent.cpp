@@ -44,8 +44,8 @@ void BounceComponent::OnAttached(GameObject* inGameObject)
 	//IEventCallback* newCallbackFree = new EventCallbackFree(&HandleEventFree);
 	//newCallbackFree(BALL_COLLISION);
 
-	//EventMessenger::GetSingleton()->SubscribeToEvent(BALL_COLLISION, mOwner, newCallback);
-	//EventMessenger::GetSingleton()->SubscribeToEvent(COLLISION, mOwner, newCallbackFree);
+	//EventMessenger::GetSingleton()->SubscribeToEvent(BALL_COLLISION, m_owner, newCallback);
+	//EventMessenger::GetSingleton()->SubscribeToEvent(COLLISION, m_owner, newCallbackFree);
 }
 
 void BounceComponent::OnCollision(CollisionComponent* inComponent, Vector3 inCollisionVector)
@@ -56,35 +56,35 @@ void BounceComponent::OnCollision(CollisionComponent* inComponent, Vector3 inCol
 
 	Vector3 dirVec(0.f, -1.f, 0.f);
 
-	if(mOwner->GetPosition().x > inComponent->mBoundingBox.right)
+	if(m_owner->GetPosition().x > inComponent->mBoundingBox.right)
 	{
 		dirVec = X_UNIT_POSITIVE;
 	}
-	else if(mOwner->GetPosition().x < inComponent->mBoundingBox.left)
+	else if(m_owner->GetPosition().x < inComponent->mBoundingBox.left)
 	{
 		dirVec = X_UNIT_NEGATIVE;
 	}
-	else if(mOwner->GetPosition().y > inComponent->mBoundingBox.top)
+	else if(m_owner->GetPosition().y > inComponent->mBoundingBox.top)
 	{
 		dirVec = Y_UNIT_POSITIVE;
 	}
-	else if(mOwner->GetPosition().y < inComponent->mBoundingBox.bottom)
+	else if(m_owner->GetPosition().y < inComponent->mBoundingBox.bottom)
 	{
 		dirVec = Y_UNIT_NEGATIVE;
 	}
 
-	if(mOwner->GetVelocity() != Vector3())
+	if(m_owner->GetVelocity() != Vector3())
 	{
 		// Reflect the balls velocity based on what side of the bounding box it hits
-		Vector3 velocityNorm = glm::normalize(mOwner->GetVelocity());
-		mOwner->SetVelocity((-2 * (glm::dot(velocityNorm, dirVec)) * dirVec - velocityNorm));
+		Vector3 velocityNorm = glm::normalize(m_owner->GetVelocity());
+		m_owner->SetVelocity((-2 * (glm::dot(velocityNorm, dirVec)) * dirVec - velocityNorm));
 	}
 
 	// Add offset vector so bounces further from the center deflect more
 	inCollisionVector *= 4;
-	mOwner->MoveVelocity(inCollisionVector);
+	m_owner->MoveVelocity(inCollisionVector);
 
-	mOwner->SetVelocity(glm::normalize(mOwner->GetVelocity()) * mBounceSpeed);
+	m_owner->SetVelocity(glm::normalize(m_owner->GetVelocity()) * mBounceSpeed);
 }
 
 void BounceComponent::Update(float in_dt)
