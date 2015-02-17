@@ -4,11 +4,15 @@
 #include "../Rendering/RenderableComponent.h"
 
 #include "../Application/Application.h"
+
+#include "../Rendering/SpriteComponent.h"
+
 #include <iostream>
 
-RenderSystem::RenderSystem()
+RenderSystem::RenderSystem() :
+m_texManager()
 {
-	m_components = std::vector<IRenderableComponent*>();
+	
 }
 
 RenderSystem::~RenderSystem()
@@ -52,13 +56,7 @@ void RenderSystem::RemoveComponent(IRenderableComponent* inRenderableComponent)
 
 void RenderSystem::Update(float in_dt)
 {
-	/*for(std::vector<IRenderableComponent*>::const_iterator it = m_components.begin(); it != m_components.end(); ++it)
-	{
-		if(*it)
-		{
-			(*it)->Update(in_dt);
-		}
-	}*/
+	
 }
 
 /*
@@ -86,7 +84,7 @@ void RenderSystem::Draw()
 			class to hold this and a variety of other information. Every RenderableComponent
 			should have a Material.
 			*/
-			if(m_components[i]->GetOwner()->GetName() == "ball")
+			if(dynamic_cast<SpriteComponent*>(m_components[i]) != NULL)
 			{
 				glDisable(GL_DEPTH_TEST);
 				glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -4,8 +4,11 @@
 
 #include "../Camera/CameraManager.h"
 #include "../Events/EventMessenger.h"
-#include "../OpenGL/GLUtils.h"
+#include "../Input/InputManager.h"
 #include "../Utils/ModelLoader.h"
+
+#include "../Rendering/Texture.h"
+
 
 #include <iostream>
 
@@ -18,26 +21,11 @@ namespace
 	const char* defaultModel = "cube.obj";
 }
 
-using namespace std;
-
-RenderableMeshComponent::RenderableMeshComponent(const char* in_meshName, const char* in_textureName) :
+RenderableMeshComponent::RenderableMeshComponent(const char* in_meshName) :
 IRenderableComponent()
 {
-	m_textureData = LoadImage(in_textureName);
-
 	Initialise(in_meshName);
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
-
-	MessageDelegate mesDel = new EventCallbackMember<RenderableMeshComponent>(this, &RenderableMeshComponent::HandleEvent);
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_A_PRESS, NULL, mesDel);
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_S_PRESS, NULL, mesDel);
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_Z_PRESS, NULL, mesDel);
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_X_PRESS, NULL, mesDel);
-
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_0_PRESS, NULL, mesDel);
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_1_PRESS, NULL, mesDel);
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_2_PRESS, NULL, mesDel);
-	EventMessenger::GetSingleton()->SubscribeToEvent(INPUT_3_PRESS, NULL, mesDel);
 }
 
 RenderableMeshComponent::~RenderableMeshComponent()
@@ -90,13 +78,8 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
 
 glm::mat4 RenderableMeshComponent::CalculateModelMatrix()
 {
-	glm::mat4 transMatrix = glm::translate(glm::mat4(1), GetOwner()->GetPosition());
-	glm::mat4 inverseTransMatrix = glm::inverse(transMatrix);
-
-	glm::mat4 rotMatrix = glm::mat4_cast(GetOwner()->GetRotation());
-
 	glm::mat4 model = glm::mat4(1);
-	model = glm::translate(model, GetOwner()->GetPosition()) * rotMatrix * glm::scale(model, GetOwner()->GetScale()) ;
+	model = glm::translate(model, GetOwner()->GetPosition()) * glm::mat4_cast(GetOwner()->GetRotation()) * glm::scale(model, GetOwner()->GetScale()) ;
 
 	return model;
 }
@@ -111,7 +94,6 @@ void RenderableMeshComponent::AddUniforms()
 
 bool RenderableMeshComponent::LoadModel(const char* in_fileName, std::vector<GLfloat>& out_vertexData)
 {
-	// Load model
 	std::vector<Vector3> tempVertices;
 	std::vector<Vector2> tempUVs;
 	std::vector<Vector3> tempNormals;
@@ -135,32 +117,53 @@ bool RenderableMeshComponent::LoadModel(const char* in_fileName, std::vector<GLf
 
 void RenderableMeshComponent::Update(float in_dt)
 {
-	/*if(glfwGetKey(GetOwner()->GetInputManager()get ->mWindow, GLFW_KEY_A) == GLFW_PRESS)
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_A))
 	{
-		//m_owner->SetPosition(m_owner->GetPosition() + Vector3(0.0f, -0.0001f, 0.f));
 		m_owner->SetScale(m_owner->GetScale() + Vector3(0.00001f, 0.00001f, 0.00001f));
 	}
-
-	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_D) == GLFW_PRESS)
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_S))
 	{
-		//m_owner->SetPosition(m_owner->GetPosition() + Vector3(0.0f, 0.0001f, 0.f));
 		m_owner->SetScale(m_owner->GetScale() - Vector3(0.00001f, 0.00001f, 0.00001f));
 	}
 
-	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_Z) == GLFW_PRESS)
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_Z))
 	{
-		//m_owner->SetPosition(m_owner->GetPosition() + Vector3(-0.01f, 0.f, 0.f));
-		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 0, 1)));
+		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 100.f, Vector3(0, 0, 1)));
+	}
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_X))
+	{
+		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 100.f, Vector3(0, 1, 0)));
 	}
 
-	if(glfwGetKey(RenderSystem::GetSingleton()->mWindow, GLFW_KEY_X) == GLFW_PRESS)
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_1))
 	{
-		//m_owner->SetPosition(m_owner->GetPosition() + Vector3(0.01f, 0.f, 0.f));
+		m_owner->MovePosition(Vector3(0.001f, 0.f, 0.f));
+	}
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_2))
+	{
+		m_owner->MovePosition(Vector3(-0.001f, 0.f, 0.f));
+	}
 
-		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 1, 0)));
-	}*/
+	float zoomSpeed = 0.01f;
 
-	//GetOwner()->m_rotationQuat = glm::rotate(GetOwner()->m_rotationQuat, in_dt * 50, Vector3(0, 1, 0));
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_3))
+	{
+		Camera* const curCam = GetOwner()->GetCameraManager()->GetActiveCamera();
+		Vector3 dir = glm::normalize(curCam->GetTarget() - curCam->GetPosition());
+
+		curCam->SetPosition(curCam->GetPosition() + -dir * zoomSpeed);
+		curCam->SetTarget(curCam->GetTarget() + -dir * zoomSpeed);
+	}
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_4))
+	{
+		Camera* const curCam = GetOwner()->GetCameraManager()->GetActiveCamera();
+		Vector3 dir = glm::normalize(curCam->GetTarget() - curCam->GetPosition());
+
+		curCam->SetPosition(curCam->GetPosition() + dir * zoomSpeed);
+		curCam->SetTarget(curCam->GetTarget() + dir * zoomSpeed);
+	}
+
+	GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 1, 0)));
 }
 
 void RenderableMeshComponent::Draw()
@@ -177,66 +180,13 @@ void RenderableMeshComponent::Draw()
 		m_shader["view"]->SetMatrix(curCam->GetViewMatrix(), 1, GL_FALSE);
 	}
 
-	// Bind the texture
-	glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, *(m_textureData.textureID));
+	if(m_texture != NULL)
+	{
+		// Bind the texture
+		m_texture->Activate(GL_TEXTURE0);
+		m_texture->Bind();
+	}
 
 	// Bind vertex array
 	m_vao.Bind();
-}
-
-
-// Need to expose delta time somewhere other than in Update
-void RenderableMeshComponent::HandleEvent(uint32_t in_eventType, GameObject* in_target)
-{
-	if(in_eventType == INPUT_A_PRESS)
-	{
-		m_owner->SetScale(m_owner->GetScale() + Vector3(0.00001f, 0.00001f, 0.00001f));
-	}
-
-	if(in_eventType == INPUT_S_PRESS)
-	{
-		m_owner->SetScale(m_owner->GetScale() - Vector3(0.00001f, 0.00001f, 0.00001f));
-		//m_owner->MovePosition(Vector3(0.001f, 0.f, 0.f));
-	}
-
-	if(in_eventType == INPUT_Z_PRESS)
-	{
-		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), Application::GetApplication()->GetDeltaTime() * 100.f, Vector3(0, 0, 1)));
-	}
-
-	if(in_eventType == INPUT_X_PRESS)
-	{
-		GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), Application::GetApplication()->GetDeltaTime() * 100.f, Vector3(0, 1, 0)));
-	}
-
-	if(in_eventType == INPUT_0_PRESS)
-	{
-		m_owner->MovePosition(Vector3(0.001f, 0.f, 0.f));
-	}
-
-	if(in_eventType == INPUT_1_PRESS)
-	{
-		m_owner->MovePosition(Vector3(-0.001f, 0.f, 0.f));
-	}
-
-	float zoomSpeed = 0.01f;
-
-	if(in_eventType == INPUT_2_PRESS)
-	{
-		Camera* const curCam = GetOwner()->GetCameraManager()->GetActiveCamera();
-		Vector3 dir = glm::normalize(curCam->GetTarget() - curCam->GetPosition());
-
-		curCam->SetPosition(curCam->GetPosition() + -dir * zoomSpeed);
-		curCam->SetTarget(curCam->GetTarget() + -dir * zoomSpeed);
-	}
-
-	if(in_eventType == INPUT_3_PRESS)
-	{
-		Camera* const curCam = GetOwner()->GetCameraManager()->GetActiveCamera();
-		Vector3 dir = glm::normalize(curCam->GetTarget() - curCam->GetPosition());
-
-		curCam->SetPosition(curCam->GetPosition() + dir * zoomSpeed);
-		curCam->SetTarget(curCam->GetTarget() + dir * zoomSpeed);
-	}
 }

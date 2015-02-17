@@ -58,7 +58,7 @@ void Application::Update()
 
 	float fpsTimer = 0;
 
-	GameObject* const theCube = m_gameObjectFactory->Create3DGameObject("thor.obj", "bros.png");
+	GameObject* theCube = m_gameObjectFactory->Create3DGameObject("thor.obj", "bros.png");
 	theCube->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
 
 	while(!GetWindow()->ShouldWindowClose())
@@ -74,7 +74,17 @@ void Application::Update()
 			//cout << "FPS: " << 1 / delta << endl;
 		}
 
-		theCube->Update(m_dt);
+		if(m_inputManager->IsKeyDown(GLFW_KEY_COMMA))
+		{
+			if(theCube != NULL)
+			{
+				delete theCube;
+				theCube = NULL;
+			}
+		}
+
+		if(theCube != NULL)
+			theCube->Update(m_dt);
 
 		m_inputManager->Update(m_dt);
 		m_stateManager->Update(m_dt);

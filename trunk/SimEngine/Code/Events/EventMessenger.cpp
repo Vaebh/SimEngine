@@ -1,17 +1,17 @@
 #include "../Events/EventMessenger.h"
 
-EventMessenger* EventMessenger::mEventMessenger = NULL;
+EventMessenger* EventMessenger::m_eventMessenger = NULL;
 
 EventMessenger::EventMessenger() {}
 
 EventMessenger* EventMessenger::GetSingleton()
 {
-	if(!mEventMessenger)
+	if(!m_eventMessenger)
 	{
-		mEventMessenger = new EventMessenger();
+		m_eventMessenger = new EventMessenger();
 	}
 
-	return mEventMessenger;
+	return m_eventMessenger;
 }
 
 std::vector<MessageDelegate> EventMessenger::GetEventDelegates(const uint32_t in_eventType, GameObject* in_target)

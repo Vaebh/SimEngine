@@ -51,37 +51,6 @@ bool ShaderCompilationCheck(GLuint shader, std::string shaderType)
 	}
 }
 
-void Setup3D(GLuint& shaderProgram)
-{
-	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-	cout << "PositionAttrib: " << posAttrib << endl;
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0);
-
-	GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
-	cout << "ColorAttrib: " << colAttrib << endl;
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(3*sizeof(float)));
-                     
-	GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
-	cout << "TexAttrib: " << texAttrib << endl;
-	glEnableVertexAttribArray(texAttrib);
-	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(6*sizeof(float)));
-}
-
-void Setup2D(const GLuint& shaderProgram)
-{
-	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-	cout << "PositionAttrib: " << posAttrib << endl;
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), 0);
-                     
-	GLint texAttrib = glGetAttribLocation(shaderProgram, "texcoord");
-	cout << "TexAttrib: " << texAttrib << endl;
-	glEnableVertexAttribArray(texAttrib);
-	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)(2*sizeof(float)));
-}
-
 //-------------------------------------------------------------------------------------
 // CreateShaderProgram
 //

@@ -1,17 +1,12 @@
-//
-//  TextureManager.cpp
-//  OpenGL Attempt1
-//
-//  Created by Simon McDonnell on 13/08/2014.
-//  Copyright (c) 2014 ___SimonMcDonnell___. All rights reserved.
-//
-
+#include "../Rendering/Texture.h"
 #include "../Rendering/TextureManager.h"
+
 #include <iostream>
 
 TextureManager::TextureManager()
 {
-    
+    int g = 0;
+	g++;
 }
 
 TextureManager::~TextureManager()
@@ -19,34 +14,34 @@ TextureManager::~TextureManager()
     DumpTextureCache();
 }
 
-TextureData TextureManager::GetTexture(const GLchar* path)
+Texture* TextureManager::LoadTexture(const GLchar* in_texName)
 {
-    // Do this but in a non horrible way, tie it to the state somehow? Maybe bring back the Scene and tie it to that instead
-    
-    // Search texture cache for image
-	for(uint32_t i = 0; i < mTextureCache.size(); ++i)
+	std::string str = in_texName;
+
+	AdjustUsageCount(str, 1);
+
+	std::pair<Texture*, uint32_t>& texPair = m_textureCache[str];
+	Texture* tex = texPair.first;
+	if(tex != NULL)
 	{
-		if(mTextureCache[i].mName == std::string(path))
-		{
-			return mTextureCache[i];
-		}
+		return tex;
 	}
-    
-    // If this is a new image
-    return LoadTexture(path);
+	
+	// If this is a new image
+	return LoadTextureFromFile(in_texName);
 }
 
-TextureData TextureManager::LoadTexture(const GLchar* path)
+Texture* TextureManager::LoadTextureFromFile(const GLchar* in_texName)
 {
-	GLuint* texture = NULL;
+	GLuint* texture = new GLuint;
 	glGenTextures(1, texture);
 	GLint width = 0, height = 0;
     
 	unsigned char* image = NULL;
     
-	const std::string imagePath = "../OpenGL Attempt1/Assets/Images/";
+	const std::string imagePath = "../SimEngine/Assets/Images/";
     
-	std::string amendedPath(path);
+	std::string amendedPath(in_texName);
 	amendedPath = imagePath + amendedPath;
     
 	glBindTexture(GL_TEXTURE_2D, *texture);
@@ -54,7 +49,7 @@ TextureData TextureManager::LoadTexture(const GLchar* path)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	if(image == NULL)
 	{
-        std::cout << "Image " << path << " is null!" << std::endl;
+        std::cout << "Image " << in_texName << " is null!" << std::endl;
 		std::cout << "SOIL error: " << SOIL_last_result() << std::endl;
 	}
 	SOIL_free_image_data(image);
@@ -64,18 +59,35 @@ TextureData TextureManager::LoadTexture(const GLchar* path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-	TextureData newTexData(path, texture, width, height);
-	mTextureCache.push_back(newTexData);
+	Texture* newTexture = new Texture(in_texName, texture, GL_TEXTURE_2D, Vector2(width, height), this);
+	
+	m_textureCache[in_texName] = std::make_pair<Texture*, uint32_t>(newTexture, 0);
     
-	return newTexData;
+	return newTexture;
+}
+
+void TextureManager::UnloadTexture(std::string in_texName)
+{
+	Texture* tex = m_textureCache[in_texName].first;
+	if(tex != NULL)
+	{
+		uint32_t curUsageCount = AdjustUsageCount(in_texName, -1);
+
+		if(curUsageCount == 0)
+			delete tex;
+	}
 }
 
 void TextureManager::DumpTextureCache()
 {
-    for(uint32_t i = 0; i < mTextureCache.size(); ++i)
-    {
-        glDeleteTextures(1, mTextureCache[i].mTextureID);
-    }
-    
-    mTextureCache.clear();
+	m_textureCache.clear();
+}
+
+uint32_t TextureManager::AdjustUsageCount(std::string in_texKey, int in_adjustment)
+{
+	// Increment the usage count
+	std::pair<Texture*, uint32_t>& texPair = m_textureCache[in_texKey];
+	texPair.second += in_adjustment;
+
+	return texPair.second;
 }

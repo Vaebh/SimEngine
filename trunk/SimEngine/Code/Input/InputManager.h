@@ -10,6 +10,7 @@
 
 // TODO - Add a circular buffer that stores the last n actions, n being configurable.
 // TODO - Add the ability to poll the InputManager directly for input - eg if(keyIsDown)
+// TODO - Add an alias to each key so users can specify what they want each to be - eg Jump or Shoot
 
 struct Key
 {
@@ -25,7 +26,10 @@ public:
 	void Init();
 	void InitKeys();
 
-	virtual void Update(const float in_dt);
+	void Update(const float in_dt);
+
+	bool IsKeyDown(const GLint in_keyCode);
+	bool IsKeyUp(const GLint in_keyCode);
 
 	// Prints out mouse coordinates
 	static void mouseCallback(GLFWwindow* in_window, int in_button, int in_action, int in_mods);
