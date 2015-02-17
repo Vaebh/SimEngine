@@ -142,3 +142,13 @@ void InputManager::Update(const float in_dt)
 {
 	HandleKeyboardInput(in_dt);
 }
+
+bool InputManager::IsKeyDown(const GLint in_keyCode)
+{
+	return glfwGetKey(m_window, in_keyCode);
+}
+
+bool InputManager::IsKeyUp(const GLint in_keyCode)
+{
+	return !glfwGetKey(m_window, in_keyCode);
+}

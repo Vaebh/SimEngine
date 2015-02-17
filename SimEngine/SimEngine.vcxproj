@@ -93,6 +93,7 @@
     <ClCompile Include="Code\Rendering\Shader.cpp" />
     <ClCompile Include="Code\Rendering\SpriteComponent.cpp" />
     <ClCompile Include="Code\Rendering\Test3DComponent.cpp" />
+    <ClCompile Include="Code\Rendering\Texture.cpp" />
     <ClCompile Include="Code\Rendering\TextureManager.cpp" />
     <ClCompile Include="Code\Rendering\Uniform.cpp" />
     <ClCompile Include="Code\Rendering\VertexArray.cpp" />

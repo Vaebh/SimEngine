@@ -17,10 +17,6 @@ struct TextureData
 
 bool ShaderCompilationCheck(GLuint shader, std::string shaderType);
 
-// Sets up the 3D and 2D shader variables
-void Setup3D(GLuint& shaderProgram);
-void Setup2D(const GLuint& shaderProgram);
-
 // Creates a shader program from the supplied vertex and fragment shaders
 // Includes compilation check
 GLuint CreateShaderProgram(std::string vertexShaderSrc, std::string fragShaderSrc);

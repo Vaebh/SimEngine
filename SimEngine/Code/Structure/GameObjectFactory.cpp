@@ -33,7 +33,10 @@ GameObject* GameObjectFactory::CreateGameObject()
 GameObject* GameObjectFactory::Create3DGameObject(char* in_meshName, char* in_textureName)
 {
 	GameObject* newObject = CreateGameObject();
-	RenderableMeshComponent* rendMeshComp = new RenderableMeshComponent(in_meshName, in_textureName);
+	RenderableMeshComponent* rendMeshComp = new RenderableMeshComponent(in_meshName);
+
+	rendMeshComp->SetTextureManager(m_renderSystem->GetTextureManager());
+	rendMeshComp->SetTextures(in_textureName);
 
 	newObject->Attach(rendMeshComp);
 	m_renderSystem->AddComponent(rendMeshComp);

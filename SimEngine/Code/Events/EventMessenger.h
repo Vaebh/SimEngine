@@ -35,7 +35,7 @@ private:
 private:
 	std::map< std::pair<const uint32_t, GameObject*>, std::vector<MessageDelegate> > m_eventMap;
 
-	static EventMessenger* mEventMessenger;
+	static EventMessenger* m_eventMessenger;
 };
 
 #endif

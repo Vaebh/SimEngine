@@ -1,13 +1,13 @@
 #ifndef RENDERSYSTEM_SIMENGINE
 #define RENDERSYSTEM_SIMENGINE
 
-class IRenderableComponent;
-
 #include "../OpenGL/GLIncludes.h"
 #include "../Structure/System.h"
+#include "../Rendering/TextureManager.h"
+
 #include <vector>
 
-class GameObject;
+class IRenderableComponent;
 
 class RenderSystem : public ISystem
 {
@@ -23,9 +23,13 @@ public:
 
 	void Draw();
 
+	inline TextureManager* GetTextureManager() {return &m_texManager;}
+
 private:
 	// TODO - Should change this to a list and change it to support actually removing elements when their GameObjects have been deleted.
 	std::vector<IRenderableComponent*> m_components;
+
+	TextureManager m_texManager;
 };
 
 #endif
