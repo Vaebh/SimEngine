@@ -34,7 +34,6 @@ void GameObject::Attach(IComponent* in_component)
 		}
 	}
 
-	in_component->SetOwner(this);
 	in_component->OnAttached(this);
 	m_components.push_back(in_component);
 }
@@ -49,7 +48,6 @@ void GameObject::Detach(IComponent* in_component)
 		// Check if we have this Component
 		if((*it) == in_component)
 		{
-			in_component->SetOwner(NULL);
 			in_component->OnDetached(this);
 			m_components.erase(std::remove(m_components.begin(), m_components.end(), in_component));
 			break;

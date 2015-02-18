@@ -43,7 +43,6 @@
     <ClInclude Include="Code\Rendering\Shader.h" />
     <ClInclude Include="Code\Rendering\SpriteBatcher.h" />
     <ClInclude Include="Code\Rendering\SpriteComponent.h" />
-    <ClInclude Include="Code\Rendering\Test3DComponent.h" />
     <ClInclude Include="Code\Rendering\Texture.h" />
     <ClInclude Include="Code\Rendering\TextureManager.h" />
     <ClInclude Include="Code\Rendering\Uniform.h" />
@@ -92,7 +91,6 @@
     <ClCompile Include="Code\Rendering\RenderSystem.cpp" />
     <ClCompile Include="Code\Rendering\Shader.cpp" />
     <ClCompile Include="Code\Rendering\SpriteComponent.cpp" />
-    <ClCompile Include="Code\Rendering\Test3DComponent.cpp" />
     <ClCompile Include="Code\Rendering\Texture.cpp" />
     <ClCompile Include="Code\Rendering\TextureManager.cpp" />
     <ClCompile Include="Code\Rendering\Uniform.cpp" />
