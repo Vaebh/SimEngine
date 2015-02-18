@@ -9,7 +9,6 @@
 
 #include "../Rendering/Texture.h"
 
-
 #include <iostream>
 
 namespace

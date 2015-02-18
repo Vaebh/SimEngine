@@ -21,8 +21,6 @@ public:
 	virtual void Update(float in_dt) = 0;
 	virtual void Draw() = 0;
 
-	virtual void OnAttached(GameObject* in_gameObject);
-
 	virtual glm::mat4 CalculateModelMatrix() = 0;
 
 	inline void SetVisible(bool in_isVisible) {m_visible = in_isVisible;}

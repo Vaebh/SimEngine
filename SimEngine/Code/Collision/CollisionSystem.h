@@ -20,7 +20,7 @@ public:
 	static CollisionSystem* GetSingleton();
 
 private:
-	std::vector<CollisionComponent*> m_components;
+	//std::vector<CollisionComponent*> m_components;
 
 	static CollisionSystem* mColSystem;
 };

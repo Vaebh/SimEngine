@@ -41,6 +41,8 @@ void CollisionComponent::PrePositionSet(Vector3 inNewPosition)
 
 void CollisionComponent::OnAttached(GameObject* inGameObject)
 {
+	IComponent::OnAttached(inGameObject);
+
 	mBoundingBox = CreateBoundingBox(inGameObject->GetPosition());
 
 	CollisionSystem::GetSingleton()->AddComponent(this);

@@ -32,7 +32,7 @@ void CollisionSystem::AddComponent(CollisionComponent* inCollisionComponent)
 
 void CollisionSystem::RemoveComponent(CollisionComponent* inCollisionComponent)
 {
-	if(inCollisionComponent)
+	/*if(inCollisionComponent)
 	{
 		std::vector<CollisionComponent*>::const_iterator it;
 
@@ -47,12 +47,12 @@ void CollisionSystem::RemoveComponent(CollisionComponent* inCollisionComponent)
 				break;
 			}
 		}
-	}
+	}*/
 }
 
 bool CollisionSystem::IsColliding(Rectangle inBoundingBox, CollisionComponent* inCollisionComponent)
 {
-    for(uint32_t i = 0; i < m_components.size(); ++i)
+    /*for(uint32_t i = 0; i < m_components.size(); ++i)
 	{
 		if(m_components[i] != inCollisionComponent && m_components[i]->IsIntersecting(inBoundingBox))
 		{
@@ -65,7 +65,7 @@ bool CollisionSystem::IsColliding(Rectangle inBoundingBox, CollisionComponent* i
 			inCollisionComponent->OnCollision(m_components[i], collisionVector);
 			return true;
 		}
-	}
+	}*/
 
 	return false;
 }
