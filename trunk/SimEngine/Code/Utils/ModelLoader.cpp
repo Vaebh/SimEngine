@@ -8,28 +8,87 @@
 
 #include <regex>
 
-bool ConstructVertexData(std::vector<GLfloat>& out_vertexData, const std::vector<Vector3>& in_vertices, const std::vector<Vector2>& in_uvs, const std::vector<Vector3>& in_normals)
+bool LoadVertexData(const char* in_fileName, std::vector<GLfloat>& out_vertexData, int& out_numVerts)
+{
+	std::ifstream inputBinary;
+	inputBinary.open(in_fileName, std::ios::in | std::ios::binary | std::ios::ate);
+	if(inputBinary.is_open() && inputBinary.good())
+	{
+		// Get the size of the data in bytes
+		std::size_t size = inputBinary.tellg();
+
+		// Subtract an integer worth of bytes as the number of verts is stored in one integer in the file
+		size -= sizeof(int);
+		inputBinary.seekg(inputBinary.beg);
+
+		out_vertexData.resize(size / sizeof(GLfloat));
+
+		// Read the vertex data directly into the vector
+		inputBinary.read((char*)&out_numVerts, sizeof(int));
+		inputBinary.read((char*)&out_vertexData[0], size);
+
+		inputBinary.close();
+
+		return true;
+	}
+
+	return false;
+}
+
+bool ConstructVertexData(const char* in_name, const char* in_destPath, const std::vector<Vector3>& in_vertices, const std::vector<glm::vec2>& in_uvs, const std::vector<Vector3>& in_normals)
 {
 	if(in_vertices.empty())
 		return false;
 
+	std::string fileName(in_destPath);
+	fileName.append(in_name);
+	fileName.append(".bin");
+
+	std::ofstream outputBinary;
+	outputBinary.open(fileName, std::ios::out | std::ios::binary);
+
+	// Write the number of vertices to the file
+	int numVertices = in_vertices.size();
+	outputBinary.write((char*)&numVertices, sizeof(numVertices));
+
 	for(int i = 0; i < in_vertices.size(); ++i)
 	{
-		out_vertexData.push_back(in_vertices[i].x);
-		out_vertexData.push_back(in_vertices[i].y);
-		out_vertexData.push_back(in_vertices[i].z);
+		outputBinary.write((char*)&(in_vertices[i].x), sizeof(in_vertices[i].x));
+		outputBinary.write((char*)&(in_vertices[i].y), sizeof(in_vertices[i].y));
+		outputBinary.write((char*)&(in_vertices[i].z), sizeof(in_vertices[i].z));
 
 		if(in_uvs.empty())
 		{
-			out_vertexData.push_back(0.f);
-			out_vertexData.push_back(1.f);
+			float zero = 0.f;
+			float one = 1.f;
+
+			outputBinary.write((char*)&(zero), sizeof(zero));
+			outputBinary.write((char*)&(one), sizeof(one));
 		}
 		else
 		{
-			out_vertexData.push_back(in_uvs[i].x);
-			out_vertexData.push_back(in_uvs[i].y);
+			outputBinary.write((char*)&(in_uvs[i].x), sizeof(in_uvs[i].x));
+			outputBinary.write((char*)&(in_uvs[i].y), sizeof(in_uvs[i].y));
+		}
+
+		if(in_normals.empty())
+		{
+			float zero = 0.f;
+
+			outputBinary.write((char*)&(zero), sizeof(zero));
+			outputBinary.write((char*)&(zero), sizeof(zero));
+		}
+		else
+		{
+			float flippedY = in_normals[i].y;
+			float flippedZ = in_normals[i].z;
+			outputBinary.write((char*)&(in_normals[i].x), sizeof(in_normals[i].x));
+			outputBinary.write((char*)&(in_normals[i].y), sizeof(in_normals[i].y));
+			outputBinary.write((char*)&(in_normals[i].z), sizeof(in_normals[i].z));
 		}
 	}
+
+	outputBinary.close();
 
 	return true;
 }
@@ -43,9 +102,9 @@ bool LoadOBJ(std::string in_path, std::vector<Vector3>& out_vertices, std::vecto
 	myFile.open(in_path);
 	if(myFile.is_open() && !myFile.bad())
 	{
-		std::vector<Vector3> tempVertices;
-		std::vector<Vector2> tempUVs;
-		std::vector<Vector3> tempNormals;
+		std::vector<glm::vec3> tempVertices;
+		std::vector<glm::vec2> tempUVs;
+		std::vector<glm::vec3> tempNormals;
 
 		std::vector<std::string> parsedText;
 
@@ -63,17 +122,17 @@ bool LoadOBJ(std::string in_path, std::vector<Vector3>& out_vertices, std::vecto
 			if(parsedText.front() == "v")
 			{
 				if(parsedText.size() >= 4)
-					tempVertices.push_back(Vector3(StringToNumber<float>(parsedText[1]), StringToNumber<float>(parsedText[2]), StringToNumber<float>(parsedText[3])));
+					tempVertices.push_back(glm::vec3(StringToNumber<float>(parsedText[1]), StringToNumber<float>(parsedText[2]), StringToNumber<float>(parsedText[3])));
 			}
 			else if(parsedText.front() == "vt")
 			{
 				if(parsedText.size() >= 3)
-					tempUVs.push_back(Vector2(StringToNumber<float>(parsedText[1]), 1.f - StringToNumber<float>(parsedText[2])));
+					tempUVs.push_back(glm::vec2(StringToNumber<float>(parsedText[1]), 1.f - StringToNumber<float>(parsedText[2])));
 			}
 			else if(parsedText.front() == "vn")
 			{
 				if(parsedText.size() >= 4)
-					tempNormals.push_back(Vector3(StringToNumber<float>(parsedText[1]), StringToNumber<float>(parsedText[2]), StringToNumber<float>(parsedText[3])));
+					tempNormals.push_back(glm::vec3(StringToNumber<float>(parsedText[1]), StringToNumber<float>(parsedText[2]), StringToNumber<float>(parsedText[3])));
 			}
 			else if(parsedText.front() == "f")
 			{
@@ -104,8 +163,8 @@ bool LoadOBJ(std::string in_path, std::vector<Vector3>& out_vertices, std::vecto
 									out_vertices.push_back(tempVertices[StringToNumber<int>(parsedFace[j]) - 1]);
 								if(j % 3 == 1)
 									out_uvs.push_back(tempUVs[StringToNumber<int>(parsedFace[j]) - 1]);
-								//if(j % 3 == 2)
-									//out_normals.push_back(tempNormals[StringToNumber<int>(parsedFace[j]) - 1]);
+								if(j % 3 == 2)
+									out_normals.push_back(tempNormals[StringToNumber<int>(parsedFace[j]) - 1]);
 							}
 						}
 					}
@@ -120,65 +179,4 @@ bool LoadOBJ(std::string in_path, std::vector<Vector3>& out_vertices, std::vecto
 	}
 
 	return true;
-}
-
-bool LoadOBJRegex(std::string in_path, std::vector<Vector3>& out_vertices, std::vector<Vector2>& out_uvs, std::vector<Vector3>& out_normals)
-{
-	const uint32_t BUFFER_SIZE = 4096;
-	char buffer[BUFFER_SIZE];
-
-	std::ifstream myFile;
-	std::string currentLine;
-
-	myFile.open(in_path);
-	if(myFile.is_open() && !myFile.bad())
-	{
-		std::smatch regexMatch;
-
-		std::string regexNumberPattern = "-?\\d+.\\d+\\s*";
-
-		std::regex vertexRegex("v\\s*" + regexNumberPattern + regexNumberPattern + regexNumberPattern);// "-?\\d+.\\d+\\s*-?\\d+.\\d+\\s*-?\\d+.\\d+");
-		std::regex uvRegex("vt\\s*" + regexNumberPattern + regexNumberPattern);
-		std::regex normalRegex("vn\\s*" + regexNumberPattern + regexNumberPattern + regexNumberPattern);
-		int count = 0;
-		while(myFile.getline(buffer, BUFFER_SIZE))
-		{
-			currentLine = buffer;
-
-			std::sregex_iterator regVertexIter = std::sregex_iterator(currentLine.begin(), currentLine.end(), vertexRegex);
-			std::sregex_iterator regUVIter = std::sregex_iterator(currentLine.begin(), currentLine.end(), uvRegex);
-			std::sregex_iterator regNormalIter = std::sregex_iterator(currentLine.begin(), currentLine.end(), normalRegex);
-
-			/*for(;regVertexIter != std::sregex_iterator(); ++regVertexIter)
-			{
-				//std::cout << regVertexIter->str() << std::endl;
-				std::cout << "hey: " << count << std::endl;
-
-				count++;
-			}
-			if(count > 0)
-				break;
-
-			//std::cout << std::endl;
-			for(;regUVIter != std::sregex_iterator(); ++regUVIter)
-			{
-				//std::cout << regUVIter->str() << std::endl;
-			}
-
-			//std::cout << std::endl;
-			for(;regNormalIter != std::sregex_iterator(); ++regNormalIter)
-			{
-				//std::cout << regNormalIter->str() << std::endl;
-			}*/
-		}
-		
-		return true;
-	}
-	else
-	{
-		std::cout << "File " << in_path << " does not exist!" << std::endl;
-		return false;
-	}
-
-	
 }

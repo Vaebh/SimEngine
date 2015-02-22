@@ -6,6 +6,7 @@
 #include "../Application/Application.h"
 
 #include "../Rendering/SpriteComponent.h"
+#include "../Structure/Window.h"
 
 #include <iostream>
 

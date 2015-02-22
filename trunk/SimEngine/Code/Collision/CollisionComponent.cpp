@@ -1,6 +1,7 @@
 #include "../Collision/CollisionComponent.h"
 #include "../Collision/CollisionSystem.h"
 #include "../Events/EventMessenger.h"
+#include "../Structure/GameObject.h"
 
 CollisionComponent::CollisionComponent()
 {

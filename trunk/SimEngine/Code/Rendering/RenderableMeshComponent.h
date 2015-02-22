@@ -1,7 +1,6 @@
 #ifndef RENDERABLE_MESH_COMPONENT
 #define RENDERABLE_MESH_COMPONENT
 
-#include "../Foundation/Foundation.h"
 #include "../Rendering/RenderableComponent.h"
 
 class RenderableMeshComponent : public IRenderableComponent
@@ -9,6 +8,8 @@ class RenderableMeshComponent : public IRenderableComponent
 public:
 	RenderableMeshComponent(const char* in_meshName);
 	~RenderableMeshComponent();
+
+	Vector3 m_lightPos;
 
 protected:
 	virtual void Draw();

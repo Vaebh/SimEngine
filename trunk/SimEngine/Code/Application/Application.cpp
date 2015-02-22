@@ -1,15 +1,21 @@
 #include "../Application/Application.h"
 
-#include "../Structure/GameObjectFactory.h"
-
-#include "../Rendering/RenderSystem.h"
-#include "../Structure/StateManager.h"
-#include "../Input/InputManager.h"
-#include "../Sound/AudioSystem.h"
 #include "../Camera/CameraManager.h"
+
 #include "../Collision/CollisionSystem.h"
 
+#include "../Input/InputManager.h"
+
+#include "../Sound/AudioSystem.h"
+
+#include "../Structure/GameObjectFactory.h"
+#include "../Structure/StateManager.h"
+#include "../Structure/Window.h"
+
+#include "../Rendering/RenderSystem.h"
+
 #include "../Rendering/RenderableMeshComponent.h"
+
 
 Application* Application::m_application = NULL;
 
@@ -54,17 +60,27 @@ void Application::InitialiseSystems()
 
 void Application::Update()
 {
-	double olddt = 0;
+	double oldDt = 0;
 
 	float fpsTimer = 0;
 
-	GameObject* theCube = m_gameObjectFactory->Create3DGameObject("thor.obj", "bros.png");
-	theCube->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
+	GameObject* testModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
+	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
+	testModel->SetScale(Vector3(0.5f, 0.5f, 0.5f));
+
+
+	GameObject* lightModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
+	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
+	lightModel->SetScale(Vector3(0.15f, 0.15f, 0.15f));
+
+	GameObject* thorModel = NULL;
+
+	GameObject* thing = NULL;
 
 	while(!GetWindow()->ShouldWindowClose())
 	{
-		m_dt = glfwGetTime() - olddt;
-		olddt = glfwGetTime();
+		m_dt = glfwGetTime() - oldDt;
+		oldDt = glfwGetTime();
 
 		fpsTimer += m_dt;
 
@@ -76,15 +92,27 @@ void Application::Update()
 
 		if(m_inputManager->IsKeyDown(GLFW_KEY_COMMA))
 		{
-			if(theCube != NULL)
+			if(thing == NULL)
 			{
-				delete theCube;
-				theCube = NULL;
+				//delete testModel;
+				//testModel = NULL;
+
+				thing = testModel;
+
+				thorModel = m_gameObjectFactory->Create3DGameObject("thor.bin", "bros.png");
+				thorModel->MovePosition(Vector3(0.5f, 0.f, 0.f));
+				thorModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
 			}
 		}
 
-		if(theCube != NULL)
-			theCube->Update(m_dt);
+		if(testModel != NULL)
+			testModel->Update(m_dt);
+
+		if(thorModel != NULL)
+			thorModel->Update(m_dt);
+
+		lightModel->Update(m_dt);
+		lightModel->SetPosition(testModel->GetComponent<RenderableMeshComponent>()->m_lightPos);
 
 		m_inputManager->Update(m_dt);
 		m_stateManager->Update(m_dt);

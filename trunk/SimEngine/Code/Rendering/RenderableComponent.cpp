@@ -1,15 +1,15 @@
 #include "../Rendering/RenderableComponent.h"
-#include "../Rendering/RenderSystem.h"
 
 #include "../Rendering/Texture.h"
 #include "../Rendering/TextureManager.h"
 
 IRenderableComponent::IRenderableComponent() : 
-m_visible(true),
-m_shader(),
+m_vao(),
 m_vertexBuffer(NULL),
+m_shader(),
+m_texture(NULL),
 m_texManager(NULL),
-m_texture(NULL)
+m_visible(true)
 {
 
 }

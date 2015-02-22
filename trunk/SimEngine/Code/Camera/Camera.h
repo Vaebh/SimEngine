@@ -4,6 +4,9 @@
 #include "../OpenGL/GLIncludes.h"
 #include "../Structure/Vectors.h"
 
+// TODO - Add Projection matrix to cameras
+// TODO - Actually reset m_viewMatrixChanged somewhere, likely after render, add a postRender event?
+
 class Camera
 {
 public:
@@ -32,6 +35,7 @@ private:
 	Vector3 m_target;
 
 	glm::mat4 m_viewMatrix;
+	glm::mat4 m_projMatrix;
 };
 
 #endif

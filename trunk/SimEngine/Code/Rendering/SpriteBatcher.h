@@ -22,10 +22,6 @@ class SpriteBatcher
 {
 public:
 	~SpriteBatcher();
-    
-private:
-    GLuint mSpriteVao;
-    GLuint mSpriteVbo;
 };
 
 #endif

@@ -6,10 +6,6 @@
 
 #include <vector>
 
-// Fill this out with the relevant OpenGL buffer information and methods
-// Should handle binding and releasing buffer data, Vbo, etc
-// Should work for both 2 and 3 dimensional objects
-
 class Buffer
 {
 public:
@@ -26,16 +22,13 @@ public:
 	void SetData(GLsizeiptr in_dataSize, GLvoid* in_dataPtr);
 
 	void AddAttribute(VertexAttribute in_attribute);
-	inline std::vector<VertexAttribute> GetAttributes() {return m_attributes;}
+	inline std::vector<VertexAttribute>& GetAttributes() {return m_attributes;}
 
 	GLuint m_bufferID;
-
 
 protected:
 	GLenum m_usage;
 	GLenum m_target;
-
-	
 
 private:
 	GLvoid* m_dataPtr;

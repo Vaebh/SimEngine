@@ -1,6 +1,7 @@
 #ifndef APPLICATION_SIMENGINE
 #define APPLICATION_SIMENGINE
 
+class Window;
 class GameObjectFactory;
 
 class RenderSystem;
@@ -10,7 +11,6 @@ class StateManager;
 class InputManager;
 class CameraManager;
 
-#include "../Structure/Window.h"
 #include <memory>
 
 class Application

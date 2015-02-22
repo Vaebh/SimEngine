@@ -13,12 +13,13 @@ public:
 	CameraManager(Camera* in_defaultCamera);
 
 	const int AddCamera(Camera* in_newCamera, bool in_makeActive = false);
+	//const int RemoveCamera(Camera* in_newCamera);
 
-	const Camera* GetActiveCamera() const;
 	Camera* GetActiveCamera();
-	const Camera* GetCameraAtIndex(int in_camIndex) const;
-
+	const Camera* GetActiveCamera() const;
 	void SetActiveCamera(const int in_index);
+
+	const Camera* GetCameraAtIndex(int in_camIndex) const;
 
 	void Update(float in_dt);
 

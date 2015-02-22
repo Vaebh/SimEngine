@@ -9,19 +9,22 @@
 
 #include "../Rendering/Texture.h"
 
+#include "../Structure/GameObject.h"
+
 #include <iostream>
 
 namespace
 {
-	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/3DVertexShader.txt";
-	const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/3DFragShader.txt";
+	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/3DVertexShaderNormals.txt";
+	const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/3DFragShaderNormals.txt";
 
 	const std::string modelPath = "../SimEngine/Assets/Models/";
-	const char* defaultModel = "cube.obj";
+	const char* defaultModel = "cube.bin";
 }
 
 RenderableMeshComponent::RenderableMeshComponent(const char* in_meshName) :
-IRenderableComponent()
+IRenderableComponent(),
+m_lightPos(ZERO)
 {
 	Initialise(in_meshName);
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
@@ -60,8 +63,11 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
 	m_shader.Use();
 
 	// Add vertex attributes
-	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("position"), 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), 0) );
-	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("texcoord"), 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat))) );
+	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("position"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), 0) );
+	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("texcoord"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat))) );
+	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("normal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat))) );
+
+	GLint thing = m_shader.GetAttributeLocation("normal");
 
 	m_vao.SetVertexAttributes();
 
@@ -89,27 +95,26 @@ void RenderableMeshComponent::AddUniforms()
 	m_shader.AddUniform("view");
 	m_shader.AddUniform("proj");
 	m_shader.AddUniform("textureSprite");
+	m_shader.AddUniform("lightPos");
 }
 
 bool RenderableMeshComponent::LoadModel(const char* in_fileName, std::vector<GLfloat>& out_vertexData)
 {
-	std::vector<Vector3> tempVertices;
-	std::vector<Vector2> tempUVs;
-	std::vector<Vector3> tempNormals;
+	int numVerts = 0;
+	std::string fileName = modelPath + in_fileName;
 
-	// Try to load model
-	if(!LoadOBJ(modelPath + in_fileName, tempVertices, tempUVs, tempNormals))
+	if(!LoadVertexData(fileName.c_str(), out_vertexData, numVerts))
 	{
-		std::cout << "Attempting to load default mesh" << std::endl;
-		if(!LoadOBJ(modelPath + defaultModel, tempVertices, tempUVs, tempNormals))
+		// Clear vertices in case of partially loaded data
+		out_vertexData.clear();
+
+		// Try to load default model
+		if(!LoadVertexData((modelPath + defaultModel).c_str(), out_vertexData, numVerts))
 			return false;
 	}
 
-	// Format the data
-	ConstructVertexData(out_vertexData, tempVertices, tempUVs, tempNormals);
-
 	// Set draw count
-	m_vao.SetNumVertices(tempVertices.size());
+	m_vao.SetNumVertices(numVerts);
 
 	return true;
 }
@@ -162,7 +167,28 @@ void RenderableMeshComponent::Update(float in_dt)
 		curCam->SetTarget(curCam->GetTarget() + dir * zoomSpeed);
 	}
 
-	GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 1, 0)));
+	///GetOwner()->SetRotation(glm::rotate(GetOwner()->GetRotation(), in_dt * 50, Vector3(0, 1, 0)));
+
+	float lightSpeed = 0.001f;
+
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_5))
+		m_lightPos += Vector3(lightSpeed, 0.f, 0.f);
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_6))
+		m_lightPos += Vector3(-lightSpeed, 0.f, 0.f);
+
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_7))
+		m_lightPos += Vector3(0.f, lightSpeed, 0.f);
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_8))
+		m_lightPos += Vector3(0.f, -lightSpeed, 0.f);
+
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_Q))
+		m_lightPos += Vector3(0.f, 0.f, lightSpeed);
+	if(GetOwner()->GetInputManager()->IsKeyDown(GLFW_KEY_W))
+		m_lightPos += Vector3(0.f, 0.f, -lightSpeed);
+
+	glUseProgram(m_shader.GetProgramID());
+	m_shader["lightPos"]->SetVec(m_lightPos, 1);
+	glUseProgram(0);
 }
 
 void RenderableMeshComponent::Draw()
