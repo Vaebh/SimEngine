@@ -1,7 +1,9 @@
 #ifndef VECTORS_SIMENGINE
 #define VECTORS_SIMENGINE
 
-#include "../OpenGL/GLIncludes.h"
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 typedef glm::vec2 Vector2;
 typedef glm::vec3 Vector3;

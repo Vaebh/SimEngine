@@ -15,39 +15,35 @@ public:
 	IRenderableComponent();
 	virtual ~IRenderableComponent();
 
-	inline const Shader& GetShader() const {return m_shader;}
-	inline bool IsVisible() const {return m_visible;}
-
 	virtual void Update(float in_dt) = 0;
 	virtual void Draw() = 0;
 
 	virtual glm::mat4 CalculateModelMatrix() = 0;
 
-	inline void SetVisible(bool in_isVisible) {m_visible = in_isVisible;}
+	inline const Shader& GetShader() const {return m_shader;}
 
 	inline const VertexArray& GetVAO() const {return m_vao;}
 
 	inline void SetTextureManager(TextureManager* in_texManager) {m_texManager = in_texManager;}
-
 	void SetTextures(const char* in_texName1, const char* in_texName2 = "", const char* in_texName3 = "", const char* in_texName4 = "");
+
+	inline bool IsVisible() const {return m_visible;}
+	inline void SetVisible(bool in_isVisible) {m_visible = in_isVisible;}
 
 protected:
 	virtual void AddUniforms() = 0;
 
 protected:
-	Shader m_shader;
-
 	VertexArray m_vao;
 	Buffer* m_vertexBuffer;
 
-	bool m_visible;
-
-	// Should probably just be in one place, maybe a pointer to the camera instead?
-	glm::mat4 m_viewMatrix;
+	Shader m_shader;
 
 	// TODO - Expand to support a set number of textures
 	Texture* m_texture;
 	TextureManager* m_texManager;
+
+	bool m_visible;
 };
 
 #endif

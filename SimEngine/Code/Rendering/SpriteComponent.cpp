@@ -5,6 +5,8 @@
 #include "../Rendering/SpriteComponent.h"
 #include "../Rendering/RenderSystem.h"
 
+#include "../Structure/GameObject.h"
+
 #include <iostream>
 
 const GLfloat vertices[] = 

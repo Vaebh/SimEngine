@@ -1,4 +1,5 @@
 #include "../Collision/FragileCollisionComponent.h"
+#include "../Structure/GameObject.h"
 
 FragileCollisionComponent::FragileCollisionComponent(int inHealth) :
 CollisionComponent(),

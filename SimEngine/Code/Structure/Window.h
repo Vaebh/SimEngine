@@ -12,7 +12,7 @@ public:
 
 	inline const Vector2 GetDimensions() {return m_dimensions;}
 
-	inline GLFWwindow* GetGLFWWindow() {return m_window;}
+	GLFWwindow* GetGLFWWindow() {return m_window;}
 
 	bool ShouldWindowClose() const;
 

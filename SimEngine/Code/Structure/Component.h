@@ -1,15 +1,11 @@
 #ifndef COMPONENT_SIMENGINE
 #define COMPONENT_SIMENGINE
 
-#include "../Structure/GameObject.h"
 #include "../Structure/Vectors.h"
 
 class GameObject;
 class ISystem;
 
-// TODO - Add a pointer to an ISystem that this component is part of.
-// Can either be NULL or a system, upon destruction it will remove 
-// itself from the system if it's not NULL
 class IComponent
 {
 public:

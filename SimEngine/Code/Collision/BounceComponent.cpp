@@ -1,6 +1,7 @@
 #include "../Collision/BounceComponent.h"
 #include "../Rendering/RenderSystem.h"
 #include "../Events/EventMessenger.h"
+#include "../Structure/GameObject.h"
 #include <iostream>
 
 namespace

@@ -5,6 +5,8 @@
 #include "../Rendering/RenderSystem.h"
 #include "../Rendering/SpriteComponent.h"
 
+#include "../Structure/GameObject.h"
+
 StateVictory::StateVictory()
 {
 	mVictoryCake.reset(new GameObject());
