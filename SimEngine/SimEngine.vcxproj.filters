@@ -171,6 +171,9 @@
     <ClCompile Include="Code\Rendering\Texture.cpp">
       <Filter>Code\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Rendering\SpriteBatcher.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Application\Game.h">

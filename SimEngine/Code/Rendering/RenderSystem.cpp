@@ -58,7 +58,12 @@ void RenderSystem::Draw()
 			class to hold this and a variety of other information. Every RenderableComponent
 			should have a Material.
 			*/
-			if(dynamic_cast<SpriteComponent*>(rendComp) != NULL)
+
+			// Draw 3D meshes
+			glEnable(GL_DEPTH_TEST);
+			glDrawArrays(GL_TRIANGLES, 0, rendComp->GetVAO().GetNumVertices());
+
+			/*if(dynamic_cast<SpriteComponent*>(rendComp) != NULL)
 			{
 				glDisable(GL_DEPTH_TEST);
 				glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -67,14 +72,18 @@ void RenderSystem::Draw()
 			{
 				glEnable(GL_DEPTH_TEST);
 				glDrawArrays(GL_TRIANGLES, 0, rendComp->GetVAO().GetNumVertices());
-			}
+			}*/
 
 			// Unbind everthing
-			glBindVertexArray(0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glUseProgram(0);
+			//glBindVertexArray(0);
+			//glBindTexture(GL_TEXTURE_2D, 0);
+			//glUseProgram(0);
 		}
 	}
+
+	// Draw sprites
+	glDisable(GL_DEPTH_TEST);
+	m_spriteBatcher.DrawBatch();
 
 	glfwSwapBuffers(Application::GetApplication()->GetWindow()->GetGLFWWindow());
 }

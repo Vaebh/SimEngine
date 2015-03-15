@@ -39,7 +39,7 @@ void Buffer::Unbind()
 	glBindBuffer(m_target, 0);
 }
 
-void Buffer::SetData(GLsizeiptr in_dataSize, GLvoid* in_dataPtr)
+void Buffer::SetData(GLsizeiptr in_dataSize, const GLvoid* in_dataPtr)
 {
 	glBufferData(m_target, in_dataSize, in_dataPtr, m_usage);
 }

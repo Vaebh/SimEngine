@@ -20,9 +20,9 @@ public:
 
 	virtual glm::mat4 CalculateModelMatrix() = 0;
 
-	inline const Shader& GetShader() const {return m_shader;}
+	inline Shader& GetShader() {return m_shader;}
 
-	inline const VertexArray& GetVAO() const {return m_vao;}
+	inline VertexArray& GetVAO() {return m_vao;}
 
 	inline void SetTextureManager(TextureManager* in_texManager) {m_texManager = in_texManager;}
 	void SetTextures(const char* in_texName1, const char* in_texName2 = "", const char* in_texName3 = "", const char* in_texName4 = "");

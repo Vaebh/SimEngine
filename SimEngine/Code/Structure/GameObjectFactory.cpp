@@ -1,6 +1,7 @@
 #include "../Structure/GameObjectFactory.h"
 #include "../Rendering/RenderSystem.h"
 #include "../Rendering/RenderableMeshComponent.h"
+#include "../Rendering/SpriteComponent.h"
 
 GameObjectFactory::GameObjectFactory() {}
 
@@ -40,6 +41,21 @@ GameObject* GameObjectFactory::Create3DGameObject(char* in_meshName, char* in_te
 
 	newObject->Attach(rendMeshComp);
 	m_renderSystem->AddComponent(rendMeshComp);
+
+	return newObject;
+}
+
+GameObject* GameObjectFactory::CreateSpriteGameObject(char* in_textureName)
+{
+	GameObject* newObject = CreateGameObject();
+	SpriteComponent* spriteComp = new SpriteComponent(in_textureName);
+
+	spriteComp->SetTextureManager(m_renderSystem->GetTextureManager());
+	spriteComp->SetTextures(in_textureName);
+
+	newObject->Attach(spriteComp);
+
+	m_renderSystem->GetSpriteBatcher()->AddSprite(spriteComp, in_textureName);
 
 	return newObject;
 }
