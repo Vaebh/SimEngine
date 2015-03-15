@@ -90,6 +90,7 @@
     <ClCompile Include="Code\Rendering\RenderableMeshComponent.cpp" />
     <ClCompile Include="Code\Rendering\RenderSystem.cpp" />
     <ClCompile Include="Code\Rendering\Shader.cpp" />
+    <ClCompile Include="Code\Rendering\SpriteBatcher.cpp" />
     <ClCompile Include="Code\Rendering\SpriteComponent.cpp" />
     <ClCompile Include="Code\Rendering\Texture.cpp" />
     <ClCompile Include="Code\Rendering\TextureManager.cpp" />

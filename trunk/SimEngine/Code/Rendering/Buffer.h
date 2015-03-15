@@ -19,7 +19,7 @@ public:
 	void Bind();
 	void Unbind();
 
-	void SetData(GLsizeiptr in_dataSize, GLvoid* in_dataPtr);
+	void SetData(GLsizeiptr in_dataSize, const GLvoid* in_dataPtr);
 
 	void AddAttribute(VertexAttribute in_attribute);
 	inline std::vector<VertexAttribute>& GetAttributes() {return m_attributes;}

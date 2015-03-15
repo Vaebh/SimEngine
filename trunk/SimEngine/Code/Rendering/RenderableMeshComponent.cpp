@@ -67,8 +67,6 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
 	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("texcoord"), 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat))) );
 	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("normal"), 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(GLfloat))) );
 
-	GLint thing = m_shader.GetAttributeLocation("normal");
-
 	m_vao.SetVertexAttributes();
 
 	// Add the uniforms
@@ -79,14 +77,6 @@ void RenderableMeshComponent::SetShader(const std::string in_vertexShaderSrc, co
 	m_shader["proj"]->SetMatrix(proj, 1, GL_FALSE);
 
 	m_shader["textureSprite"]->Set(0);
-}
-
-glm::mat4 RenderableMeshComponent::CalculateModelMatrix()
-{
-	glm::mat4 model = glm::mat4(1);
-	model = glm::translate(model, GetOwner()->GetPosition()) * glm::mat4_cast(GetOwner()->GetRotation()) * glm::scale(model, GetOwner()->GetScale()) ;
-
-	return model;
 }
 
 void RenderableMeshComponent::AddUniforms()
@@ -117,6 +107,14 @@ bool RenderableMeshComponent::LoadModel(const char* in_fileName, std::vector<GLf
 	m_vao.SetNumVertices(numVerts);
 
 	return true;
+}
+
+glm::mat4 RenderableMeshComponent::CalculateModelMatrix()
+{
+	glm::mat4 model = glm::mat4(1);
+	model = glm::translate(model, GetOwner()->GetPosition()) * glm::mat4_cast(GetOwner()->GetRotation()) * glm::scale(model, GetOwner()->GetScale()) ;
+
+	return model;
 }
 
 void RenderableMeshComponent::Update(float in_dt)

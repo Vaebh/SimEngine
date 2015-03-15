@@ -7,9 +7,11 @@
 
 #include "../Structure/GameObject.h"
 
+#include "../Rendering/Texture.h"
+
 #include <iostream>
 
-const GLfloat vertices[] = 
+const GLfloat SPRITE_VERTICES[] = 
 {	// position					//texcoords
 	-0.5f,  0.5f, 0.0f, 1.0f,  0.0f, 0.0f,
 	0.5f,  0.5f, 0.0f, 1.0f,  1.0f, 0.0f,
@@ -20,91 +22,77 @@ const GLfloat vertices[] =
 	-0.5f,  0.5f, 0.0f, 1.0f,  0.0f, 0.0f
 };
 
-const unsigned int kNumVertsForSprites = 4;
+const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
+const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefault.txt";
 
-const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderMove.txt";
-const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderPlain.txt";
-
-using namespace std;
-
-SpriteComponent::SpriteComponent(const std::string inTexture, int inNumFrames) :
+SpriteComponent::SpriteComponent(const std::string in_texture) :
 IRenderableComponent(),
-mWidth(0),
-mHeight(0),
-mNumFrames(inNumFrames),
-mCurrentFrame(0),
-mColourTintUniform(0),
-mColourTint(Vector4(0.f, 0.f, 0.f, 1.f))
+m_width(0),
+m_height(0),
+m_uvs(glm::vec2(0))
 {
 	Initialise();
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
-
-	mTextureData = LoadImage(inTexture.c_str());
 }
 
 SpriteComponent::~SpriteComponent()
 {
-	// TODO - Make some kind of sprite managery class, maybe SpriteBatch, and have it store and bind the vao and vbo as they're the same for every sprite
-	// Also maybe use the same shader program for all sprites
-    //glDeleteBuffers(1, &mVbo);
-    //glDeleteVertexArrays(1, &mVao);
+	m_vao.Destroy();
 }
 
 void SpriteComponent::Initialise()
 {
-	glGenVertexArrays(1, &mVao);
-	glGenBuffers(1, &mVbo);
+	// Bind and send data to buffer
+	m_vertexBuffer = &(m_vao.GetVertexBuffer());
 
-	glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	m_vertexBuffer->Bind();
+	m_vertexBuffer->SetData(sizeof(SPRITE_VERTICES), SPRITE_VERTICES);
 }
 
-void SpriteComponent::SetShader(const std::string inVertexShaderSrc, const std::string inFragShaderSrc)
+void SpriteComponent::SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc)
 {
-	if(inVertexShaderSrc.empty() || inFragShaderSrc.empty())
+	if(in_vertexShaderSrc.empty() || in_fragShaderSrc.empty())
 		return;
 
-	glBindVertexArray(mVao);
-    glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+	// Bind vertex array
+	m_vao.Bind();
 
-	m_shader.CreateShaderProgram(inVertexShaderSrc, inFragShaderSrc);
+	// Bind vertex buffer
+    m_vertexBuffer->Bind();
 
-	glUseProgram(m_shader.GetProgramID());
+	// Create and activate shader
+	m_shader.CreateShaderProgram(in_vertexShaderSrc, in_fragShaderSrc);
+	m_shader.Use();
 
-	GLint posAttrib = glGetAttribLocation(m_shader.GetProgramID(), "position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 6*sizeof(float), 0);
-                     
-	GLint texAttrib = glGetAttribLocation(m_shader.GetProgramID(), "texcoord");
-	glEnableVertexAttribArray(texAttrib);
-	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)(4*sizeof(float)));
+	// Add vertex attributes
+	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("position"), 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0) );
+	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("texcoord"), 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(4 * sizeof(GLfloat))) );
 
-	glUniform1i(glGetUniformLocation(m_shader.GetProgramID(), "textureSprite"), 0);
+	m_vao.SetVertexAttributes();
 
-	mMoveUniform = glGetUniformLocation(m_shader.GetProgramID(), "move");
-	mUVUniform = glGetUniformLocation(m_shader.GetProgramID(), "spriteOffset");
-	mFrameUniform = glGetUniformLocation(m_shader.GetProgramID(), "currentFrame");
-	mColourTintUniform = glGetUniformLocation(m_shader.GetProgramID(), "uniformColour");
+	// Add the uniforms
+	AddUniforms();
+
+	m_shader["textureSprite"]->Set(0);
 }
 
 void SpriteComponent::AddUniforms()
 {
-
+	m_shader.AddUniform("model");
+	m_shader.AddUniform("uv");
+	m_shader.AddUniform("textureSprite");
 }
 
 glm::mat4 SpriteComponent::CalculateModelMatrix()
 {
-	glm::mat4 model;
-	//model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->m_scale) * glm::rotate(model, GetOwner()->mRotationAngle.x, X_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.y, Y_UNIT_POSITIVE) * glm::rotate(model, GetOwner()->mRotationAngle.z, Z_UNIT_POSITIVE);
-
+	glm::mat4 model(1.f);
 	model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->GetScale());
 	return model;
 }
 
 void SpriteComponent::Update(float in_dt)
 {
-	//mAnimTimer += in_dt;
-	//IRenderableComponent::Update(in_dt);
+
 }
 
 
@@ -119,22 +107,19 @@ up in the rendering order, so all sprites should be drawn last, in a batch.
 void SpriteComponent::Draw()
 {
 	// Bind shader program
-	glUseProgram(m_shader.GetProgramID());
+	//m_shader.Use();
 
 	// Set shader uniforms
-	glUniformMatrix4fv(mMoveUniform, 1, GL_FALSE, glm::value_ptr(CalculateModelMatrix()));
+	m_shader["model"]->SetMatrix(CalculateModelMatrix(), 1, GL_FALSE);
+	m_shader["uv"]->SetVec(GetUVs(), 1);
 
-	float spriteFrameDivisorU = 1.f / mNumFrames;
-
-	glUniform2f(mUVUniform, spriteFrameDivisorU, 1.f);
-	glUniform1i(mFrameUniform, mCurrentFrame);
-
-	glUniform4f(mColourTintUniform, mColourTint.x, mColourTint.y, mColourTint.z, mColourTint.w);
-
-	// Bind the texture
-	glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, *(mTextureData.textureID));
+	/*if(m_texture != NULL)
+	{
+		// Bind the texture
+		m_texture->Activate(GL_TEXTURE0);
+		m_texture->Bind();
+	}
 
 	// Bind vertex array
-	glBindVertexArray(mVao);
+	m_vao.Bind();*/
 }

@@ -3,7 +3,7 @@
 
 #include "../Rendering/SpriteComponent.h"
 
-class AnimatedSpriteComponent : public SpriteComponent
+/*class AnimatedSpriteComponent : public SpriteComponent
 {
 public:
 	AnimatedSpriteComponent(const std::string inTexture = "sample.png", int inNumFrames = 1, float inAnimationSpeed = 1.f, bool inbLooping = true);
@@ -27,6 +27,6 @@ private:
 
 	bool mAnimating;
 	bool mLooping;
-};
+};*/
 
 #endif // include guard

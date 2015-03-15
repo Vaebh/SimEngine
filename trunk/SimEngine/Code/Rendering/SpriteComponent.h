@@ -1,59 +1,40 @@
 #ifndef SPRITE_COMPONENT_SIMENGINE
 #define SPRITE_COMPONENT_SIMENGINE
 
-#include "../OpenGL/GLIncludes.h"
-#include "../OpenGL/GLUtils.h"
 #include "../Rendering/RenderableComponent.h"
 #include <string>
+
+// TODO - Sprites should be as big onscreen by default as their actual texture pixel width and depth
 
 class SpriteComponent : public IRenderableComponent
 {
 public:
-	SpriteComponent(const std::string inTexture = "sample.png", int inNumFrames = 1);
+	SpriteComponent(const std::string in_texture = "sample.png");
 	~SpriteComponent();
-    
-    inline Vector4 GetColourTint() const {return mColourTint;}
-    inline void SetColourTint(Vector4 inColourTint) {mColourTint = inColourTint;}
 
-    // These really should not be public
-	inline GLuint GetVAO() const {return mVao;}
-	inline GLuint GetVBO() const {return mVbo;}
+	virtual void Draw();
+
+	inline Texture* GetTexture() {return m_texture;}
 
 protected:
-	virtual void Draw();
 	virtual void Update(float in_dt);
 
-	inline GLuint GetMoveUniform() const {return mMoveUniform;}
-	inline GLuint GetUVUniform() const {return mUVUniform;}
-	inline GLuint GetFrameUniform() const {return mFrameUniform;}
-	inline GLuint GetColourTintUniform() const {return mColourTintUniform;}
-
 	void AddUniforms();
+
+	inline glm::vec2 GetUVs() {return m_uvs;}
 
 private:
 	void Initialise();
 	glm::mat4 CalculateModelMatrix();
 
-	void SetShader(const std::string inVertexShaderSrc, const std::string inFragShaderSrc);
+	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
+
+protected:
+	float m_width;
+	float m_height;
 
 private:
-	GLuint mVao;
-	GLuint mVbo;
-
-	GLuint mMoveUniform;
-	GLuint mUVUniform;
-	GLuint mFrameUniform;
-	GLuint mColourTintUniform;
-
-	float mWidth;
-	float mHeight;
-
-	int mNumFrames;
-	int mCurrentFrame;
-
-	Vector4 mColourTint;
-
-	TextureData mTextureData;
+	glm::vec2 m_uvs;
 };
 
 #endif
