@@ -10,7 +10,7 @@ BlockManager::BlockManager(std::vector<GameObject*>& outGameObjects, std::string
 	{
 		for(uint32_t j = 0; j < BLOCK_ROWS; ++j)
 		{
-			mBlocks[i][j] = CreateBlock(Vector3(-0.8f + i * 0.3f, 0.8f - j * 0.3f, 0.f));
+			//mBlocks[i][j] = CreateBlock(Vector3(-0.8f + i * 0.3f, 0.8f - j * 0.3f, 0.f));
 			mBlocks[i][j]->SetName("Block" + ConvertNumber(i));
 		}
 	}

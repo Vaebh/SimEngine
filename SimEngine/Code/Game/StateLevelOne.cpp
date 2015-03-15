@@ -14,10 +14,10 @@
 
 StateLevelOne::StateLevelOne()
 {
-	mBall.reset(CreateBall());
+	//mBall.reset(CreateBall());
 	mGameObjects.push_back(mBall.get());
 
-	mPaddle.reset(CreatePaddle());
+	//mPaddle.reset(CreatePaddle());
 	mGameObjects.push_back(mPaddle.get());
 
 	ComponentBallController* ballController = mBall->GetComponent<ComponentBallController>();
@@ -54,7 +54,7 @@ void StateLevelOne::HandleEvent(uint32_t inEventType, GameObject* inTarget)
 	{
 		//std::cout << "=============BALL COLLIDED=============\n";
 
-		mBall->GetComponent<SpriteComponent>()->SetColourTint(Vector4(0.f, 0.f, 1.f, 0.f));
+		//mBall->GetComponent<SpriteComponent>()->SetColourTint(Vector4(0.f, 0.f, 1.f, 0.f));
 	}
 }
 

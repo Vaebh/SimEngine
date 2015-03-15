@@ -7,7 +7,7 @@
 #include "../Game/ComponentBallController.h"
 #include "../Game/ComponentBallModel.h"
 
-GameObject* CreateBall()
+/*GameObject* CreateBall()
 {
 	GameObject* const theBall = new GameObject();
 	theBall->SetPosition(Vector3(-0.2, -0.7, 0));
@@ -64,4 +64,4 @@ GameObject* CreateBlock(Vector3 inPosition)
 	theBlock->Attach(fragileColComp);
 
 	return theBlock;
-}
+}*/
