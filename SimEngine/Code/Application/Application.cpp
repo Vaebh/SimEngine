@@ -115,6 +115,8 @@ void Application::Update()
 		if(thorModel != NULL)
 			thorModel->Update(m_dt);
 
+		spriteTest1->Update(m_dt);
+
 		lightModel->Update(m_dt);
 		lightModel->SetPosition(testModel->GetComponent<RenderableMeshComponent>()->m_lightPos);
 

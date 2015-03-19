@@ -1,0 +1,11 @@
+#version 150
+in vec2 Texcoord;
+
+out vec4 outColor;
+
+uniform sampler2D textureSprite;
+
+void main()
+{
+	outColor = clamp(texture(textureSprite, Texcoord), 0.0, 1.0);
+}
