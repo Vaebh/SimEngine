@@ -16,6 +16,9 @@
 
 #include "../Rendering/RenderableMeshComponent.h"
 
+#include "../Debug/Log.h"
+#include "../Utils/Clock.h"
+
 
 Application* Application::m_application = NULL;
 
@@ -23,6 +26,9 @@ Application::Application() :
 m_dt(0)
 {
 	m_application = this;
+
+	// Start the clock
+	Clock::Get();
 
 	InitialiseSystems();
 	Update();
@@ -80,6 +86,10 @@ void Application::Update()
 	GameObject* thorModel = NULL;
 
 	GameObject* thing = NULL;
+
+	Log(true).Get() << "Hello logging tool " << 6;
+	Log(true).Get() << "Second hello! " << 7;
+	Log(true).Get() << "OMG THIRD HELLO " << 8;
 
 	while(!GetWindow()->ShouldWindowClose())
 	{

@@ -5,27 +5,21 @@
 
 TextureManager::TextureManager()
 {
-    int g = 0;
-	g++;
 }
 
 TextureManager::~TextureManager()
 {
-    DumpTextureCache();
+    m_textureCache.clear();
 }
 
 Texture* TextureManager::LoadTexture(const GLchar* in_texName)
 {
-	std::string str = in_texName;
+	AdjustUsageCount(in_texName, 1);
 
-	AdjustUsageCount(str, 1);
-
-	std::pair<Texture*, uint32_t>& texPair = m_textureCache[str];
+	std::pair<Texture*, uint32_t>& texPair = m_textureCache[in_texName];
 	Texture* tex = texPair.first;
-	if(tex != NULL)
-	{
-		return tex;
-	}
+
+	if(tex != NULL) return tex;
 	
 	// If this is a new image
 	return LoadTextureFromFile(in_texName);
@@ -78,14 +72,8 @@ void TextureManager::UnloadTexture(std::string in_texName)
 	}
 }
 
-void TextureManager::DumpTextureCache()
-{
-	m_textureCache.clear();
-}
-
 uint32_t TextureManager::AdjustUsageCount(std::string in_texKey, int in_adjustment)
 {
-	// Increment the usage count
 	std::pair<Texture*, uint32_t>& texPair = m_textureCache[in_texKey];
 	texPair.second += in_adjustment;
 

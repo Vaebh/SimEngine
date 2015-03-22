@@ -19,14 +19,12 @@ public:
     Texture* LoadTexture(const GLchar* in_texName);
 
 	void UnloadTexture(std::string in_texName);
-	void DumpTextureCache();
 
 private:
 	Texture* LoadTextureFromFile(const GLchar* in_texName);
 	uint32_t AdjustUsageCount(std::string in_texKey, int in_adjustment);
 
 private:
-	//std::vector<Texture*> m_textureCache;
 	std::map< std::string, std::pair<Texture*, uint32_t> > m_textureCache;
 };
 
