@@ -6,14 +6,12 @@
 class Log
 {
 public:
-	Log();
-	Log(bool in_writeToFile);
+	Log() {}
 	~Log();
 
 	inline std::ostringstream& Get() {return m_stringStream;}
 
 private:
-	bool m_writeToFile;
 	std::ostringstream m_stringStream;
 };
 

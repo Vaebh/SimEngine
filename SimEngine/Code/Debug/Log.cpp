@@ -6,19 +6,13 @@
 #include <fstream>
 #include <algorithm>
 
-Log::Log() :
-m_writeToFile(false)
-{}
-
-Log::Log(bool in_writeToFile) :
-m_writeToFile(in_writeToFile)
-{}
+#define LOG_TO_FILE true
 
 Log::~Log()
 {
 	std::cout << "LOG: " << m_stringStream.str() << std::endl;
 
-	if(m_writeToFile)
+	if(LOG_TO_FILE)
 	{
 		std::string fileName = "../SimEngine/Logging/LOG_" + Clock::Get()->GetProgramStartTime() + ".txt";
 

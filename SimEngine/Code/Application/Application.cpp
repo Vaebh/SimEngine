@@ -87,9 +87,9 @@ void Application::Update()
 
 	GameObject* thing = NULL;
 
-	Log(true).Get() << "Hello logging tool " << 6;
-	Log(true).Get() << "Second hello! " << 7;
-	Log(true).Get() << "OMG THIRD HELLO " << 8;
+	Log().Get() << "Hello logging tool " << 6;
+	Log().Get() << "Second hello! " << 7;
+	Log().Get() << "OMG THIRD HELLO " << 8;
 
 	while(!GetWindow()->ShouldWindowClose())
 	{
