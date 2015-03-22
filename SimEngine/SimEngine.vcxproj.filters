@@ -43,6 +43,9 @@
     <Filter Include="Code\Interfaces">
       <UniqueIdentifier>{9381abad-f9aa-4cb0-9301-a7853f9c2367}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Debug">
+      <UniqueIdentifier>{702904de-7b16-4a91-8893-0aacce433e59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Code\Application\main.cpp">
@@ -173,6 +176,12 @@
     </ClCompile>
     <ClCompile Include="Code\Rendering\SpriteBatcher.cpp">
       <Filter>Code\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Utils\Clock.cpp">
+      <Filter>Code\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Debug\Log.cpp">
+      <Filter>Code\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +337,12 @@
     </ClInclude>
     <ClInclude Include="Code\Rendering\Uniform.h">
       <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utils\Clock.h">
+      <Filter>Code\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Debug\Log.h">
+      <Filter>Code\Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

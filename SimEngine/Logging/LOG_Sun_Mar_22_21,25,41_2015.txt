@@ -1,0 +1,3 @@
+LOG: Hello logging tool 6
+LOG: Second hello! 7
+LOG: OMG THIRD HELLO 8

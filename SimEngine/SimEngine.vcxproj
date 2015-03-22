@@ -19,6 +19,7 @@
     <ClInclude Include="Code\Collision\CollisionComponent.h" />
     <ClInclude Include="Code\Collision\CollisionSystem.h" />
     <ClInclude Include="Code\Collision\FragileCollisionComponent.h" />
+    <ClInclude Include="Code\Debug\Log.h" />
     <ClInclude Include="Code\Events\EventCallback.h" />
     <ClInclude Include="Code\Events\EventMessenger.h" />
     <ClInclude Include="Code\Events\EventTypes.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="Code\Structure\System.h" />
     <ClInclude Include="Code\Structure\Vectors.h" />
     <ClInclude Include="Code\Structure\Window.h" />
+    <ClInclude Include="Code\Utils\Clock.h" />
     <ClInclude Include="Code\Utils\MathUtils.h" />
     <ClInclude Include="Code\Utils\ModelLoader.h" />
   </ItemGroup>
@@ -72,6 +74,7 @@
     <ClCompile Include="Code\Collision\CollisionComponent.cpp" />
     <ClCompile Include="Code\Collision\CollisionSystem.cpp" />
     <ClCompile Include="Code\Collision\FragileCollisionComponent.cpp" />
+    <ClCompile Include="Code\Debug\Log.cpp" />
     <ClCompile Include="Code\Events\EventCallback.cpp" />
     <ClCompile Include="Code\Events\EventMessenger.cpp" />
     <ClCompile Include="Code\Foundation\StringUtils.cpp" />
@@ -106,6 +109,7 @@
     <ClCompile Include="Code\Structure\StateManager.cpp" />
     <ClCompile Include="Code\Structure\System.cpp" />
     <ClCompile Include="Code\Structure\Window.cpp" />
+    <ClCompile Include="Code\Utils\Clock.cpp" />
     <ClCompile Include="Code\Utils\ModelLoader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
