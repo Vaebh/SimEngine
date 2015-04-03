@@ -6,8 +6,11 @@
 class RenderableMeshComponent : public IRenderableComponent
 {
 public:
-	RenderableMeshComponent(const char* in_meshName);
+	RenderableMeshComponent(const char* in_meshName, const char* in_textureName);
 	~RenderableMeshComponent();
+
+	virtual void OnAttached(GameObject* in_gameObject);
+	virtual void OnDetached(GameObject* in_gameObject);
 
 	Vector3 m_lightPos;
 
@@ -24,6 +27,9 @@ private:
 	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
 
 	bool LoadModel(const char* in_fileName, std::vector<GLfloat>& out_vertexData);
+
+protected:
+	std::string m_textureName;
 };
 
 #endif

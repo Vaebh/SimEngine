@@ -12,9 +12,13 @@ public:
 	SpriteComponent(const std::string in_texture = "sample.png");
 	~SpriteComponent();
 
+	virtual void OnAttached(GameObject* in_gameObject);
+	virtual void OnDetached(GameObject* in_gameObject);
+
 	virtual void Draw();
 
 	inline Texture* GetTexture() {return m_texture;}
+	void SetTexture(std::string in_newTex);
 
 protected:
 	virtual void Update(float in_dt);
@@ -32,6 +36,8 @@ private:
 protected:
 	float m_width;
 	float m_height;
+
+	std::string m_textureName;
 
 private:
 	glm::vec2 m_uvs;

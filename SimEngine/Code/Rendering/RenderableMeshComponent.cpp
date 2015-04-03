@@ -8,6 +8,7 @@
 #include "../Utils/ModelLoader.h"
 
 #include "../Rendering/Texture.h"
+#include "../Rendering/RenderSystem.h"
 
 #include "../Structure/GameObject.h"
 
@@ -22,8 +23,9 @@ namespace
 	const char* defaultModel = "cube.bin";
 }
 
-RenderableMeshComponent::RenderableMeshComponent(const char* in_meshName) :
+RenderableMeshComponent::RenderableMeshComponent(const char* in_meshName, const char* in_textureName) :
 IRenderableComponent(),
+m_textureName(in_textureName),
 m_lightPos(ZERO)
 {
 	Initialise(in_meshName);
@@ -107,6 +109,22 @@ bool RenderableMeshComponent::LoadModel(const char* in_fileName, std::vector<GLf
 	m_vao.SetNumVertices(numVerts);
 
 	return true;
+}
+
+void RenderableMeshComponent::OnAttached(GameObject* in_gameObject)
+{
+	IRenderableComponent::OnAttached(in_gameObject);
+
+	SetTextureManager(in_gameObject->GetRenderSystem()->GetTextureManager());
+	SetTextures(m_textureName.c_str());
+
+	in_gameObject->GetRenderSystem()->AddComponent(this);
+}
+
+void RenderableMeshComponent::OnDetached(GameObject* in_gameObject)
+{
+	// Fill this out with logic for anything sprite-specific that needs to be done
+	IRenderableComponent::OnDetached(in_gameObject);
 }
 
 glm::mat4 RenderableMeshComponent::CalculateModelMatrix()

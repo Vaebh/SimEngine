@@ -21,5 +21,6 @@ IRenderableComponent::~IRenderableComponent()
 
 void IRenderableComponent::SetTextures(const char* in_texName1, const char* in_texName2, const char* in_texName3, const char* in_texName4)
 {
+	// TODO - Change something as this does not in any way unload the texture that was previously used
 	m_texture = m_texManager->LoadTexture(in_texName1);
 }

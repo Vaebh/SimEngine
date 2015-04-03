@@ -65,6 +65,10 @@ void SpriteBatcher::DrawBatch()
 		}
 		for(iter = m_sprites[i].second.begin(); iter != m_sprites[i].second.end(); ++iter)
 		{
+			// Don't draw sprites which are detached or invisible
+			if((*iter)->GetOwner() == NULL || !(*iter)->IsVisible())
+				continue;
+
 			// This whole thing requires all sprites referencing the same shaders, textures, and vao's
 			// Currently the only one that's the same across sprites is the texture.
 			if(m_activeShader != &(*iter)->GetShader())

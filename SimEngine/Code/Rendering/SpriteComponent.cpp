@@ -29,7 +29,8 @@ SpriteComponent::SpriteComponent(const std::string in_texture) :
 IRenderableComponent(),
 m_width(0),
 m_height(0),
-m_uvs(glm::vec2(0))
+m_uvs(glm::vec2(0)),
+m_textureName(in_texture)
 {
 	Initialise();
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
@@ -81,6 +82,22 @@ void SpriteComponent::AddUniforms()
 	m_shader.AddUniform("model");
 	m_shader.AddUniform("uv");
 	m_shader.AddUniform("textureSprite");
+}
+
+void SpriteComponent::OnAttached(GameObject* in_gameObject)
+{
+	IRenderableComponent::OnAttached(in_gameObject);
+
+	SetTextureManager(in_gameObject->GetRenderSystem()->GetTextureManager());
+	SetTextures(m_textureName.c_str());
+
+	in_gameObject->GetRenderSystem()->GetSpriteBatcher()->AddSprite(this, m_textureName);
+}
+
+void SpriteComponent::OnDetached(GameObject* in_gameObject)
+{
+	// Fill this out with logic for anything sprite-specific that needs to be done
+	IRenderableComponent::OnDetached(in_gameObject);
 }
 
 glm::mat4 SpriteComponent::CalculateModelMatrix()

@@ -81,7 +81,8 @@ void Application::Update()
 
 	GameObject* spriteTest = m_gameObjectFactory->CreateSpriteGameObject("bros.png");
 	spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
-	GameObject* spriteTest1 = m_gameObjectFactory->CreateSpriteGameObject("sample.png");
+	spriteTest->SetScale(Vector3(0.2f, 0.2f, 0.2f));
+	//GameObject* spriteTest1 = m_gameObjectFactory->CreateSpriteGameObject("sample.png");
 
 	GameObject* thorModel = NULL;
 
@@ -125,7 +126,7 @@ void Application::Update()
 		if(thorModel != NULL)
 			thorModel->Update(m_dt);
 
-		spriteTest1->Update(m_dt);
+		spriteTest->Update(m_dt);
 
 		lightModel->Update(m_dt);
 		lightModel->SetPosition(testModel->GetComponent<RenderableMeshComponent>()->m_lightPos);
