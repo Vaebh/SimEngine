@@ -25,10 +25,11 @@ namespace
 
 RenderableMeshComponent::RenderableMeshComponent(const char* in_meshName, const char* in_textureName) :
 IRenderableComponent(),
+m_meshName(in_meshName),
 m_textureName(in_textureName),
 m_lightPos(ZERO)
 {
-	Initialise(in_meshName);
+	Initialise();
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 }
 
@@ -37,15 +38,20 @@ RenderableMeshComponent::~RenderableMeshComponent()
 	m_vao.Destroy();
 }
 
-void RenderableMeshComponent::Initialise(const char* in_meshName)
+void RenderableMeshComponent::Initialise()
 {
 	// Bind and send data to buffer
 	m_vertexBuffer = &(m_vao.GetVertexBuffer());
 
-	std::vector<GLfloat> vertexData;
-	assert(LoadModel(in_meshName, vertexData));
-
 	m_vertexBuffer->Bind();
+	SetVertexData();
+}
+
+void RenderableMeshComponent::SetVertexData()
+{
+	std::vector<GLfloat> vertexData;
+	assert(LoadModel(m_meshName.c_str(), vertexData));
+
 	m_vertexBuffer->SetData(vertexData.size() * sizeof(GLfloat), &vertexData[0]);
 }
 

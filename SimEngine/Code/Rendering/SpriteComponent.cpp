@@ -1,39 +1,28 @@
+#include "../Application/Application.h"
+
 #include "../Foundation/Foundation.h"
 
 #include "../OpenGL/GLUtils.h"
 
 #include "../Rendering/SpriteComponent.h"
 #include "../Rendering/RenderSystem.h"
-
-#include "../Structure/GameObject.h"
-
 #include "../Rendering/Texture.h"
 
+#include "../Structure/GameObject.h"
+#include "../Structure/Window.h"
+
 #include <iostream>
-
-const GLfloat SPRITE_VERTICES[] = 
-{	// position					//texcoords
-	-0.5f,  0.5f, 0.0f, 1.0f,  0.0f, 0.0f,
-	0.5f,  0.5f, 0.0f, 1.0f,  1.0f, 0.0f,
-	0.5f, -0.5f, 0.0f, 1.0f,  1.0f, 1.0f,
-
-	0.5f, -0.5f, 0.0f, 1.0f,  1.0f, 1.0f,
-	-0.5f, -0.5f, 0.0f, 1.0f,  0.0f, 1.0f,
-	-0.5f,  0.5f, 0.0f, 1.0f,  0.0f, 0.0f
-};
 
 const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
 const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefault.txt";
 
 SpriteComponent::SpriteComponent(const std::string in_texture) :
 IRenderableComponent(),
-m_width(0),
-m_height(0),
 m_uvs(glm::vec2(0)),
 m_textureName(in_texture)
 {
-	Initialise();
-	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
+	//Initialise();
+	//SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 }
 
 SpriteComponent::~SpriteComponent()
@@ -47,7 +36,29 @@ void SpriteComponent::Initialise()
 	m_vertexBuffer = &(m_vao.GetVertexBuffer());
 
 	m_vertexBuffer->Bind();
-	m_vertexBuffer->SetData(sizeof(SPRITE_VERTICES), SPRITE_VERTICES);
+
+	SetVertexData();
+}
+
+void SpriteComponent::SetVertexData()
+{
+	Vector2 windowDimensions = GetOwner()->GetApplication()->GetWindow()->GetDimensions();
+
+	float halfClipWidth = GetDimensions().x / windowDimensions.x;
+	float halfClipHeight = GetDimensions().y / windowDimensions.y;
+
+	const GLfloat VERTS[] = 
+	{	// position							  //texcoords
+		-halfClipWidth, halfClipHeight, 0.0f, 1.0f,  0.0f, 0.0f,
+		halfClipWidth, halfClipHeight, 0.0f, 1.0f,  1.0f, 0.0f,
+		halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  1.0f, 1.0f,
+
+		halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  1.0f, 1.0f,
+		-halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  0.0f, 1.0f,
+		-halfClipWidth, halfClipHeight, 0.0f, 1.0f,  0.0f, 0.0f
+	};
+
+	m_vertexBuffer->SetData(sizeof(VERTS), VERTS);
 }
 
 void SpriteComponent::SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc)
@@ -92,6 +103,9 @@ void SpriteComponent::OnAttached(GameObject* in_gameObject)
 	SetTextures(m_textureName.c_str());
 
 	in_gameObject->GetRenderSystem()->GetSpriteBatcher()->AddSprite(this, m_textureName);
+
+	Initialise();
+	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 }
 
 void SpriteComponent::OnDetached(GameObject* in_gameObject)
@@ -139,4 +153,9 @@ void SpriteComponent::Draw()
 
 	// Bind vertex array
 	m_vao.Bind();*/
+}
+
+const Vector2 SpriteComponent::GetDimensions()
+{
+	return GetTexture()->GetDimensions();
 }

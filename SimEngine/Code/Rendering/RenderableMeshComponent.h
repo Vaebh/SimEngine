@@ -18,17 +18,19 @@ protected:
 	virtual void Draw();
 	virtual void Update(float in_dt);
 
+	void Initialise();
+	void SetVertexData();
+	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
+
+	glm::mat4 CalculateModelMatrix();
+
 	void AddUniforms();
 
 private:
-	void Initialise(const char* in_meshName);
-	glm::mat4 CalculateModelMatrix();
-
-	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
-
 	bool LoadModel(const char* in_fileName, std::vector<GLfloat>& out_vertexData);
 
 protected:
+	std::string m_meshName;
 	std::string m_textureName;
 };
 

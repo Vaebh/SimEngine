@@ -1,12 +1,12 @@
 #include "../Structure/GameObjectFactory.h"
-#include "../Rendering/RenderSystem.h"
 #include "../Rendering/RenderableMeshComponent.h"
 #include "../Rendering/SpriteComponent.h"
 
 GameObjectFactory::GameObjectFactory() {}
 
-GameObjectFactory::GameObjectFactory(RenderSystem* in_renderSystem, StateManager* in_stateManager, InputManager* in_inputManager,
+GameObjectFactory::GameObjectFactory(Application* in_application, RenderSystem* in_renderSystem, StateManager* in_stateManager, InputManager* in_inputManager,
 		AudioSystem* in_audioSystem, CameraManager* in_cameraManager, CollisionSystem* in_collisionSystem) :
+m_application(in_application),
 m_renderSystem(in_renderSystem),
 m_stateManager(in_stateManager),
 m_inputManager(in_inputManager),
@@ -20,6 +20,8 @@ m_collisionSystem(in_collisionSystem)
 GameObject* GameObjectFactory::CreateGameObject()
 {
 	GameObject* newObject = new GameObject();
+
+	newObject->SetApplication(m_application);
 
 	newObject->SetRenderSystem(m_renderSystem);
 	newObject->SetStateManager(m_stateManager);

@@ -7,7 +7,7 @@ class GameObjectFactory
 {
 public:
 	GameObjectFactory();
-	GameObjectFactory(RenderSystem* in_renderSystem, StateManager* in_stateManager, InputManager* in_inputManager,
+	GameObjectFactory(Application* in_application, RenderSystem* in_renderSystem, StateManager* in_stateManager, InputManager* in_inputManager,
 		AudioSystem* in_audioSystem, CameraManager* in_cameraManager, CollisionSystem* in_collisionSystem);
 
 	GameObject* CreateGameObject();
@@ -18,6 +18,8 @@ public:
 	GameObject* Create3DGameObject(char* in_meshName, char* in_textureName);
 
 private:
+	Application* m_application;
+
 	RenderSystem* m_renderSystem;
 	StateManager* m_stateManager;
 	InputManager* m_inputManager;

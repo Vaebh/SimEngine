@@ -9,6 +9,8 @@
 #include <vector>
 #include <string>
 
+class Application;
+
 class RenderSystem;
 class AudioSystem;
 class CollisionSystem;
@@ -59,6 +61,9 @@ public:
 
 	#pragma region System Modules
 
+	inline Application* GetApplication() {return m_application;}
+	inline void SetApplication(Application* in_application) {m_application = in_application;}
+
 	inline RenderSystem* GetRenderSystem() {return m_renderSystem;}
 	inline void SetRenderSystem(RenderSystem* in_renderSystem) {m_renderSystem = in_renderSystem;}
 
@@ -97,7 +102,8 @@ private:
 
 	Vector3 m_velocity;
 
-	// Add getters for all of these
+	Application* m_application;
+
 	RenderSystem* m_renderSystem;
 	StateManager* m_stateManager;
 	InputManager* m_inputManager;

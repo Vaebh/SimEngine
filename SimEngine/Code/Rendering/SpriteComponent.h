@@ -23,20 +23,18 @@ public:
 protected:
 	virtual void Update(float in_dt);
 
-	void AddUniforms();
-
 	inline glm::vec2 GetUVs() {return m_uvs;}
+	const Vector2 GetDimensions();
 
-private:
 	void Initialise();
-	glm::mat4 CalculateModelMatrix();
-
+	void SetVertexData();
 	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
 
-protected:
-	float m_width;
-	float m_height;
+	void AddUniforms();
 
+	glm::mat4 CalculateModelMatrix();
+
+protected:
 	std::string m_textureName;
 
 private:

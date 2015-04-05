@@ -60,7 +60,7 @@ void Application::InitialiseSystems()
 
 	m_collisionSystem.reset(new CollisionSystem());
 
-	m_gameObjectFactory.reset(new GameObjectFactory(m_renderSystem.get(), m_stateManager.get(), m_inputManager.get(),
+	m_gameObjectFactory.reset(new GameObjectFactory(this, m_renderSystem.get(), m_stateManager.get(), m_inputManager.get(),
 		m_audioSystem.get(), m_cameraManager.get(), m_collisionSystem.get()));
 }
 
@@ -74,13 +74,12 @@ void Application::Update()
 	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
 	testModel->SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
-
 	GameObject* lightModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
 	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
 	lightModel->SetScale(Vector3(0.15f, 0.15f, 0.15f));
 
 	GameObject* spriteTest = m_gameObjectFactory->CreateSpriteGameObject("bros.png");
-	spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
+	//spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
 	spriteTest->SetScale(Vector3(0.2f, 0.2f, 0.2f));
 	//GameObject* spriteTest1 = m_gameObjectFactory->CreateSpriteGameObject("sample.png");
 
@@ -88,9 +87,9 @@ void Application::Update()
 
 	GameObject* thing = NULL;
 
-	Log().Get() << "Hello logging tool " << 6;
-	Log().Get() << "Second hello! " << 7;
-	Log().Get() << "OMG THIRD HELLO " << 8;
+	//Log().Get() << "Hello logging tool " << 6;
+	//Log().Get() << "Second hello! " << 7;
+	//Log().Get() << "OMG THIRD HELLO " << 8;
 
 	while(!GetWindow()->ShouldWindowClose())
 	{
