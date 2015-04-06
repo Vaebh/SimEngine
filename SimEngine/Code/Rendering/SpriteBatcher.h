@@ -12,13 +12,16 @@ either every frame or just until they're removed. Maybe batches are things you b
 and then you call the drawBatch function on each one. Maybe DrawBatch accepts a shader? SpriteBatcher should accept a FrameBuffer anyway
 */
 
+// TODO - Add removeSprite method
+// TODO - Rework the m_sprites datastructure to be less terrible
+
 class SpriteBatcher
 {
 public:
 	SpriteBatcher();
 	~SpriteBatcher();
 
-	void AddSprite(SpriteComponent* in_newSpriteComp, std::string in_texName);
+	void AddSprite(SpriteComponent* in_newSpriteComp);
 
 	void DrawBatch();
 

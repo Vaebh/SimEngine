@@ -36,21 +36,21 @@ SpriteBatcher::~SpriteBatcher()
 	m_activeShader.AddUniform("textureSprite");
 }*/
 
-void SpriteBatcher::AddSprite(SpriteComponent* in_newSpriteComp, std::string in_texName)
+void SpriteBatcher::AddSprite(SpriteComponent* in_newSpriteComp)
 {
 	// Check if we have a list for this texture already, if we do then add a new one for it
 	// if we don't then add a new list with it in it
 	std::vector< std::pair<std::string, std::list<SpriteComponent*>> >::iterator iter;
 	for(iter = m_sprites.begin(); iter != m_sprites.end(); ++iter)
 	{
-		if((*iter).first == in_texName)
+		if((*iter).first == in_newSpriteComp->GetTextureName())
 		{
 			(*iter).second.push_back(in_newSpriteComp);
 			return;
 		}
 	}
 
-	m_sprites.push_back( std::make_pair(in_texName, std::list<SpriteComponent*>()) );
+	m_sprites.push_back( std::make_pair(in_newSpriteComp->GetTextureName(), std::list<SpriteComponent*>()) );
 	m_sprites.back().second.push_back(in_newSpriteComp);
 }
 

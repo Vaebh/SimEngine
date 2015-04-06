@@ -1,6 +1,7 @@
 #ifndef GAME_OBJECT_FACTORY
 #define GAME_OBJECT_FACTORY
 
+#include "../Foundation/Foundation.h"
 #include "../Structure/GameObject.h"
 
 class GameObjectFactory
@@ -12,7 +13,7 @@ public:
 
 	GameObject* CreateGameObject();
 
-	GameObject* CreateSpriteGameObject(char* in_textureName);
+	GameObject* CreateSpriteGameObject(char* in_textureName, uint32_t in_numFrames);
 
 	// Should pass in a vector of textures when support for it is implemented
 	GameObject* Create3DGameObject(char* in_meshName, char* in_textureName);

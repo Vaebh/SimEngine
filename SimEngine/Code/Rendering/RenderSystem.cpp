@@ -31,6 +31,11 @@ void RenderSystem::Update(float in_dt)
 	
 }
 
+void RenderSystem::AddSpriteToBatch(SpriteComponent* in_sprite)
+{
+	m_spriteBatcher.AddSprite(in_sprite);
+}
+
 /*
 TODO
 - Batch sprites, notes above SpriteComponent.cpp's Draw function

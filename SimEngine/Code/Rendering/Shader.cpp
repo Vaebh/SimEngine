@@ -1,5 +1,5 @@
 #include "../Rendering/Shader.h"
-#include <iostream>
+#include "../Debug/Log.h"
 #include <fstream>
 
 #define DEBUG_PRINTING 0
@@ -91,9 +91,9 @@ void Shader::CreateShaderProgram(const std::string& in_vertexShaderSrc, const st
 
 	#if DEBUG_PRINTING == 1
 	if(glIsProgram(m_shaderProgram) == GL_TRUE)
-		std::cout << "isProgram success" << std::endl;
+		Log().Get() << "isProgram success";
 	else
-		std::cout << "isProgram fail" << std::endl;
+		Log().Get() << "isProgram fail";
 	#endif
 
 	return;
@@ -108,7 +108,7 @@ bool Shader::ShaderCompilationCheck(const GLuint in_vertexShader, const GLuint i
 	if(vertexStatus == GL_TRUE && fragmentStatus == GL_TRUE)
 	{
 		#if DEBUG_PRINTING == 1
-		std::cout << in_shaderName + " shader compilation SUCCESS" << std::endl;
+		Log().Get() << in_shaderName + " shader compilation SUCCESS";
 		#endif
 		return true;
 	}
@@ -117,17 +117,19 @@ bool Shader::ShaderCompilationCheck(const GLuint in_vertexShader, const GLuint i
 		if(vertexStatus == GL_FALSE)
 		{
 			#if DEBUG_PRINTING == 1
-			std::cout << "Vertex shader compilation FAILED" << std::endl;
+			Log().Get() << "Vertex shader compilation FAILED";
 			#endif
 		}
 		if(fragmentStatus == GL_FALSE)
 		{
 			#if DEBUG_PRINTING == 1
-			std::cout << "Fragment shader compilation FAILED" << std::endl;
+			Log().Get() << "Fragment shader compilation FAILED";
 			#endif
 		}
 
-		std::cout << "Invalid shaders" << std::endl;
+		#if DEBUG_PRINTING == 1
+		Log().Get() << "Invalid shaders";
+		#endif
 
 		return false;
 	}

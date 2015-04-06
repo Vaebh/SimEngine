@@ -9,6 +9,7 @@
 #include <vector>
 
 class IRenderableComponent;
+class SpriteComponent;
 
 class RenderSystem : public ISystem
 {
@@ -23,7 +24,8 @@ public:
 	void Draw();
 
 	inline TextureManager* GetTextureManager() {return &m_texManager;}
-	inline SpriteBatcher* GetSpriteBatcher() {return &m_spriteBatcher;}
+
+	void AddSpriteToBatch(SpriteComponent* in_sprite);
 
 private:
 	TextureManager m_texManager;

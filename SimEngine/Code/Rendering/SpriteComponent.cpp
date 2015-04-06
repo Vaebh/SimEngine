@@ -11,18 +11,21 @@
 #include "../Structure/GameObject.h"
 #include "../Structure/Window.h"
 
-#include <iostream>
-
 const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
 const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefault.txt";
 
-SpriteComponent::SpriteComponent(const std::string in_texture) :
+SpriteComponent::SpriteComponent(const std::string in_texture, const uint32_t in_numFrames) :
 IRenderableComponent(),
-m_uvs(glm::vec2(0)),
-m_textureName(in_texture)
+m_textureName(in_texture),
+m_numFrames(in_numFrames),
+m_currentFrame(0),
+m_frameWidth(0),
+m_animSpeed(0.1f),
+m_loopAnim(true),
+m_uvs(Vector2(0)),
+m_initialised(false)
 {
-	//Initialise();
-	//SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
+
 }
 
 SpriteComponent::~SpriteComponent()
@@ -32,19 +35,25 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Initialise()
 {
-	// Bind and send data to buffer
-	m_vertexBuffer = &(m_vao.GetVertexBuffer());
-
-	m_vertexBuffer->Bind();
+	SetTextureManager(GetOwner()->GetRenderSystem()->GetTextureManager());
+	SetTextures(m_textureName.c_str());
+	GetOwner()->GetRenderSystem()->AddSpriteToBatch(this);
 
 	SetVertexData();
+	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
+
+	m_initialised = true;
 }
 
 void SpriteComponent::SetVertexData()
 {
+	// Bind and send data to buffer
+	m_vertexBuffer = &(m_vao.GetVertexBuffer());
+	m_vertexBuffer->Bind();
+
 	Vector2 windowDimensions = GetOwner()->GetApplication()->GetWindow()->GetDimensions();
 
-	float halfClipWidth = GetDimensions().x / windowDimensions.x;
+	float halfClipWidth = (GetDimensions().x / m_numFrames) / windowDimensions.x;
 	float halfClipHeight = GetDimensions().y / windowDimensions.y;
 
 	const GLfloat VERTS[] = 
@@ -91,7 +100,7 @@ void SpriteComponent::SetShader(const std::string in_vertexShaderSrc, const std:
 void SpriteComponent::AddUniforms()
 {
 	m_shader.AddUniform("model");
-	m_shader.AddUniform("uv");
+	m_shader.AddUniform("frameInfo");
 	m_shader.AddUniform("textureSprite");
 }
 
@@ -99,13 +108,10 @@ void SpriteComponent::OnAttached(GameObject* in_gameObject)
 {
 	IRenderableComponent::OnAttached(in_gameObject);
 
-	SetTextureManager(in_gameObject->GetRenderSystem()->GetTextureManager());
-	SetTextures(m_textureName.c_str());
+	if(!m_initialised)
+		Initialise();
 
-	in_gameObject->GetRenderSystem()->GetSpriteBatcher()->AddSprite(this, m_textureName);
-
-	Initialise();
-	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
+	m_frameWidth = GetDimensions().x / (float)m_numFrames;
 }
 
 void SpriteComponent::OnDetached(GameObject* in_gameObject)
@@ -123,9 +129,31 @@ glm::mat4 SpriteComponent::CalculateModelMatrix()
 
 void SpriteComponent::Update(float in_dt)
 {
+	static float animTimer = 0;
 
+	animTimer += in_dt;
+
+	if(animTimer >= m_animSpeed)
+	{
+		animTimer = 0;
+
+		if(IsAnimLooping() && m_currentFrame >= m_numFrames - 1)
+			m_currentFrame = 0;
+		else if(m_currentFrame < m_numFrames)
+			m_currentFrame += 1;
+	}
 }
 
+Vector2 SpriteComponent::GetFrameInfo()
+{
+	float frameWidth = GetDimensions().x / (float)m_numFrames;
+
+	Vector2 frameInfo;
+	frameInfo.x = (frameWidth * m_currentFrame) / GetDimensions().x;
+	frameInfo.y = frameWidth / GetDimensions().x;
+
+	return frameInfo;
+}
 
 /* TODO
 Right now Sprites are being drawn as a square in the actual world. They should
@@ -137,22 +165,9 @@ up in the rendering order, so all sprites should be drawn last, in a batch.
 */
 void SpriteComponent::Draw()
 {
-	// Bind shader program
-	//m_shader.Use();
-
 	// Set shader uniforms
 	m_shader["model"]->SetMatrix(CalculateModelMatrix(), 1, GL_FALSE);
-	m_shader["uv"]->SetVec(GetUVs(), 1);
-
-	/*if(m_texture != NULL)
-	{
-		// Bind the texture
-		m_texture->Activate(GL_TEXTURE0);
-		m_texture->Bind();
-	}
-
-	// Bind vertex array
-	m_vao.Bind();*/
+	m_shader["frameInfo"]->SetVec(GetFrameInfo(), 1);
 }
 
 const Vector2 SpriteComponent::GetDimensions()

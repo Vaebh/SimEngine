@@ -78,9 +78,11 @@ void Application::Update()
 	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
 	lightModel->SetScale(Vector3(0.15f, 0.15f, 0.15f));
 
-	GameObject* spriteTest = m_gameObjectFactory->CreateSpriteGameObject("bros.png");
+	GameObject* spriteTest = m_gameObjectFactory->CreateGameObject();
+	SpriteComponent* newSprComp = new SpriteComponent("testAnim.png", 6);
+	spriteTest->Attach(newSprComp);
 	//spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
-	spriteTest->SetScale(Vector3(0.2f, 0.2f, 0.2f));
+	spriteTest->SetScale(Vector3(3.f, 3.f, 1.f));
 	//GameObject* spriteTest1 = m_gameObjectFactory->CreateSpriteGameObject("sample.png");
 
 	GameObject* thorModel = NULL;
