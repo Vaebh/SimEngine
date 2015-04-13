@@ -21,6 +21,10 @@ public:
 	SpriteBatcher();
 	~SpriteBatcher();
 
+	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
+
+	void AddUniforms();
+
 	void AddSprite(SpriteComponent* in_newSpriteComp);
 
 	void DrawBatch();
@@ -31,6 +35,15 @@ private:
 
 	VertexArray* m_activeVAO;
 	std::vector< std::pair<std::string, std::list<SpriteComponent*>> > m_sprites;
+
+	VertexArray m_vao;
+	Buffer m_vertexBuffer;
+
+	Buffer m_modelMatBuffer;
+	Buffer m_uvBuffer;
+
+	// TEMPORARY UNTIL SHADER MANAGER IS DONE
+	Shader m_shader;
 };
 
 #endif

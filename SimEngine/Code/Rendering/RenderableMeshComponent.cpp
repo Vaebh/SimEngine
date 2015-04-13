@@ -122,7 +122,7 @@ void RenderableMeshComponent::OnAttached(GameObject* in_gameObject)
 	IRenderableComponent::OnAttached(in_gameObject);
 
 	SetTextureManager(in_gameObject->GetRenderSystem()->GetTextureManager());
-	SetTextures(m_textureName.c_str());
+	//SetTextures(m_textureName.c_str());
 
 	in_gameObject->GetRenderSystem()->AddComponent(this);
 }

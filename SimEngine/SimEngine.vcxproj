@@ -38,6 +38,7 @@
     <ClInclude Include="Code\OpenGL\GLUtils.h" />
     <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h" />
     <ClInclude Include="Code\Rendering\Buffer.h" />
+    <ClInclude Include="Code\Rendering\Image.h" />
     <ClInclude Include="Code\Rendering\RenderableComponent.h" />
     <ClInclude Include="Code\Rendering\RenderableMeshComponent.h" />
     <ClInclude Include="Code\Rendering\RenderSystem.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="Code\OpenGL\GLUtils.cpp" />
     <ClCompile Include="Code\Rendering\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="Code\Rendering\Buffer.cpp" />
+    <ClCompile Include="Code\Rendering\Image.cpp" />
     <ClCompile Include="Code\Rendering\RenderableComponent.cpp" />
     <ClCompile Include="Code\Rendering\RenderableMeshComponent.cpp" />
     <ClCompile Include="Code\Rendering\RenderSystem.cpp" />
@@ -152,13 +154,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>F:\OpenGL\SimEngine\trunk\Dependancies\FMOD\inc;F:\OpenGL\SimEngine\trunk\Dependancies\glm\glm;F:\OpenGL\SimEngine\trunk\Dependancies\SOIL\src;F:\OpenGL\SimEngine\trunk\Dependancies\gl;F:\OpenGL\SimEngine\trunk\Dependancies\glew-1.10.0\include;F:\OpenGL\SimEngine\trunk\Dependancies\GLFW3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\OpenGL\SimEngine\trunk\Dependancies\FMOD\inc;F:\OpenGL\SimEngine\trunk\Dependancies\glm\glm;F:\OpenGL\SimEngine\trunk\Dependancies\SOIL\src;F:\OpenGL\SimEngine\trunk\Dependancies\gl;F:\OpenGL\SimEngine\trunk\Dependancies\glew-1.10.0\include;F:\OpenGL\SimEngine\trunk\Dependancies\GLFW3\include;F:\OpenGL\SimEngine\trunk\Dependancies\TinyXML2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>F:\OpenGL\SimEngine\trunk\Dependancies\FMOD\lib;F:\OpenGL\SimEngine\trunk\Dependancies\SOIL\lib;F:\OpenGL\SimEngine\trunk\Dependancies\gl\lib;F:\OpenGL\SimEngine\trunk\Dependancies\GLFW3\lib;F:\OpenGL\SimEngine\trunk\Dependancies\glew-1.10.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib;SOIL.lib;glew32.lib;glfw3.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\OpenGL\SimEngine\trunk\Dependancies\FMOD\lib;F:\OpenGL\SimEngine\trunk\Dependancies\SOIL\lib;F:\OpenGL\SimEngine\trunk\Dependancies\gl\lib;F:\OpenGL\SimEngine\trunk\Dependancies\GLFW3\lib;F:\OpenGL\SimEngine\trunk\Dependancies\glew-1.10.0\lib;F:\OpenGL\SimEngine\trunk\Dependancies\TinyXML2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>fmod_vc.lib;SOIL.lib;glew32.lib;glfw3.lib;OpenGL32.lib;tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

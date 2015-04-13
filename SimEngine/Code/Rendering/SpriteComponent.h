@@ -1,6 +1,8 @@
 #ifndef SPRITE_COMPONENT_SIMENGINE
 #define SPRITE_COMPONENT_SIMENGINE
 
+class Image;
+
 #include "../Foundation/Foundation.h"
 #include "../Rendering/RenderableComponent.h"
 #include <string>
@@ -18,7 +20,8 @@ public:
 
 	virtual void Draw();
 
-	inline std::string GetTextureName() {return m_textureName;}
+	inline const std::string GetImageName() const {return m_imageName;}
+	const std::string GetTextureName();
 
 	inline Texture* GetTexture() {return m_texture;}
 	void SetTexture(std::string in_newTex);
@@ -32,8 +35,7 @@ public:
 protected:
 	virtual void Update(float in_dt);
 
-	Vector2 GetFrameInfo();
-	const Vector2 GetDimensions();
+	glm::vec4 GetFrameInfo();
 
 	void Initialise();
 	void SetVertexData();
@@ -43,12 +45,19 @@ protected:
 
 	glm::mat4 CalculateModelMatrix();
 
+private:
+	// Sets the images up for either normal rendering or animation
+	void SetImages();
+
 protected:
-	std::string m_textureName;
+	Image* m_activeImage;
+	std::string m_imageName;
 
 	uint32_t m_numFrames;
 	uint32_t m_currentFrame;
 	uint32_t m_frameWidth;
+
+	std::vector<Image*> m_imageFrames;
 
 	// The animation speed in seconds;
 	float m_animSpeed;

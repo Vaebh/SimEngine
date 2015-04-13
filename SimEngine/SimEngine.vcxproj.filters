@@ -183,6 +183,9 @@
     <ClCompile Include="Code\Debug\Log.cpp">
       <Filter>Code\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Rendering\Image.cpp">
+      <Filter>Code\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Application\Game.h">
@@ -343,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="Code\Debug\Log.h">
       <Filter>Code\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Rendering\Image.h">
+      <Filter>Code\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

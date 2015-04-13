@@ -1,7 +1,10 @@
 #include "../Rendering/RenderableComponent.h"
 
+#include "../Rendering/Image.h"
 #include "../Rendering/Texture.h"
 #include "../Rendering/TextureManager.h"
+
+#include <cstdarg>
 
 IRenderableComponent::IRenderableComponent() : 
 m_vao(),
@@ -19,8 +22,37 @@ IRenderableComponent::~IRenderableComponent()
 	m_texManager->UnloadTexture(m_texture->GetName());
 }
 
-void IRenderableComponent::SetTextures(const char* in_texName1, const char* in_texName2, const char* in_texName3, const char* in_texName4)
+Image* IRenderableComponent::RequestImage(const char* in_imgName)
 {
 	// TODO - Change something as this does not in any way unload the texture that was previously used
-	m_texture = m_texManager->LoadTexture(in_texName1);
+	// TODO - Change as this will set the active texture to be whatever the first image loaded in is
+	Image* newImage = m_texManager->RequestImage(in_imgName);
+	if(m_texture == NULL && newImage != NULL)
+		m_texture = newImage->GetTexture();
+
+	return newImage;
+}
+
+#include "../Debug/Log.h"
+std::vector<Image*> IRenderableComponent::RequestImages(uint32_t in_numArgs, ...)
+{
+	va_list args;
+    va_start(args, in_numArgs);
+
+	std::vector<Image*> requestedImages;
+
+	for(int i = 0; i < in_numArgs; ++i)
+	{
+		const char* imgName = va_arg(args, const char*);
+		Image* const reqImage = m_texManager->RequestImage(imgName);
+
+		if(reqImage != NULL)
+			requestedImages.push_back(reqImage);
+
+		Log().Get() << imgName;
+	}
+
+	va_end(args);
+
+	return requestedImages;
 }

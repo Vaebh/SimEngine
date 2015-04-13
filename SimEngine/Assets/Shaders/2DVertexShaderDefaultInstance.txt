@@ -1,0 +1,13 @@
+#version 150
+in vec2 texcoord;
+in vec4 position;
+in mat4 World;
+flat in vec4 spriteFrame;
+
+out vec2 Texcoord;
+
+void main()
+{
+	Texcoord = vec2(spriteFrame.xy + (texcoord * spriteFrame.zw));
+	gl_Position = World * position;
+}

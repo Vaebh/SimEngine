@@ -2,10 +2,14 @@
 #define RENDERABLECOMPONENT_SIMENGINE
 
 class Buffer;
+class Image;
 class Texture;
 class TextureManager;
 
+#include "../Foundation/Foundation.h"
+
 #include "../Structure/Component.h"
+
 #include "../Rendering/Shader.h"
 #include "../Rendering/VertexArray.h"
 
@@ -22,7 +26,8 @@ public:
 	inline Shader& GetShader() {return m_shader;}
 
 	inline void SetTextureManager(TextureManager* in_texManager) {m_texManager = in_texManager;}
-	void SetTextures(const char* in_texName1, const char* in_texName2 = "", const char* in_texName3 = "", const char* in_texName4 = "");
+	Image* RequestImage(const char* in_imgName);
+	std::vector<Image*> RequestImages(uint32_t in_numArgs, ...);
 
 	inline bool IsVisible() const {return m_visible;}
 	inline void SetVisible(bool in_isVisible) {m_visible = in_isVisible;}
@@ -42,7 +47,7 @@ protected:
 
 	Shader m_shader;
 
-	// TODO - Expand to support a set number of textures
+	// NOOOOOO Meshes don't need multiple images only sprites dooooooo
 	Texture* m_texture;
 	TextureManager* m_texManager;
 

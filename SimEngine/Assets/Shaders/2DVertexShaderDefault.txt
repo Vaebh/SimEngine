@@ -5,10 +5,10 @@ in vec4 position;
 out vec2 Texcoord;
 
 uniform mat4 model;
-uniform vec2 frameInfo;
+uniform vec4 spriteFrame;
 
 void main()
 {
-	Texcoord = vec2(frameInfo.x + (texcoord.x * frameInfo.y), texcoord.y);
+	Texcoord = vec2(spriteFrame.xy + (texcoord * spriteFrame.zw));
 	gl_Position = model * position;
 }

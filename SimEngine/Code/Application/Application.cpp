@@ -70,19 +70,19 @@ void Application::Update()
 
 	float fpsTimer = 0;
 
-	GameObject* testModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
+	//GameObject* testModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
 	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
-	testModel->SetScale(Vector3(0.5f, 0.5f, 0.5f));
+	//testModel->SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
-	GameObject* lightModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
+	//GameObject* lightModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
 	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
-	lightModel->SetScale(Vector3(0.15f, 0.15f, 0.15f));
+	//lightModel->SetScale(Vector3(0.15f, 0.15f, 0.15f));
 
 	GameObject* spriteTest = m_gameObjectFactory->CreateGameObject();
-	SpriteComponent* newSprComp = new SpriteComponent("testAnim.png", 6);
+	SpriteComponent* newSprComp = new SpriteComponent("testAnim", 6);
 	spriteTest->Attach(newSprComp);
 	//spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
-	spriteTest->SetScale(Vector3(3.f, 3.f, 1.f));
+	//spriteTest->SetScale(Vector3(3.f, 3.f, 1.f));
 	//GameObject* spriteTest1 = m_gameObjectFactory->CreateSpriteGameObject("sample.png");
 
 	GameObject* thorModel = NULL;
@@ -113,7 +113,7 @@ void Application::Update()
 				//delete testModel;
 				//testModel = NULL;
 
-				thing = testModel;
+				//thing = testModel;
 
 				thorModel = m_gameObjectFactory->Create3DGameObject("thor.bin", "bros.png");
 				thorModel->MovePosition(Vector3(0.5f, 0.f, 0.f));
@@ -121,16 +121,16 @@ void Application::Update()
 			}
 		}
 
-		if(testModel != NULL)
-			testModel->Update(m_dt);
+		//if(testModel != NULL)
+			//testModel->Update(m_dt);
 
 		if(thorModel != NULL)
 			thorModel->Update(m_dt);
 
 		spriteTest->Update(m_dt);
 
-		lightModel->Update(m_dt);
-		lightModel->SetPosition(testModel->GetComponent<RenderableMeshComponent>()->m_lightPos);
+		////lightModel->Update(m_dt);
+		//lightModel->SetPosition(testModel->GetComponent<RenderableMeshComponent>()->m_lightPos);
 
 		m_inputManager->Update(m_dt);
 		m_stateManager->Update(m_dt);

@@ -1,22 +1,31 @@
+#include "../Rendering/SpriteComponent.h"
+
 #include "../Application/Application.h"
 
+#include "../Debug/Log.h"
+
 #include "../Foundation/Foundation.h"
+#include "../Foundation/StringUtils.h"
 
 #include "../OpenGL/GLUtils.h"
 
-#include "../Rendering/SpriteComponent.h"
+#include "../Rendering/Image.h"
 #include "../Rendering/RenderSystem.h"
 #include "../Rendering/Texture.h"
 
 #include "../Structure/GameObject.h"
 #include "../Structure/Window.h"
 
-const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
-const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefault.txt";
+namespace
+{
+	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
+	const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefault.txt";
+}
 
-SpriteComponent::SpriteComponent(const std::string in_texture, const uint32_t in_numFrames) :
+SpriteComponent::SpriteComponent(const std::string in_imageName, const uint32_t in_numFrames) :
 IRenderableComponent(),
-m_textureName(in_texture),
+m_activeImage(NULL),
+m_imageName(in_imageName),
 m_numFrames(in_numFrames),
 m_currentFrame(0),
 m_frameWidth(0),
@@ -25,7 +34,7 @@ m_loopAnim(true),
 m_uvs(Vector2(0)),
 m_initialised(false)
 {
-
+	m_imageFrames.reserve(m_numFrames);
 }
 
 SpriteComponent::~SpriteComponent()
@@ -36,13 +45,32 @@ SpriteComponent::~SpriteComponent()
 void SpriteComponent::Initialise()
 {
 	SetTextureManager(GetOwner()->GetRenderSystem()->GetTextureManager());
-	SetTextures(m_textureName.c_str());
+	SetImages();
 	GetOwner()->GetRenderSystem()->AddSpriteToBatch(this);
 
 	SetVertexData();
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 
 	m_initialised = true;
+}
+
+void SpriteComponent::SetImages()
+{
+	for(int i = 0; i < m_numFrames; ++i)
+	{
+		Image* newImage = RequestImage((m_imageName + ConvertNumber(i + 1)).c_str());
+
+		if(newImage != NULL)
+			m_imageFrames.push_back(newImage);
+		else
+		{
+			Log().Get() << m_numFrames << " sprite frames requested, only " << i << " frames found.";
+			m_numFrames = i;
+		}
+	}
+
+	if(!m_imageFrames.empty())
+		m_activeImage = m_imageFrames[0];
 }
 
 void SpriteComponent::SetVertexData()
@@ -53,10 +81,10 @@ void SpriteComponent::SetVertexData()
 
 	Vector2 windowDimensions = GetOwner()->GetApplication()->GetWindow()->GetDimensions();
 
-	float halfClipWidth = (GetDimensions().x / m_numFrames) / windowDimensions.x;
-	float halfClipHeight = GetDimensions().y / windowDimensions.y;
+	float halfClipWidth = (m_activeImage->GetTexture()->GetDimensions().x / m_numFrames) / windowDimensions.x;
+	float halfClipHeight = m_activeImage->GetTexture()->GetDimensions().y / windowDimensions.y;
 
-	const GLfloat VERTS[] = 
+	/*const GLfloat VERTS[] = 
 	{	// position							  //texcoords
 		-halfClipWidth, halfClipHeight, 0.0f, 1.0f,  0.0f, 0.0f,
 		halfClipWidth, halfClipHeight, 0.0f, 1.0f,  1.0f, 0.0f,
@@ -65,6 +93,17 @@ void SpriteComponent::SetVertexData()
 		halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  1.0f, 1.0f,
 		-halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  0.0f, 1.0f,
 		-halfClipWidth, halfClipHeight, 0.0f, 1.0f,  0.0f, 0.0f
+	};*/
+
+	const GLfloat VERTS[] = 
+	{	// position							  //texcoords
+		-0.5, 0.5, 0.0f, 1.0f,  0.0f, 0.0f,
+		0.5, 0.5, 0.0f, 1.0f,  1.0f, 0.0f,
+		0.5, -0.5, 0.0f, 1.0f,  1.0f, 1.0f,
+
+		0.5, -0.5, 0.0f, 1.0f,  1.0f, 1.0f,
+		-0.5, -0.5, 0.0f, 1.0f,  0.0f, 1.0f,
+		-0.5, 0.5, 0.0f, 1.0f,  0.0f, 0.0f
 	};
 
 	m_vertexBuffer->SetData(sizeof(VERTS), VERTS);
@@ -100,7 +139,7 @@ void SpriteComponent::SetShader(const std::string in_vertexShaderSrc, const std:
 void SpriteComponent::AddUniforms()
 {
 	m_shader.AddUniform("model");
-	m_shader.AddUniform("frameInfo");
+	m_shader.AddUniform("spriteFrame");
 	m_shader.AddUniform("textureSprite");
 }
 
@@ -111,7 +150,7 @@ void SpriteComponent::OnAttached(GameObject* in_gameObject)
 	if(!m_initialised)
 		Initialise();
 
-	m_frameWidth = GetDimensions().x / (float)m_numFrames;
+	m_frameWidth = m_activeImage->GetDimensions().x / (float)m_numFrames;
 }
 
 void SpriteComponent::OnDetached(GameObject* in_gameObject)
@@ -129,6 +168,7 @@ glm::mat4 SpriteComponent::CalculateModelMatrix()
 
 void SpriteComponent::Update(float in_dt)
 {
+	// TODO - Redo this whole animation thing to work with separate images instead of the same texture
 	static float animTimer = 0;
 
 	animTimer += in_dt;
@@ -138,21 +178,43 @@ void SpriteComponent::Update(float in_dt)
 		animTimer = 0;
 
 		if(IsAnimLooping() && m_currentFrame >= m_numFrames - 1)
+		{
 			m_currentFrame = 0;
+			m_activeImage = m_imageFrames[m_currentFrame];
+		}
 		else if(m_currentFrame < m_numFrames)
+		{
 			m_currentFrame += 1;
+			m_activeImage = m_imageFrames[m_currentFrame];
+		}
 	}
 }
-
-Vector2 SpriteComponent::GetFrameInfo()
+#include "../Debug/Log.h"
+glm::vec4 SpriteComponent::GetFrameInfo()
 {
-	float frameWidth = GetDimensions().x / (float)m_numFrames;
+	float frameWidth = m_activeImage->GetDimensions().x / (float)m_numFrames;
 
 	Vector2 frameInfo;
-	frameInfo.x = (frameWidth * m_currentFrame) / GetDimensions().x;
-	frameInfo.y = frameWidth / GetDimensions().x;
+	frameInfo.x = (frameWidth * m_currentFrame) / m_activeImage->GetDimensions().x;
+	frameInfo.y = frameWidth / m_activeImage->GetDimensions().x;
 
-	return frameInfo;
+	//return frameInfo;
+
+	/*Vector2 uvs;
+
+	m_imageFrames[m_currentFrame-1]->GetUVs();*/
+
+	//Log().Get() << "m_activeImage->GetUVs().x: " << m_activeImage->GetUVs().x;
+	//Log().Get() << "m_activeImage->GetUVs().y: " << m_activeImage->GetUVs().y;
+
+	
+	Vector2 widthHeight;
+	widthHeight.x = m_activeImage->GetDimensions().x / GetTexture()->GetDimensions().x;
+	widthHeight.y = m_activeImage->GetDimensions().y / GetTexture()->GetDimensions().y;
+
+	glm::vec4 theFrameInfo = glm::vec4(m_activeImage->GetUVs(), widthHeight);
+	return theFrameInfo;//m_activeImage->GetUVs();
+	//return Vector2(0,0);
 }
 
 /* TODO
@@ -165,12 +227,20 @@ up in the rendering order, so all sprites should be drawn last, in a batch.
 */
 void SpriteComponent::Draw()
 {
+	//m_shader.Use();
+	//m_texture->Activate(GL_TEXTURE0);
+	//m_texture->Bind();
+
+	//m_vao.Bind();
+
 	// Set shader uniforms
 	m_shader["model"]->SetMatrix(CalculateModelMatrix(), 1, GL_FALSE);
-	m_shader["frameInfo"]->SetVec(GetFrameInfo(), 1);
+	m_shader["spriteFrame"]->SetVec(GetFrameInfo(), 1);
+
+	//glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-const Vector2 SpriteComponent::GetDimensions()
+const std::string SpriteComponent::GetTextureName()
 {
-	return GetTexture()->GetDimensions();
+	return GetTexture()->GetName();
 }
