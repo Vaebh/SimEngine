@@ -137,7 +137,7 @@ Texture* TextureManager::LoadTextureFromFile(const GLchar* in_texName)
 
 	Texture* newTexture = new Texture(in_texName, texture, GL_TEXTURE_2D, Vector2(width, height), this);
 	
-	m_textureCache[in_texName] = std::make_pair<Texture*, uint32_t>(newTexture, 0);
+	m_textureCache[in_texName] = std::make_pair<Texture*&, uint32_t>(newTexture, 0);
 
 	return newTexture;
 }

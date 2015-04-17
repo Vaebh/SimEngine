@@ -5,6 +5,8 @@
 #include "../Foundation/Foundation.h"
 #include "../Structure/State.h"
 
+#include <memory>
+
 class StateVictory : public IState
 {
 public:

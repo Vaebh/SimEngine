@@ -6,6 +6,8 @@
 #include "../Foundation/Foundation.h"
 #include "../Events/EventMessenger.h"
 
+#include <memory>
+
 class ComponentBallController : public IComponent
 {
 public:
