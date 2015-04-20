@@ -64,6 +64,8 @@ void Application::InitialiseSystems()
 		m_audioSystem.get(), m_cameraManager.get(), m_collisionSystem.get()));
 }
 
+#include "../Rendering/AnimationClip.h"
+
 void Application::Update()
 {
 	double oldDt = 0;
@@ -79,8 +81,12 @@ void Application::Update()
 	//lightModel->SetScale(Vector3(0.15f, 0.15f, 0.15f));
 
 	GameObject* spriteTest = m_gameObjectFactory->CreateGameObject();
-	SpriteComponent* newSprComp = new SpriteComponent("testAnim", 6);
+	SpriteComponent* newSprComp = new SpriteComponent("testAnim1", 1);
 	spriteTest->Attach(newSprComp);
+	
+	AnimationClip* newClip = new AnimationClip("name", newSprComp->RequestImages(6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6"));
+	newSprComp->m_activeAnimation = newClip;
+
 	//spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
 	//spriteTest->SetScale(Vector3(3.f, 3.f, 1.f));
 	//GameObject* spriteTest1 = m_gameObjectFactory->CreateSpriteGameObject("sample.png");

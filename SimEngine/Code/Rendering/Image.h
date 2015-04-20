@@ -17,6 +17,9 @@ public:
 	inline const Vector2 GetDimensions() {return m_dimensions;}
 	inline void SetDimensions(Vector2 in_dimensions) {m_dimensions = in_dimensions;}
 
+	inline const Vector2 GetPercentOfTexture() { return m_percentOfTexture; }
+	void SetPercentOfTexture();
+
 	inline Texture* GetTexture() {return m_texture;}
 
 private:
@@ -24,6 +27,7 @@ private:
 
 	Vector2 m_uvs;
 	Vector2 m_dimensions;
+	Vector2 m_percentOfTexture;
 
 	Texture* m_texture;
 };

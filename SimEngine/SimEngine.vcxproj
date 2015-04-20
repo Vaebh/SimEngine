@@ -37,6 +37,7 @@
     <ClInclude Include="Code\OpenGL\GLIncludes.h" />
     <ClInclude Include="Code\OpenGL\GLUtils.h" />
     <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h" />
+    <ClInclude Include="Code\Rendering\AnimationClip.h" />
     <ClInclude Include="Code\Rendering\Buffer.h" />
     <ClInclude Include="Code\Rendering\Image.h" />
     <ClInclude Include="Code\Rendering\RenderableComponent.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="Code\Input\InputManager.cpp" />
     <ClCompile Include="Code\OpenGL\GLUtils.cpp" />
     <ClCompile Include="Code\Rendering\AnimatedSpriteComponent.cpp" />
+    <ClCompile Include="Code\Rendering\AnimationClip.cpp" />
     <ClCompile Include="Code\Rendering\Buffer.cpp" />
     <ClCompile Include="Code\Rendering\Image.cpp" />
     <ClCompile Include="Code\Rendering\RenderableComponent.cpp" />

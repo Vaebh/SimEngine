@@ -59,19 +59,19 @@ void BounceComponent::OnCollision(CollisionComponent* inComponent, Vector3 inCol
 
 	if(m_owner->GetPosition().x > inComponent->mBoundingBox.right)
 	{
-		dirVec = X_UNIT_POSITIVE;
+		dirVec = X_UNIT_POSITIVE3;
 	}
 	else if(m_owner->GetPosition().x < inComponent->mBoundingBox.left)
 	{
-		dirVec = X_UNIT_NEGATIVE;
+		dirVec = X_UNIT_NEGATIVE3;
 	}
 	else if(m_owner->GetPosition().y > inComponent->mBoundingBox.top)
 	{
-		dirVec = Y_UNIT_POSITIVE;
+		dirVec = Y_UNIT_POSITIVE3;
 	}
 	else if(m_owner->GetPosition().y < inComponent->mBoundingBox.bottom)
 	{
-		dirVec = Y_UNIT_NEGATIVE;
+		dirVec = Y_UNIT_NEGATIVE3;
 	}
 
 	if(m_owner->GetVelocity() != Vector3())

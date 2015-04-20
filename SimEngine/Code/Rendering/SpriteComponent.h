@@ -5,14 +5,16 @@ class Image;
 
 #include "../Foundation/Foundation.h"
 #include "../Rendering/RenderableComponent.h"
+
+#include <map>
 #include <string>
 
-// TODO - Sprites should be as big onscreen by default as their actual texture pixel width and depth
+class AnimationClip;
 
 class SpriteComponent : public IRenderableComponent
 {
 public:
-	SpriteComponent(const std::string in_texture = "sample.png", const uint32_t in_numFrames = 1);
+	SpriteComponent(const std::string in_texture = "bros.png", const uint32_t in_numFrames = 1);
 	~SpriteComponent();
 
 	virtual void OnAttached(GameObject* in_gameObject);
@@ -32,6 +34,9 @@ public:
 	inline const bool IsAnimLooping() const {return m_loopAnim;}
 	inline void SetLooping(bool in_looping) {m_loopAnim = in_looping;}
 
+	// temp for testing
+	AnimationClip* m_activeAnimation;
+
 protected:
 	virtual void Update(float in_dt);
 
@@ -45,9 +50,11 @@ protected:
 
 	glm::mat4 CalculateModelMatrix();
 
+	void SetImageScale();
+
 private:
 	// Sets the images up for either normal rendering or animation
-	void SetImages();
+	bool SetImages();
 
 protected:
 	Image* m_activeImage;
@@ -55,7 +62,6 @@ protected:
 
 	uint32_t m_numFrames;
 	uint32_t m_currentFrame;
-	uint32_t m_frameWidth;
 
 	std::vector<Image*> m_imageFrames;
 
@@ -67,6 +73,9 @@ protected:
 
 private:
 	bool m_initialised;
+	Vector3 m_imageScale;
+
+	std::map <std::string, AnimationClip*> m_animationClips;
 };
 
 #endif

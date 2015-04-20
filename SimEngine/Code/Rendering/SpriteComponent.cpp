@@ -9,6 +9,7 @@
 
 #include "../OpenGL/GLUtils.h"
 
+#include "../Rendering/AnimationClip.h"
 #include "../Rendering/Image.h"
 #include "../Rendering/RenderSystem.h"
 #include "../Rendering/Texture.h"
@@ -20,6 +21,19 @@ namespace
 {
 	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
 	const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefault.txt";
+
+	const GLfloat VERTS[] =
+	{	// position				//texcoords
+		-1.0, 1.0, 0.0f, 1.0f, 0.0f, 0.0f,
+		1.0, 1.0, 0.0f, 1.0f, 1.0f, 0.0f,
+		1.0, -1.0, 0.0f, 1.0f, 1.0f, 1.0f,
+
+		1.0, -1.0, 0.0f, 1.0f, 1.0f, 1.0f,
+		-1.0, -1.0, 0.0f, 1.0f, 0.0f, 1.0f,
+		-1.0, 1.0, 0.0f, 1.0f, 0.0f, 0.0f
+	};
+
+	float animTimer = 0.f;
 }
 
 SpriteComponent::SpriteComponent(const std::string in_imageName, const uint32_t in_numFrames) :
@@ -28,11 +42,12 @@ m_activeImage(NULL),
 m_imageName(in_imageName),
 m_numFrames(in_numFrames),
 m_currentFrame(0),
-m_frameWidth(0),
 m_animSpeed(0.1f),
 m_loopAnim(true),
-m_uvs(Vector2(0)),
-m_initialised(false)
+m_uvs(),
+m_initialised(false),
+m_imageScale(),
+m_activeAnimation(NULL)
 {
 	m_imageFrames.reserve(m_numFrames);
 }
@@ -45,7 +60,8 @@ SpriteComponent::~SpriteComponent()
 void SpriteComponent::Initialise()
 {
 	SetTextureManager(GetOwner()->GetRenderSystem()->GetTextureManager());
-	SetImages();
+	if (!SetImages())
+		return;
 	GetOwner()->GetRenderSystem()->AddSpriteToBatch(this);
 
 	SetVertexData();
@@ -54,23 +70,51 @@ void SpriteComponent::Initialise()
 	m_initialised = true;
 }
 
-void SpriteComponent::SetImages()
+bool SpriteComponent::SetImages()
 {
-	for(int i = 0; i < m_numFrames; ++i)
+	if (m_numFrames == 1)
 	{
-		Image* newImage = RequestImage((m_imageName + ConvertNumber(i + 1)).c_str());
+		Image* const newImage = RequestImage(m_imageName.c_str());
 
-		if(newImage != NULL)
-			m_imageFrames.push_back(newImage);
-		else
+		if (newImage != NULL)
+			m_activeImage = newImage;
+	}
+	else
+	{
+		for(int i = 0; i < m_numFrames; ++i)
 		{
-			Log().Get() << m_numFrames << " sprite frames requested, only " << i << " frames found.";
-			m_numFrames = i;
+			Image* const newImage = RequestImage((m_imageName + ConvertNumber(i + 1)).c_str());
+
+			if(newImage != NULL)
+				m_imageFrames.push_back(newImage);
+			else
+			{
+				Log().Get() << m_numFrames << " sprite frames requested, only " << i << " frames found.";
+				m_numFrames = i;
+				break;
+			}
+		}
+
+		if (!m_imageFrames.empty())
+		{
+			m_activeImage = m_imageFrames[0];
 		}
 	}
 
-	if(!m_imageFrames.empty())
-		m_activeImage = m_imageFrames[0];
+	if (m_activeImage != NULL)
+		SetImageScale();
+	else
+		return false;
+}
+
+void SpriteComponent::SetImageScale()
+{
+	Vector2 windowDimensions = GetOwner()->GetApplication()->GetWindow()->GetDimensions();
+
+	float clipWidth = m_activeImage->GetDimensions().x / windowDimensions.x;
+	float clipHeight = m_activeImage->GetDimensions().y / windowDimensions.y;
+
+	m_imageScale = Vector3(clipWidth, clipHeight, 1.f);
 }
 
 void SpriteComponent::SetVertexData()
@@ -78,33 +122,6 @@ void SpriteComponent::SetVertexData()
 	// Bind and send data to buffer
 	m_vertexBuffer = &(m_vao.GetVertexBuffer());
 	m_vertexBuffer->Bind();
-
-	Vector2 windowDimensions = GetOwner()->GetApplication()->GetWindow()->GetDimensions();
-
-	float halfClipWidth = (m_activeImage->GetTexture()->GetDimensions().x / m_numFrames) / windowDimensions.x;
-	float halfClipHeight = m_activeImage->GetTexture()->GetDimensions().y / windowDimensions.y;
-
-	/*const GLfloat VERTS[] = 
-	{	// position							  //texcoords
-		-halfClipWidth, halfClipHeight, 0.0f, 1.0f,  0.0f, 0.0f,
-		halfClipWidth, halfClipHeight, 0.0f, 1.0f,  1.0f, 0.0f,
-		halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  1.0f, 1.0f,
-
-		halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  1.0f, 1.0f,
-		-halfClipWidth, -halfClipHeight, 0.0f, 1.0f,  0.0f, 1.0f,
-		-halfClipWidth, halfClipHeight, 0.0f, 1.0f,  0.0f, 0.0f
-	};*/
-
-	const GLfloat VERTS[] = 
-	{	// position							  //texcoords
-		-0.5, 0.5, 0.0f, 1.0f,  0.0f, 0.0f,
-		0.5, 0.5, 0.0f, 1.0f,  1.0f, 0.0f,
-		0.5, -0.5, 0.0f, 1.0f,  1.0f, 1.0f,
-
-		0.5, -0.5, 0.0f, 1.0f,  1.0f, 1.0f,
-		-0.5, -0.5, 0.0f, 1.0f,  0.0f, 1.0f,
-		-0.5, 0.5, 0.0f, 1.0f,  0.0f, 0.0f
-	};
 
 	m_vertexBuffer->SetData(sizeof(VERTS), VERTS);
 }
@@ -149,8 +166,6 @@ void SpriteComponent::OnAttached(GameObject* in_gameObject)
 
 	if(!m_initialised)
 		Initialise();
-
-	m_frameWidth = m_activeImage->GetDimensions().x / (float)m_numFrames;
 }
 
 void SpriteComponent::OnDetached(GameObject* in_gameObject)
@@ -162,59 +177,42 @@ void SpriteComponent::OnDetached(GameObject* in_gameObject)
 glm::mat4 SpriteComponent::CalculateModelMatrix()
 {
 	glm::mat4 model(1.f);
-	model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->GetScale());
+
+	model = glm::translate(model, GetOwner()->GetPosition()) * glm::scale(model, GetOwner()->GetScale()) * glm::scale(model, m_imageScale);
 	return model;
 }
 
 void SpriteComponent::Update(float in_dt)
 {
-	// TODO - Redo this whole animation thing to work with separate images instead of the same texture
-	static float animTimer = 0;
+	if (m_activeAnimation != NULL)
+		m_activeImage = m_activeAnimation->Update(in_dt);
 
-	animTimer += in_dt;
-
-	if(animTimer >= m_animSpeed)
+	/*if (m_numFrames > 1)
 	{
-		animTimer = 0;
+		animTimer += in_dt;
 
-		if(IsAnimLooping() && m_currentFrame >= m_numFrames - 1)
+		if(animTimer >= m_animSpeed)
 		{
-			m_currentFrame = 0;
-			m_activeImage = m_imageFrames[m_currentFrame];
+			animTimer = 0;
+
+			if(IsAnimLooping() && m_currentFrame >= m_numFrames - 1)
+			{
+				m_currentFrame = 0;
+				m_activeImage = m_imageFrames[m_currentFrame];
+			}
+			else if(m_currentFrame < m_numFrames)
+			{
+				m_currentFrame += 1;
+				m_activeImage = m_imageFrames[m_currentFrame];
+			}
 		}
-		else if(m_currentFrame < m_numFrames)
-		{
-			m_currentFrame += 1;
-			m_activeImage = m_imageFrames[m_currentFrame];
-		}
-	}
+	}*/
 }
-#include "../Debug/Log.h"
+
 glm::vec4 SpriteComponent::GetFrameInfo()
 {
-	float frameWidth = m_activeImage->GetDimensions().x / (float)m_numFrames;
-
-	Vector2 frameInfo;
-	frameInfo.x = (frameWidth * m_currentFrame) / m_activeImage->GetDimensions().x;
-	frameInfo.y = frameWidth / m_activeImage->GetDimensions().x;
-
-	//return frameInfo;
-
-	/*Vector2 uvs;
-
-	m_imageFrames[m_currentFrame-1]->GetUVs();*/
-
-	//Log().Get() << "m_activeImage->GetUVs().x: " << m_activeImage->GetUVs().x;
-	//Log().Get() << "m_activeImage->GetUVs().y: " << m_activeImage->GetUVs().y;
-
-	
-	Vector2 widthHeight;
-	widthHeight.x = m_activeImage->GetDimensions().x / GetTexture()->GetDimensions().x;
-	widthHeight.y = m_activeImage->GetDimensions().y / GetTexture()->GetDimensions().y;
-
-	glm::vec4 theFrameInfo = glm::vec4(m_activeImage->GetUVs(), widthHeight);
-	return theFrameInfo;//m_activeImage->GetUVs();
-	//return Vector2(0,0);
+	glm::vec4 theFrameInfo = glm::vec4(m_activeImage->GetUVs(), m_activeImage->GetPercentOfTexture());
+	return theFrameInfo;
 }
 
 /* TODO

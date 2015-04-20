@@ -3,7 +3,7 @@
 Camera::Camera() :
 m_viewMatrix(glm::mat4()),
 m_position(Vector3(1.5f, 1.5f, 1.5f)),
-m_target(ZERO),
+m_target(VECTOR3_ZERO),
 m_viewMatrixChanged(true)
 {
 	CalculateViewMatrix();

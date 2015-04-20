@@ -1,5 +1,7 @@
 #include "../Rendering/RenderableComponent.h"
 
+#include "../Debug/Log.h"
+
 #include "../Rendering/Image.h"
 #include "../Rendering/Texture.h"
 #include "../Rendering/TextureManager.h"
@@ -33,7 +35,6 @@ Image* IRenderableComponent::RequestImage(const char* in_imgName)
 	return newImage;
 }
 
-#include "../Debug/Log.h"
 std::vector<Image*> IRenderableComponent::RequestImages(uint32_t in_numArgs, ...)
 {
 	va_list args;

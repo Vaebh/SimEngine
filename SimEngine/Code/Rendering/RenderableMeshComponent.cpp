@@ -27,7 +27,7 @@ RenderableMeshComponent::RenderableMeshComponent(const char* in_meshName, const 
 IRenderableComponent(),
 m_meshName(in_meshName),
 m_textureName(in_textureName),
-m_lightPos(ZERO)
+m_lightPos(VECTOR3_ZERO)
 {
 	Initialise();
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);

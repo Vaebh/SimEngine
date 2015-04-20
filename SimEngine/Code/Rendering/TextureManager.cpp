@@ -29,14 +29,13 @@ void TextureManager::LoadTextureAtlas(const char* in_atlasName)
 {
 	// TODO - Change so it supports more than pngs
 	std::string texturePath = ParseText(in_atlasName, ".")[0] + ".png";
-	Texture* newTexture = LoadTexture(texturePath.c_str());
+	Texture* const newTexture = LoadTexture(texturePath.c_str());
 
 	tinyxml2::XMLDocument atlasDoc;
 	std::string path = ATLAS_PATH + in_atlasName;
-	Log().Get() << path;
-	bool docOkay = atlasDoc.LoadFile( path.c_str() );
+	bool docBad = atlasDoc.LoadFile( path.c_str() );
 
-	//if(docOkay)
+	if (!docBad)
 	{
 		tinyxml2::XMLElement* textureAtlasElement = atlasDoc.FirstChildElement("TextureAtlas");
 		tinyxml2::XMLNode* spriteElement = textureAtlasElement->FirstChild();
@@ -57,13 +56,9 @@ void TextureManager::LoadTextureAtlas(const char* in_atlasName)
 			float uvthex = uvX / newTexture->GetDimensions().x;
 			float uvthey = uvY / newTexture->GetDimensions().y;
 
-			Log().Get() << "uvthex: " << uvthex;
-			Log().Get() << "uvthey: " << uvthey;
-
-			Image* newImage = new Image((char*)spriteName.c_str(), Vector2(uvthex, uvthey), Vector2(width, height), newTexture);
+			Image* const newImage = new Image((char*)spriteName.c_str(), Vector2(uvthex, uvthey), Vector2(width, height), newTexture);
 			m_imageMap[spriteName] = newImage;
 
-			Log().Get() << spriteName;
 			spriteElement = spriteElement->NextSibling();
 		}
 	}
