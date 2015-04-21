@@ -21,14 +21,12 @@ m_visible(true)
 
 IRenderableComponent::~IRenderableComponent()
 {
-	m_texManager->UnloadTexture(m_texture->GetName());
+	
 }
 
 Image* IRenderableComponent::RequestImage(const char* in_imgName)
 {
-	// TODO - Change something as this does not in any way unload the texture that was previously used
-	// TODO - Change as this will set the active texture to be whatever the first image loaded in is
-	Image* newImage = m_texManager->RequestImage(in_imgName);
+	Image* const newImage = m_texManager->RequestImage(in_imgName);
 	if(m_texture == NULL && newImage != NULL)
 		m_texture = newImage->GetTexture();
 

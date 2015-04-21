@@ -3,16 +3,20 @@
 
 #include "../Structure/Vectors.h"
 
+#include <string>
+
 class Texture;
 
 //Intermediary between texture and sprite
 class Image
 {
 public:
-	Image(char* in_imageName, Vector2 in_uvs, Vector2 in_dimensions, Texture* in_texture);
+	Image(std::string in_imageName, Vector2 in_uvs, Vector2 in_dimensions, Texture* in_texture);
 	~Image();
 
 	inline const Vector2 GetUVs() {return m_uvs;}
+
+	std::string GetName() const { return m_imageName; }
 
 	inline const Vector2 GetDimensions() {return m_dimensions;}
 	inline void SetDimensions(Vector2 in_dimensions) {m_dimensions = in_dimensions;}
@@ -23,7 +27,7 @@ public:
 	inline Texture* GetTexture() {return m_texture;}
 
 private:
-	char* m_imageName;
+	std::string m_imageName;
 
 	Vector2 m_uvs;
 	Vector2 m_dimensions;

@@ -28,11 +28,15 @@ public:
 
 	inline const GLenum GetTarget() const {return m_target;}
 
+	void AdjustUsageCount(bool in_increment);
+
 private:
 	std::string m_name;
 	GLuint* m_textureID;
 	Vector2 m_dimensions;
 	GLenum m_target;
+
+	uint32_t m_usageCount;
 
 	TextureManager* m_texManager;
 };

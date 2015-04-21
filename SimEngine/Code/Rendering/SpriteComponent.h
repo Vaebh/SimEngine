@@ -4,12 +4,12 @@
 class Image;
 
 #include "../Foundation/Foundation.h"
+
+#include "../Rendering/AnimationClip.h"
 #include "../Rendering/RenderableComponent.h"
 
 #include <map>
 #include <string>
-
-class AnimationClip;
 
 class SpriteComponent : public IRenderableComponent
 {
@@ -22,17 +22,15 @@ public:
 
 	virtual void Draw();
 
+	inline Texture* GetTexture() { return m_texture; }
+
 	inline const std::string GetImageName() const {return m_imageName;}
 	const std::string GetTextureName();
 
-	inline Texture* GetTexture() {return m_texture;}
-	void SetTexture(std::string in_newTex);
+	void AddAnimation(char* in_animName, uint32_t in_numFrames, char* in_startImage);
+	void AddAnimation(char* in_animName, uint32_t in_numFrames, ...);
 
-	inline const float GetAnimSpeed() const {return m_animSpeed;}
-	inline void SetAnimSpeed(float in_animSpeed) {m_animSpeed = in_animSpeed;}
-
-	inline const bool IsAnimLooping() const {return m_loopAnim;}
-	inline void SetLooping(bool in_looping) {m_loopAnim = in_looping;}
+	bool SetActiveAnimation(const char* in_animName);
 
 	// temp for testing
 	AnimationClip* m_activeAnimation;
@@ -75,7 +73,7 @@ private:
 	bool m_initialised;
 	Vector3 m_imageScale;
 
-	std::map <std::string, AnimationClip*> m_animationClips;
+	std::map <std::string, std::unique_ptr< AnimationClip> > m_animationClips;
 };
 
 #endif

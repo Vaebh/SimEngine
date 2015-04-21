@@ -17,6 +17,8 @@
 #include "../Structure/GameObject.h"
 #include "../Structure/Window.h"
 
+#include <cstdarg>
+
 namespace
 {
 	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
@@ -185,28 +187,7 @@ glm::mat4 SpriteComponent::CalculateModelMatrix()
 void SpriteComponent::Update(float in_dt)
 {
 	if (m_activeAnimation != NULL)
-		m_activeImage = m_activeAnimation->Update(in_dt);
-
-	/*if (m_numFrames > 1)
-	{
-		animTimer += in_dt;
-
-		if(animTimer >= m_animSpeed)
-		{
-			animTimer = 0;
-
-			if(IsAnimLooping() && m_currentFrame >= m_numFrames - 1)
-			{
-				m_currentFrame = 0;
-				m_activeImage = m_imageFrames[m_currentFrame];
-			}
-			else if(m_currentFrame < m_numFrames)
-			{
-				m_currentFrame += 1;
-				m_activeImage = m_imageFrames[m_currentFrame];
-			}
-		}
-	}*/
+		m_activeImage = m_activeAnimation->Animate(in_dt);
 }
 
 glm::vec4 SpriteComponent::GetFrameInfo()
@@ -241,4 +222,64 @@ void SpriteComponent::Draw()
 const std::string SpriteComponent::GetTextureName()
 {
 	return GetTexture()->GetName();
+}
+
+bool SpriteComponent::SetActiveAnimation(const char* in_animName)
+{
+	if (m_animationClips[in_animName].get() == NULL)
+		return false;
+
+	m_activeAnimation = m_animationClips[in_animName].get();
+
+	return true;
+}
+
+void SpriteComponent::AddAnimation(char* in_animName, uint32_t in_numFrames, char* in_startImage)
+{
+	std::vector<Image*> requestedImages;
+
+	for (int i = 0; i < in_numFrames; ++i)
+	{
+		Image* const newImage = RequestImage((in_startImage + ConvertNumber(i + 1)).c_str());
+
+		if (newImage != NULL)
+			requestedImages.push_back(newImage);
+		else
+		{
+			Log().Get() << in_numFrames << " anim frames requested, only " << i << " frames found.";
+			in_numFrames = i;
+			break;
+		}
+	}
+
+	if (!requestedImages.empty())
+	{
+		AnimationClip* animClip = new AnimationClip(in_animName, requestedImages);
+		m_animationClips[in_animName].reset(animClip);
+	}
+}
+
+void SpriteComponent::AddAnimation(char* in_animName, uint32_t in_numFrames, ...)
+{
+	va_list args;
+	va_start(args, in_numFrames);
+
+	std::vector<Image*> requestedImages;
+
+	for (int i = 0; i < in_numFrames; ++i)
+	{
+		const char* imgName = va_arg(args, const char*);
+		Image* const reqImage = m_texManager->RequestImage(imgName);
+
+		if (reqImage != NULL)
+			requestedImages.push_back(reqImage);
+	}
+
+	va_end(args);
+
+	if (!requestedImages.empty())
+	{
+		AnimationClip* animClip = new AnimationClip(in_animName, requestedImages);
+		m_animationClips[in_animName].reset(animClip);
+	}
 }

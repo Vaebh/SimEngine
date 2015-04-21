@@ -11,9 +11,10 @@
 class Texture;
 class Image;
 
-typedef std::pair<Texture*, uint32_t> TextureUsagePair;
-typedef std::map< std::string, TextureUsagePair > TextureMap;
 typedef std::map< std::string, Image* > ImageMap;
+typedef std::map< std::string, Texture* > TextureMap;
+
+// TODO - Make texturemap use unique pointers, what happens when texturemanager gets trashed before it's happened to unload all the textures
 
 class TextureManager
 {
@@ -25,12 +26,11 @@ public:
 
 	void LoadTextureAtlas(const char* in_atlasName);
 
-	void UnloadTexture(std::string in_texName);
+	void UnloadTexture(Texture* out_textureToDelete);
 
 private:
 	Texture* LoadTexture(const GLchar* in_texName);
 	Texture* LoadTextureFromFile(const GLchar* in_texName);
-	uint32_t AdjustUsageCount(std::string in_texKey, int in_adjustment);
 
 private:
 	ImageMap m_imageMap;

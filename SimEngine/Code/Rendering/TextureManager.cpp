@@ -21,6 +21,11 @@ TextureManager::TextureManager()
 
 TextureManager::~TextureManager()
 {
+	// TODO - convert from raw loop
+	TextureMap::iterator iter;
+	for (iter = m_textureCache.begin(); iter != m_textureCache.end(); ++iter)
+		delete (*iter).second;
+
     m_textureCache.clear();
 }
 
@@ -56,7 +61,7 @@ void TextureManager::LoadTextureAtlas(const char* in_atlasName)
 			float uvthex = uvX / newTexture->GetDimensions().x;
 			float uvthey = uvY / newTexture->GetDimensions().y;
 
-			Image* const newImage = new Image((char*)spriteName.c_str(), Vector2(uvthex, uvthey), Vector2(width, height), newTexture);
+			Image* const newImage = new Image(spriteName, Vector2(uvthex, uvthey), Vector2(width, height), newTexture);
 			m_imageMap[spriteName] = newImage;
 
 			spriteElement = spriteElement->NextSibling();
@@ -70,7 +75,7 @@ Image* TextureManager::RequestImage(const GLchar* in_texName)
 
 	if(theImage != NULL)
 	{
-		AdjustUsageCount(theImage->GetTexture()->GetName(), 1);
+		theImage->GetTexture()->AdjustUsageCount(true);
 
 		return theImage;
 	}
@@ -83,20 +88,19 @@ Image* TextureManager::RequestImage(const GLchar* in_texName)
 
 Texture* TextureManager::LoadTexture(const GLchar* in_texName)
 {
-	TextureUsagePair& texPair = m_textureCache[in_texName];
-	Texture* tex = texPair.first;
+	Texture* tex = m_textureCache[in_texName];
 
 	if(tex != NULL)
 	{
-		AdjustUsageCount(in_texName, 1);
+		tex->AdjustUsageCount(true);
 		return tex;
 	}
 	
-	// If this is a new image
+	// If this is a new texture
 	tex = LoadTextureFromFile(in_texName);
 
 	if(tex != NULL)
-		AdjustUsageCount(in_texName, 1);
+		tex->AdjustUsageCount(true);
 
 	return tex;
 }
@@ -132,27 +136,17 @@ Texture* TextureManager::LoadTextureFromFile(const GLchar* in_texName)
 
 	Texture* newTexture = new Texture(in_texName, texture, GL_TEXTURE_2D, Vector2(width, height), this);
 	
-	m_textureCache[in_texName] = std::make_pair<Texture*&, uint32_t>(newTexture, 0);
+	m_textureCache[in_texName] = newTexture;
 
 	return newTexture;
 }
 
-void TextureManager::UnloadTexture(std::string in_texName)
+void TextureManager::UnloadTexture(Texture* out_textureToDelete)
 {
-	Texture* tex = m_textureCache[in_texName].first;
-	if(tex != NULL)
+	if (out_textureToDelete != NULL)
 	{
-		uint32_t curUsageCount = AdjustUsageCount(in_texName, -1);
-
-		if(curUsageCount == 0)
-			delete tex;
+		m_textureCache.erase(out_textureToDelete->GetName());
+		delete out_textureToDelete;
+		out_textureToDelete = NULL;
 	}
-}
-
-uint32_t TextureManager::AdjustUsageCount(std::string in_texKey, int in_adjustment)
-{
-	TextureUsagePair& texPair = m_textureCache[in_texKey];
-	texPair.second += in_adjustment;
-
-	return texPair.second;
 }

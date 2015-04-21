@@ -84,8 +84,12 @@ void Application::Update()
 	SpriteComponent* newSprComp = new SpriteComponent("testAnim1", 1);
 	spriteTest->Attach(newSprComp);
 	
-	AnimationClip* newClip = new AnimationClip("name", newSprComp->RequestImages(6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6"));
-	newSprComp->m_activeAnimation = newClip;
+	//AnimationClip* newClip = new AnimationClip("name", newSprComp->RequestImages(6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6"));
+	//newSprComp->m_activeAnimation = newClip;
+
+	//newSprComp->AddAnimation("name", 6, "testAnim");
+	newSprComp->AddAnimation("name", 6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6");
+	newSprComp->SetActiveAnimation("name");
 
 	//spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
 	//spriteTest->SetScale(Vector3(3.f, 3.f, 1.f));
