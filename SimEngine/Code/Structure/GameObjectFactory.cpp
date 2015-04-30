@@ -43,10 +43,10 @@ GameObject* GameObjectFactory::Create3DGameObject(char* in_meshName, char* in_te
 	return newObject;
 }
 
-GameObject* GameObjectFactory::CreateSpriteGameObject(char* in_textureName, uint32_t in_numFrames)
+GameObject* GameObjectFactory::CreateSpriteGameObject(char* in_textureName)
 {
 	GameObject* newObject = CreateGameObject();
-	SpriteComponent* spriteComp = new SpriteComponent(in_textureName, in_numFrames);
+	SpriteComponent* spriteComp = new SpriteComponent(in_textureName);
 
 	newObject->Attach(spriteComp);
 

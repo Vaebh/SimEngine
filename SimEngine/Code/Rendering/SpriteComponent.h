@@ -14,7 +14,7 @@ class Image;
 class SpriteComponent : public IRenderableComponent
 {
 public:
-	SpriteComponent(const std::string in_texture = "bros.png", const uint32_t in_numFrames = 1);
+	SpriteComponent(const std::string in_texture = "bros.png");
 	~SpriteComponent();
 
 	virtual void OnAttached(GameObject* in_gameObject);
@@ -27,13 +27,16 @@ public:
 	inline const std::string GetImageName() const {return m_imageName;}
 	const std::string GetTextureName();
 
-	void AddAnimation(char* in_animName, uint32_t in_numFrames, char* in_startImage);
-	void AddAnimation(char* in_animName, uint32_t in_numFrames, ...);
+	void AddAnimation(char* in_animName, float in_duration, bool in_looping, uint32_t in_numFrames, char* in_startImage);
+	void AddAnimation(char* in_animName, float in_duration, bool in_looping, uint32_t in_numFrames, ...);
+	void AddAnimation(AnimationClip* in_animationClip);
 
-	bool SetActiveAnimation(const char* in_animName);
+	AnimationClip* GetAnimationClip(const char* in_animName);
+	inline AnimationClip* GetActiveAnimation() { return m_activeAnimation; }
+	inline AnimationClip* GetDefaultAnimation() { return m_defaultAnimation; }
 
-	// temp for testing
-	AnimationClip* m_activeAnimation;
+	bool SetDefaultAnimationClip(const char* in_animName);
+	bool SetActiveAnimationClip(const char* in_animName);
 
 protected:
 	virtual void Update(float in_dt);
@@ -58,14 +61,8 @@ protected:
 	Image* m_activeImage;
 	std::string m_imageName;
 
-	uint32_t m_numFrames;
-	uint32_t m_currentFrame;
-
-	std::vector<Image*> m_imageFrames;
-
-	// The animation speed in seconds;
-	float m_animSpeed;
-	bool m_loopAnim;
+	AnimationClip* m_activeAnimation;
+	AnimationClip* m_defaultAnimation;
 
 	Vector2 m_uvs;
 

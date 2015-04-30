@@ -38,20 +38,17 @@ namespace
 	float animTimer = 0.f;
 }
 
-SpriteComponent::SpriteComponent(const std::string in_imageName, const uint32_t in_numFrames) :
+SpriteComponent::SpriteComponent(const std::string in_imageName) :
 IRenderableComponent(),
 m_activeImage(NULL),
 m_imageName(in_imageName),
-m_numFrames(in_numFrames),
-m_currentFrame(0),
-m_animSpeed(0.1f),
-m_loopAnim(true),
 m_uvs(),
 m_initialised(false),
 m_imageScale(),
-m_activeAnimation(NULL)
+m_activeAnimation(NULL),
+m_defaultAnimation(NULL)
 {
-	m_imageFrames.reserve(m_numFrames);
+
 }
 
 SpriteComponent::~SpriteComponent()
@@ -74,34 +71,10 @@ void SpriteComponent::Initialise()
 
 bool SpriteComponent::SetImages()
 {
-	if (m_numFrames == 1)
-	{
-		Image* const newImage = RequestImage(m_imageName.c_str());
+	Image* const newImage = RequestImage(m_imageName.c_str());
 
-		if (newImage != NULL)
-			m_activeImage = newImage;
-	}
-	else
-	{
-		for(int i = 0; i < m_numFrames; ++i)
-		{
-			Image* const newImage = RequestImage((m_imageName + ConvertNumber(i + 1)).c_str());
-
-			if(newImage != NULL)
-				m_imageFrames.push_back(newImage);
-			else
-			{
-				Log().Get() << m_numFrames << " sprite frames requested, only " << i << " frames found.";
-				m_numFrames = i;
-				break;
-			}
-		}
-
-		if (!m_imageFrames.empty())
-		{
-			m_activeImage = m_imageFrames[0];
-		}
-	}
+	if (newImage != NULL)
+		m_activeImage = newImage;
 
 	if (m_activeImage != NULL)
 		SetImageScale();
@@ -186,8 +159,13 @@ glm::mat4 SpriteComponent::CalculateModelMatrix()
 
 void SpriteComponent::Update(float in_dt)
 {
-	if (m_activeAnimation != NULL)
+	if (m_activeAnimation != NULL && m_activeAnimation->IsActive())
 		m_activeImage = m_activeAnimation->Animate(in_dt);
+	else if (m_defaultAnimation != NULL)
+	{
+		m_activeAnimation = m_defaultAnimation;
+		m_activeImage = m_defaultAnimation->Animate(in_dt);
+	}
 }
 
 glm::vec4 SpriteComponent::GetFrameInfo()
@@ -224,7 +202,17 @@ const std::string SpriteComponent::GetTextureName()
 	return GetTexture()->GetName();
 }
 
-bool SpriteComponent::SetActiveAnimation(const char* in_animName)
+bool SpriteComponent::SetDefaultAnimationClip(const char* in_animName)
+{
+	if (m_animationClips[in_animName].get() == NULL)
+		return false;
+
+	m_defaultAnimation = m_animationClips[in_animName].get();
+
+	return true;
+}
+
+bool SpriteComponent::SetActiveAnimationClip(const char* in_animName)
 {
 	if (m_animationClips[in_animName].get() == NULL)
 		return false;
@@ -234,7 +222,7 @@ bool SpriteComponent::SetActiveAnimation(const char* in_animName)
 	return true;
 }
 
-void SpriteComponent::AddAnimation(char* in_animName, uint32_t in_numFrames, char* in_startImage)
+void SpriteComponent::AddAnimation(char* in_animName, float in_duration, bool in_looping, uint32_t in_numFrames, char* in_startImage)
 {
 	std::vector<Image*> requestedImages;
 
@@ -259,7 +247,7 @@ void SpriteComponent::AddAnimation(char* in_animName, uint32_t in_numFrames, cha
 	}
 }
 
-void SpriteComponent::AddAnimation(char* in_animName, uint32_t in_numFrames, ...)
+void SpriteComponent::AddAnimation(char* in_animName, float in_duration, bool in_looping, uint32_t in_numFrames, ...)
 {
 	va_list args;
 	va_start(args, in_numFrames);
@@ -280,6 +268,19 @@ void SpriteComponent::AddAnimation(char* in_animName, uint32_t in_numFrames, ...
 	if (!requestedImages.empty())
 	{
 		AnimationClip* animClip = new AnimationClip(in_animName, requestedImages);
+		animClip->SetDuration(in_duration);
+		animClip->SetLooping(in_looping);
 		m_animationClips[in_animName].reset(animClip);
 	}
+}
+
+void SpriteComponent::AddAnimation(AnimationClip* in_animationClip)
+{
+	if (in_animationClip != NULL)
+		m_animationClips[in_animationClip->GetName()].reset(in_animationClip);
+}
+
+AnimationClip* SpriteComponent::GetAnimationClip(const char* in_animName)
+{
+	return m_animationClips[in_animName].get();
 }

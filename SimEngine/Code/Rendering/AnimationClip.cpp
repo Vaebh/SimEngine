@@ -4,20 +4,25 @@ AnimationClip::AnimationClip(char* in_name, std::vector<Image*>& out_newImages) 
 m_animationName(in_name),
 m_currentFrame(0),
 m_animTimer(0.f),
-m_animationSpeed(0.1f),
+m_duration(1.f),
 m_looping(false),
-m_active(false),
-m_activeImage(NULL)
+m_active(true),
+m_activeImage(NULL),
+m_animStep(0.f),
+m_animationSpeed(1.f)
 {
-	for (int i = 0; i < out_newImages.size(); ++i)
+	if (!out_newImages.empty())
 	{
-		m_animImages.push_back(std::unique_ptr<Image>(out_newImages[i]));
+		for (int i = 0; i < out_newImages.size(); ++i)
+		{
+			m_animImages.push_back(std::unique_ptr<Image>(out_newImages[i]));
+		}
+
+		m_activeImage = m_animImages[0].get();
+		m_numFrames = m_animImages.size();
+
+		m_animStep = m_duration / m_numFrames;
 	}
-
-	m_activeImage = m_animImages[0].get();
-	m_numFrames = m_animImages.size();
-
-	m_looping = true;
 }
 
 void AnimationClip::Play(bool in_looping)
@@ -33,24 +38,37 @@ void AnimationClip::Stop()
 	m_animTimer = 0.f;
 }
 
+void AnimationClip::SetDuration(float in_duration)
+{
+	if (in_duration >= 0)
+		m_duration = in_duration;
+	else
+		m_duration = 0.f;
+
+	m_animStep = m_duration / m_numFrames;
+}
+
 Image* AnimationClip::Animate(float in_dt)
 {
-	m_animTimer += in_dt;
-
-	if (m_animTimer >= m_animationSpeed)
+	if (m_active && !m_animImages.empty())
 	{
-		m_animTimer = 0;
+		m_animTimer += in_dt * m_animationSpeed;
 
-		if (m_looping && m_currentFrame >= m_numFrames - 1)
+		m_currentFrame = (int)(m_animTimer / m_animStep);
+
+		if (abs(m_currentFrame) >= m_numFrames)
 		{
+			m_animTimer = 0.f;
 			m_currentFrame = 0;
-			m_activeImage = m_animImages[m_currentFrame].get();
+
+			if (!m_looping)
+				m_active = false;
 		}
-		else if (m_currentFrame < m_numFrames - 1)
-		{
-			m_currentFrame += 1;
-			m_activeImage = m_animImages[m_currentFrame].get();
-		}
+
+		if (m_currentFrame < 0)
+			m_currentFrame = m_numFrames + m_currentFrame;
+
+		m_activeImage = m_animImages[m_currentFrame].get();
 	}
 
 	return m_activeImage;

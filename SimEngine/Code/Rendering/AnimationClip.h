@@ -11,11 +11,24 @@
 class AnimationClip
 {
 public:
-	AnimationClip(char* in_name, const char* in_animStartImage, uint32_t in_numFrames);
+	AnimationClip(char* in_name, const char* in_animStartImage, int in_numFrames);
 	AnimationClip(char* in_name, std::vector<Image*>& out_newImages);
 
 	void SetAnimImages(const std::vector<Image*>& in_newImages);
-	inline void SetAnimationSpeed(float in_animSpeed) { m_animationSpeed = in_animSpeed; }
+
+	inline char* GetName() { return m_animationName; }
+	inline void SetName(char* in_animationName) { m_animationName = in_animationName; }
+
+	inline float GetDuration() { return m_duration; }
+	void SetDuration(float in_duration);
+
+	inline float GetSpeed() { return m_animationSpeed; }
+	inline void SetSpeed(float in_animationSpeed) { m_animationSpeed = in_animationSpeed; }
+
+	inline bool IsLooping() { return m_looping; }
+	inline void SetLooping(bool in_looping) { m_looping = in_looping; }
+
+	inline bool IsActive() { return m_active; }
 
 	void Play(bool in_looping);
 	void Stop();
@@ -26,10 +39,12 @@ private:
 	char* m_animationName;
 
 	float m_animTimer;
+	float m_duration;
+	float m_animStep;
 	float m_animationSpeed;
 
 	uint32_t m_numFrames;
-	uint32_t m_currentFrame;
+	int m_currentFrame;
 
 	bool m_active;
 	bool m_looping;

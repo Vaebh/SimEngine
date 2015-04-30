@@ -81,15 +81,19 @@ void Application::Update()
 	//lightModel->SetScale(Vector3(0.15f, 0.15f, 0.15f));
 
 	GameObject* spriteTest = m_gameObjectFactory->CreateGameObject();
-	SpriteComponent* newSprComp = new SpriteComponent("testAnim1", 1);
+	SpriteComponent* newSprComp = new SpriteComponent("testAnim1");
 	spriteTest->Attach(newSprComp);
 	
 	//AnimationClip* newClip = new AnimationClip("name", newSprComp->RequestImages(6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6"));
 	//newSprComp->m_activeAnimation = newClip;
 
 	//newSprComp->AddAnimation("name", 6, "testAnim");
-	newSprComp->AddAnimation("name", 6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6");
-	newSprComp->SetActiveAnimation("name");
+	newSprComp->AddAnimation("name", 6.0f, false, 6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6");
+	newSprComp->SetActiveAnimationClip("name");
+
+	newSprComp->AddAnimation("default", 6.0f, true, 6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6");
+	newSprComp->GetAnimationClip("default")->SetSpeed(-1.f);
+	newSprComp->SetDefaultAnimationClip("default");
 
 	//spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
 	//spriteTest->SetScale(Vector3(3.f, 3.f, 1.f));
@@ -118,7 +122,9 @@ void Application::Update()
 
 		if(m_inputManager->IsKeyDown(GLFW_KEY_COMMA))
 		{
-			if(thing == NULL)
+			newSprComp->GetAnimationClip("name")->SetSpeed(-newSprComp->GetAnimationClip("name")->GetSpeed());
+
+			/*if(thing == NULL)
 			{
 				//delete testModel;
 				//testModel = NULL;
@@ -128,7 +134,7 @@ void Application::Update()
 				thorModel = m_gameObjectFactory->Create3DGameObject("thor.bin", "bros.png");
 				thorModel->MovePosition(Vector3(0.5f, 0.f, 0.f));
 				thorModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
-			}
+			}*/
 		}
 
 		//if(testModel != NULL)
