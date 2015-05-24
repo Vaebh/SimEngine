@@ -38,6 +38,17 @@ void AnimationClip::Stop()
 	m_animTimer = 0.f;
 }
 
+void AnimationClip::Reset()
+{
+	m_active = true;
+
+	m_animTimer = 0.f;
+
+	m_activeImage = m_animImages[0].get();
+
+	m_currentFrame = 0;
+}
+
 void AnimationClip::SetDuration(float in_duration)
 {
 	if (in_duration >= 0)

@@ -72,9 +72,9 @@ void Application::Update()
 
 	float fpsTimer = 0;
 
-	//GameObject* testModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
+	GameObject* testModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
 	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
-	//testModel->SetScale(Vector3(0.5f, 0.5f, 0.5f));
+	testModel->SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
 	//GameObject* lightModel = m_gameObjectFactory->Create3DGameObject("cube.bin", "bros.png");
 	//testModel->SetScale(Vector3(0.0125f, 0.0125f, 0.0125f));
@@ -88,11 +88,10 @@ void Application::Update()
 	//newSprComp->m_activeAnimation = newClip;
 
 	//newSprComp->AddAnimation("name", 6, "testAnim");
-	newSprComp->AddAnimation("name", 6.0f, false, 6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6");
-	newSprComp->SetActiveAnimationClip("name");
+	newSprComp->AddAnimation("name", 6.0f, false, 6, "bros");
 
 	newSprComp->AddAnimation("default", 6.0f, true, 6, "testAnim1", "testAnim2", "testAnim3", "testAnim4", "testAnim5", "testAnim6");
-	newSprComp->GetAnimationClip("default")->SetSpeed(-1.f);
+	newSprComp->GetAnimationClip("default")->SetSpeed(1.f);
 	newSprComp->SetDefaultAnimationClip("default");
 
 	//spriteTest->MovePosition(Vector3(0.2f, 0.0f, 0.0f));
@@ -107,6 +106,16 @@ void Application::Update()
 	//Log().Get() << "Second hello! " << 7;
 	//Log().Get() << "OMG THIRD HELLO " << 8;
 
+	Vector3 camPos = spriteTest->GetCameraManager()->GetActiveCamera()->GetPosition();
+
+	float totalTime = 0.f;
+
+	bool shakeActive = false;
+	float timeToShake = 0.05f;
+	float shakeTimer = 0.f;
+
+	std::srand((int)glfwGetTime());
+
 	while(!GetWindow()->ShouldWindowClose())
 	{
 		m_dt = glfwGetTime() - oldDt;
@@ -120,9 +129,35 @@ void Application::Update()
 			//cout << "FPS: " << 1 / delta << endl;
 		}
 
-		if(m_inputManager->IsKeyDown(GLFW_KEY_COMMA))
+		totalTime += m_dt;
+
+		//Log().Get() << (float)std::rand() / (float)RAND_MAX;
+
+		/*if (shakeActive)
 		{
-			newSprComp->GetAnimationClip("name")->SetSpeed(-newSprComp->GetAnimationClip("name")->GetSpeed());
+			shakeTimer += m_dt;
+			//float rand = std::rand();
+			//spriteTest->GetCameraManager()->GetActiveCamera()->SetPosition(camPos + Vector3(glm::sin((totalTime * 30.f)) * 0.1f, glm::sin((totalTime * 30.f)) * 0.1f, glm::sin((totalTime * 30.f)) * 0.1f));
+		}*/
+
+		//spriteTest->GetCameraManager()->GetActiveCamera()->SetPosition(camPos + Vector3((float)std::rand() / (float)RAND_MAX, (float)std::rand() / (float)RAND_MAX, (float)std::rand() / (float)RAND_MAX));
+
+		shakeTimer += m_dt;
+
+		if (shakeTimer >= timeToShake)
+		{
+			shakeActive = false;
+			shakeTimer = 0.f;
+
+			//spriteTest->GetCameraManager()->GetActiveCamera()->SetPosition(camPos + Vector3((float)std::rand() / (float)RAND_MAX, (float)std::rand() / (float)RAND_MAX, (float)std::rand() / (float)RAND_MAX));
+		}
+
+		if (m_inputManager->IsKeyDown(GLFW_KEY_COMMA) && !shakeActive)
+		{
+			newSprComp->PlayAnimationClip("name");
+
+			shakeActive = true;
+			//newSprComp->GetAnimationClip("name")->SetSpeed(-newSprComp->GetAnimationClip("name")->GetSpeed());
 
 			/*if(thing == NULL)
 			{

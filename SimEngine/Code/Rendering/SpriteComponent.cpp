@@ -163,6 +163,9 @@ void SpriteComponent::Update(float in_dt)
 		m_activeImage = m_activeAnimation->Animate(in_dt);
 	else if (m_defaultAnimation != NULL)
 	{
+		if (m_activeAnimation != NULL && m_activeAnimation != m_defaultAnimation)
+			m_activeAnimation->Reset();
+
 		m_activeAnimation = m_defaultAnimation;
 		m_activeImage = m_defaultAnimation->Animate(in_dt);
 	}
@@ -212,7 +215,7 @@ bool SpriteComponent::SetDefaultAnimationClip(const char* in_animName)
 	return true;
 }
 
-bool SpriteComponent::SetActiveAnimationClip(const char* in_animName)
+bool SpriteComponent::PlayAnimationClip(const char* in_animName)
 {
 	if (m_animationClips[in_animName].get() == NULL)
 		return false;
@@ -225,6 +228,17 @@ bool SpriteComponent::SetActiveAnimationClip(const char* in_animName)
 void SpriteComponent::AddAnimation(char* in_animName, float in_duration, bool in_looping, uint32_t in_numFrames, char* in_startImage)
 {
 	std::vector<Image*> requestedImages;
+
+	Image* const newImage = RequestImage(in_startImage);
+
+	if (newImage != nullptr)
+	{
+		requestedImages.push_back(newImage);
+		AnimationClip* animClip = new AnimationClip(in_animName, requestedImages);
+		m_animationClips[in_animName].reset(animClip);
+	}
+
+	/*std::vector<Image*> requestedImages;
 
 	for (int i = 0; i < in_numFrames; ++i)
 	{
@@ -244,7 +258,7 @@ void SpriteComponent::AddAnimation(char* in_animName, float in_duration, bool in
 	{
 		AnimationClip* animClip = new AnimationClip(in_animName, requestedImages);
 		m_animationClips[in_animName].reset(animClip);
-	}
+	}*/
 }
 
 void SpriteComponent::AddAnimation(char* in_animName, float in_duration, bool in_looping, uint32_t in_numFrames, ...)

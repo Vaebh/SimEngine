@@ -29,9 +29,11 @@ public:
 	inline void SetLooping(bool in_looping) { m_looping = in_looping; }
 
 	inline bool IsActive() { return m_active; }
+	inline void SetActive(bool in_active) { m_active = in_active; }
 
 	void Play(bool in_looping);
 	void Stop();
+	void Reset();
 
 	Image* Animate(float in_dt);
 

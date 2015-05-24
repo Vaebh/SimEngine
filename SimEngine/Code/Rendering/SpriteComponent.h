@@ -36,7 +36,7 @@ public:
 	inline AnimationClip* GetDefaultAnimation() { return m_defaultAnimation; }
 
 	bool SetDefaultAnimationClip(const char* in_animName);
-	bool SetActiveAnimationClip(const char* in_animName);
+	bool PlayAnimationClip(const char* in_animName);
 
 protected:
 	virtual void Update(float in_dt);
