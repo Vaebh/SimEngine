@@ -158,12 +158,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\OpenGL\SimEngine\trunk\Dependancies\FMOD\inc;D:\OpenGL\SimEngine\trunk\Dependancies\glm\glm;D:\OpenGL\SimEngine\trunk\Dependancies\SOIL\src;D:\OpenGL\SimEngine\trunk\Dependancies\gl;D:\OpenGL\SimEngine\trunk\Dependancies\glew-1.10.0\include;D:\OpenGL\SimEngine\trunk\Dependancies\GLFW3\include;D:\OpenGL\SimEngine\trunk\Dependancies\TinyXML2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependancies\FMOD\inc;$(SolutionDir)Dependancies\glm\glm;$(SolutionDir)Dependancies\SOIL\src;$(SolutionDir)Dependancies\gl;$(SolutionDir)Dependancies\glew-1.10.0\include;$(SolutionDir)Dependancies\GLFW3\include;$(SolutionDir)Dependancies\TinyXML2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\OpenGL\SimEngine\trunk\Dependancies\FMOD\lib;D:\OpenGL\SimEngine\trunk\Dependancies\SOIL\lib;D:\OpenGL\SimEngine\trunk\Dependancies\gl\lib;D:\OpenGL\SimEngine\trunk\Dependancies\GLFW3\lib;D:\OpenGL\SimEngine\trunk\Dependancies\glew-1.10.0\lib;D:\OpenGL\SimEngine\trunk\Dependancies\TinyXML2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependancies\FMOD\lib;$(SolutionDir)Dependancies\SOIL\lib;$(SolutionDir)Dependancies\gl\lib;$(SolutionDir)Dependancies\GLFW3\lib;$(SolutionDir)Dependancies\glew-1.10.0\lib;$(SolutionDir)Dependancies\TinyXML2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>fmod_vc.lib;SOIL.lib;glew32.lib;glfw3.lib;OpenGL32.lib;tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
