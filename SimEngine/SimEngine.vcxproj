@@ -15,7 +15,6 @@
     <ClInclude Include="Code\Application\Game.h" />
     <ClInclude Include="Code\Camera\Camera.h" />
     <ClInclude Include="Code\Camera\CameraManager.h" />
-    <ClInclude Include="Code\Collision\BounceComponent.h" />
     <ClInclude Include="Code\Collision\CollisionComponent.h" />
     <ClInclude Include="Code\Collision\CollisionSystem.h" />
     <ClInclude Include="Code\Collision\FragileCollisionComponent.h" />
@@ -25,18 +24,11 @@
     <ClInclude Include="Code\Events\EventTypes.h" />
     <ClInclude Include="Code\Foundation\Foundation.h" />
     <ClInclude Include="Code\Foundation\StringUtils.h" />
-    <ClInclude Include="Code\Game\BlockManager.h" />
-    <ClInclude Include="Code\Game\BreakoutFactory.h" />
-    <ClInclude Include="Code\Game\ComponentBallController.h" />
-    <ClInclude Include="Code\Game\ComponentBallModel.h" />
-    <ClInclude Include="Code\Game\FollowMouseComponent.h" />
-    <ClInclude Include="Code\Game\StateLevelOne.h" />
-    <ClInclude Include="Code\Game\StateVictory.h" />
+    <ClInclude Include="Code\Game\StateBattle.h" />
     <ClInclude Include="Code\Input\InputManager.h" />
     <ClInclude Include="Code\Interfaces\UpdateInterface.h" />
     <ClInclude Include="Code\OpenGL\GLIncludes.h" />
     <ClInclude Include="Code\OpenGL\GLUtils.h" />
-    <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h" />
     <ClInclude Include="Code\Rendering\AnimationClip.h" />
     <ClInclude Include="Code\Rendering\Buffer.h" />
     <ClInclude Include="Code\Rendering\Image.h" />
@@ -64,6 +56,7 @@
     <ClInclude Include="Code\Structure\Vectors.h" />
     <ClInclude Include="Code\Structure\Window.h" />
     <ClInclude Include="Code\Utils\Clock.h" />
+    <ClInclude Include="Code\Utils\FollowMouseComponent.h" />
     <ClInclude Include="Code\Utils\MathUtils.h" />
     <ClInclude Include="Code\Utils\ModelLoader.h" />
   </ItemGroup>
@@ -72,7 +65,6 @@
     <ClCompile Include="Code\Application\main.cpp" />
     <ClCompile Include="Code\Camera\Camera.cpp" />
     <ClCompile Include="Code\Camera\CameraManager.cpp" />
-    <ClCompile Include="Code\Collision\BounceComponent.cpp" />
     <ClCompile Include="Code\Collision\CollisionComponent.cpp" />
     <ClCompile Include="Code\Collision\CollisionSystem.cpp" />
     <ClCompile Include="Code\Collision\FragileCollisionComponent.cpp" />
@@ -80,16 +72,9 @@
     <ClCompile Include="Code\Events\EventCallback.cpp" />
     <ClCompile Include="Code\Events\EventMessenger.cpp" />
     <ClCompile Include="Code\Foundation\StringUtils.cpp" />
-    <ClCompile Include="Code\Game\BlockManager.cpp" />
-    <ClCompile Include="Code\Game\BreakoutFactory.cpp" />
-    <ClCompile Include="Code\Game\ComponentBallController.cpp" />
-    <ClCompile Include="Code\Game\ComponentBallModel.cpp" />
-    <ClCompile Include="Code\Game\FollowMouseComponent.cpp" />
-    <ClCompile Include="Code\Game\StateLevelOne.cpp" />
-    <ClCompile Include="Code\Game\StateVictory.cpp" />
+    <ClCompile Include="Code\Game\StateBattle.cpp" />
     <ClCompile Include="Code\Input\InputManager.cpp" />
     <ClCompile Include="Code\OpenGL\GLUtils.cpp" />
-    <ClCompile Include="Code\Rendering\AnimatedSpriteComponent.cpp" />
     <ClCompile Include="Code\Rendering\AnimationClip.cpp" />
     <ClCompile Include="Code\Rendering\Buffer.cpp" />
     <ClCompile Include="Code\Rendering\Image.cpp" />
@@ -114,6 +99,7 @@
     <ClCompile Include="Code\Structure\System.cpp" />
     <ClCompile Include="Code\Structure\Window.cpp" />
     <ClCompile Include="Code\Utils\Clock.cpp" />
+    <ClCompile Include="Code\Utils\FollowMouseComponent.cpp" />
     <ClCompile Include="Code\Utils\ModelLoader.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

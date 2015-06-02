@@ -12,7 +12,7 @@ public:
 	virtual void Update(float in_dt) = 0;
 
 protected:
-	std::vector<GameObject*> mGameObjects;
+	std::vector<GameObject*> m_gameObjects;
 };
 
 #endif

@@ -51,9 +51,6 @@
     <ClCompile Include="Code\Application\main.cpp">
       <Filter>Code\Application</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Collision\BounceComponent.cpp">
-      <Filter>Code\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Collision\CollisionComponent.cpp">
       <Filter>Code\Collision</Filter>
     </ClCompile>
@@ -69,35 +66,11 @@
     <ClCompile Include="Code\Events\EventMessenger.cpp">
       <Filter>Code\Events</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Game\BlockManager.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\BreakoutFactory.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\ComponentBallController.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\ComponentBallModel.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\FollowMouseComponent.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\StateLevelOne.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\StateVictory.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Input\InputManager.cpp">
       <Filter>Code\Input</Filter>
     </ClCompile>
     <ClCompile Include="Code\OpenGL\GLUtils.cpp">
       <Filter>Code\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Rendering\AnimatedSpriteComponent.cpp">
-      <Filter>Code\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Code\Rendering\RenderableComponent.cpp">
       <Filter>Code\Rendering</Filter>
@@ -189,13 +162,16 @@
     <ClCompile Include="Code\Rendering\AnimationClip.cpp">
       <Filter>Code\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Game\StateBattle.cpp">
+      <Filter>Code\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Utils\FollowMouseComponent.cpp">
+      <Filter>Code\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Application\Game.h">
       <Filter>Code\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Collision\BounceComponent.h">
-      <Filter>Code\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Code\Collision\CollisionComponent.h">
       <Filter>Code\Collision</Filter>
@@ -218,27 +194,6 @@
     <ClInclude Include="Code\Foundation\StringUtils.h">
       <Filter>Code\Foundation</Filter>
     </ClInclude>
-    <ClInclude Include="Code\Game\BlockManager.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\BreakoutFactory.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\ComponentBallController.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\ComponentBallModel.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\FollowMouseComponent.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\StateLevelOne.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\StateVictory.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Code\Input\InputManager.h">
       <Filter>Code\Input</Filter>
     </ClInclude>
@@ -247,9 +202,6 @@
     </ClInclude>
     <ClInclude Include="Code\OpenGL\GLUtils.h">
       <Filter>Code\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h">
-      <Filter>Code\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Code\Rendering\Buffer.h">
       <Filter>Code\Rendering</Filter>
@@ -355,6 +307,12 @@
     </ClInclude>
     <ClInclude Include="Code\Rendering\AnimationClip.h">
       <Filter>Code\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\StateBattle.h">
+      <Filter>Code\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Utils\FollowMouseComponent.h">
+      <Filter>Code\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
