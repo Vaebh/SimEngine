@@ -28,6 +28,10 @@ public:
 	inline Window* GetWindow() {return m_window.get();}
 	inline const Window* GetWindow() const {return m_window.get();}
 
+	inline GameObjectFactory* GetGameObjectFactory() { return m_gameObjectFactory.get(); }
+
+	inline InputManager* GetInputManager() { return m_inputManager.get(); }
+
 	inline float GetDeltaTime() {return m_dt;}
 
 private:

@@ -69,24 +69,6 @@
     <ClCompile Include="Code\Events\EventMessenger.cpp">
       <Filter>Code\Events</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Game\BlockManager.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\BreakoutFactory.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\ComponentBallController.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\ComponentBallModel.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\FollowMouseComponent.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Code\Game\StateLevelOne.cpp">
-      <Filter>Code\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Game\StateVictory.cpp">
       <Filter>Code\Game</Filter>
     </ClCompile>
@@ -189,6 +171,11 @@
     <ClCompile Include="Code\Rendering\AnimationClip.cpp">
       <Filter>Code\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Utils\FollowMouseComponent.cpp">
+      <Filter>Code\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Game\StateDefault.cpp" />
+    <ClCompile Include="Code\Game\PlayerController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Application\Game.h">
@@ -217,24 +204,6 @@
     </ClInclude>
     <ClInclude Include="Code\Foundation\StringUtils.h">
       <Filter>Code\Foundation</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\BlockManager.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\BreakoutFactory.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\ComponentBallController.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\ComponentBallModel.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\FollowMouseComponent.h">
-      <Filter>Code\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Game\StateLevelOne.h">
-      <Filter>Code\Game</Filter>
     </ClInclude>
     <ClInclude Include="Code\Game\StateVictory.h">
       <Filter>Code\Game</Filter>
@@ -356,5 +325,10 @@
     <ClInclude Include="Code\Rendering\AnimationClip.h">
       <Filter>Code\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Utils\FollowMouseComponent.h">
+      <Filter>Code\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Game\StateDefault.h" />
+    <ClInclude Include="Code\Game\PlayerController.h" />
   </ItemGroup>
 </Project>
