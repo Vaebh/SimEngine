@@ -76,5 +76,5 @@ bool Window::ShouldWindowClose() const
 
 void Window::SetSpriteScaler()
 {
-	m_spriteScaler = Vector2(2.f / m_dimensions.x, 2.f / m_dimensions.y);
+	m_spriteScaler = Vector2(2.f / m_dimensions.x, -2.f / m_dimensions.y);
 }
