@@ -28,6 +28,8 @@ public:
 
 	void Update(const float in_dt);
 
+	glm::vec2 GetMousePos();
+
 	bool IsKeyDown(const GLint in_keyCode);
 	bool IsKeyUp(const GLint in_keyCode);
 
