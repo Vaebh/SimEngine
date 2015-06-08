@@ -1,7 +1,5 @@
 #include "../Structure/Window.h"
 
-#include "../Application/Application.h"
-
 #include <iostream>
 
 namespace
@@ -9,13 +7,6 @@ namespace
 	static void ErrorCallback(int in_error, const char* in_description)
 	{
 		std::cout<< "GLFW ERROR: " << in_description << std::endl;
-	}
-
-	static void WindowResizeCallback(GLFWwindow* window, int width, int height)
-	{
-		Window* theWindow = Application::GetApplication()->GetWindow();
-		theWindow->SetDimensions(Vector2(width, height));
-		Application::GetApplication()->GetWindow()->SetSpriteScaler();
 	}
 
 	GLFWwindow* InitialiseWindow(const char* in_title, Vector2 in_dimensions)
@@ -31,7 +22,6 @@ namespace
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 		GLFWwindow* window = glfwCreateWindow(in_dimensions.x, in_dimensions.y, in_title, NULL, NULL);
-		glfwSetWindowSizeCallback(window, WindowResizeCallback);
         
 		if(!window)
 		{
@@ -55,11 +45,9 @@ namespace
 }
 
 Window::Window(const char* in_name, int in_width, int in_height) :
-m_dimensions(in_width, in_height),
-m_spriteScaler(0.f, 0.f)
+m_dimensions(in_width, in_height)
 {
 	m_window = InitialiseWindow(in_name, Vector2(in_width, in_height));
-	SetSpriteScaler();
 }
 
 Window::~Window()
@@ -72,9 +60,4 @@ bool Window::ShouldWindowClose() const
 {
 	bool result = glfwWindowShouldClose(m_window);
 	return result;
-}
-
-void Window::SetSpriteScaler()
-{
-	m_spriteScaler = Vector2(2.f / m_dimensions.x, -2.f / m_dimensions.y);
 }

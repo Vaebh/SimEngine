@@ -152,11 +152,3 @@ bool InputManager::IsKeyUp(const GLint in_keyCode)
 {
 	return !glfwGetKey(m_window, in_keyCode);
 }
-
-glm::vec2 InputManager::GetMousePos()
-{
-	double mouseX, mouseY;
-	glfwGetCursorPos(m_window, &mouseX, &mouseY);
-
-	return glm::vec2(mouseX, mouseY);
-}
