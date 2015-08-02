@@ -36,20 +36,35 @@ void RenderSystem::AddSpriteToBatch(SpriteComponent* in_sprite)
 	m_spriteBatcher.AddSprite(in_sprite);
 }
 
+void RenderSystem::PreDraw()
+{
+	std::list<IComponent*>::iterator iter;
+	for (iter = m_components.begin(); iter != m_components.end(); ++iter)
+	{
+		IRenderableComponent* rendComp = static_cast<IRenderableComponent*>(*iter);
+		if (rendComp->IsVisible())
+		{
+			// Here is where things will add themselves to batchs
+			rendComp->PreDraw();
+		}
+	}
+}
+
 /*
 TODO
-- Batch sprites, notes above SpriteComponent.cpp's Draw function
 - Create and use Materials
 */
 void RenderSystem::Draw()
 {
+	PreDraw();
+
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
-	std::list<IComponent*>::iterator iter;
+	/*std::list<IComponent*>::iterator iter;
 	for(iter = m_components.begin(); iter != m_components.end(); ++iter)
 	{
 		IRenderableComponent* rendComp = static_cast<IRenderableComponent*>(*iter);
@@ -65,30 +80,14 @@ void RenderSystem::Draw()
 			*/
 
 			// Draw 3D meshes
-			glEnable(GL_DEPTH_TEST);
-			glDrawArrays(GL_TRIANGLES, 0, rendComp->GetVAO().GetNumVertices());
-
-			/*if(dynamic_cast<SpriteComponent*>(rendComp) != NULL)
-			{
-				glDisable(GL_DEPTH_TEST);
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-			}
-			else
-			{
-				glEnable(GL_DEPTH_TEST);
-				glDrawArrays(GL_TRIANGLES, 0, rendComp->GetVAO().GetNumVertices());
-			}*/
-
-			// Unbind everthing
-			//glBindVertexArray(0);
-			//glBindTexture(GL_TEXTURE_2D, 0);
-			//glUseProgram(0);
-		}
-	}
+			//glEnable(GL_DEPTH_TEST);
+			//glDrawArrays(GL_TRIANGLES, 0, rendComp->GetVAO().GetNumVertices());
+	//	}
+	//}
 
 	// Draw sprites
 	glDisable(GL_DEPTH_TEST);
-	m_spriteBatcher.DrawBatch();
+	m_spriteBatcher.DrawBatchs();
 
 	glfwSwapBuffers(Application::GetApplication()->GetWindow()->GetGLFWWindow());
 }

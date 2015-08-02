@@ -20,7 +20,10 @@ public:
 	virtual void OnAttached(GameObject* in_gameObject);
 	virtual void OnDetached(GameObject* in_gameObject);
 
+	virtual void PreDraw();
 	virtual void Draw();
+
+	void GetVertexInfo(std::vector<GLfloat>& out_vertInfo);
 
 	inline Texture* GetTexture() { return m_texture; }
 
@@ -46,8 +49,6 @@ protected:
 	void Initialise();
 	void SetVertexData();
 	void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc);
-
-	void AddUniforms();
 
 	glm::mat4 CalculateModelMatrix();
 

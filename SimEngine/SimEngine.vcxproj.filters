@@ -78,9 +78,6 @@
     <ClCompile Include="Code\OpenGL\GLUtils.cpp">
       <Filter>Code\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="Code\Rendering\AnimatedSpriteComponent.cpp">
-      <Filter>Code\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="Code\Rendering\RenderableComponent.cpp">
       <Filter>Code\Rendering</Filter>
     </ClCompile>
@@ -176,6 +173,8 @@
     </ClCompile>
     <ClCompile Include="Code\Game\StateDefault.cpp" />
     <ClCompile Include="Code\Game\PlayerController.cpp" />
+    <ClCompile Include="Code\Game\ProjectileComponent.cpp" />
+    <ClCompile Include="Code\Rendering\Batch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Application\Game.h">
@@ -216,9 +215,6 @@
     </ClInclude>
     <ClInclude Include="Code\OpenGL\GLUtils.h">
       <Filter>Code\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Code\Rendering\AnimatedSpriteComponent.h">
-      <Filter>Code\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Code\Rendering\Buffer.h">
       <Filter>Code\Rendering</Filter>
@@ -330,5 +326,7 @@
     </ClInclude>
     <ClInclude Include="Code\Game\StateDefault.h" />
     <ClInclude Include="Code\Game\PlayerController.h" />
+    <ClInclude Include="Code\Game\ProjectileComponent.h" />
+    <ClInclude Include="Code\Rendering\Batch.h" />
   </ItemGroup>
 </Project>
