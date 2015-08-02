@@ -2,22 +2,29 @@
 
 #include "../Application/Application.h"
 
+#include "../Game/ProjectileComponent.h"
+
 #include "../Input/InputManager.h"
 
 #include "../Structure/GameObject.h"
-
 #include "../Structure/GameObjectFactory.h"
 
 PlayerController::PlayerController() :
 m_bullet(nullptr),
 m_fired(false),
 m_fireTimer(0.f),
-m_fireInterval(0.5f)
+m_fireInterval(0.1f)
 {
 
 }
 
-#include "../Debug/Log.h"
+PlayerController::~PlayerController()
+{
+	for each (GameObject* bullet in m_bullets)
+	{
+		delete bullet;
+	}
+}
 
 void PlayerController::Update(float in_dt)
 {
@@ -54,23 +61,16 @@ void PlayerController::Update(float in_dt)
 	{
 		m_fired = true;
 
-		if (m_bullet != nullptr)
-			delete m_bullet;
+		m_bullets.push_back(Application::GetApplication()->GetGameObjectFactory()->CreateSpriteGameObject("testAnim2"));
+		m_bullets.back()->SetPosition(GetOwner()->GetPosition());
+		m_bullets.back()->SetScale(Vector3(0.5f, 0.5f, 0.5f));
 
-		m_bullet = Application::GetApplication()->GetGameObjectFactory()->CreateSpriteGameObject("testAnim2");
-		m_bullet->SetPosition(GetOwner()->GetPosition());
-		m_bullet->SetScale(Vector3(0.5f, 0.5f, 0.5f));
-
-		m_bulletDir = glm::normalize(Vector3(Application::GetApplication()->GetInputManager()->GetMousePos(), 0.f) - GetOwner()->GetPosition());
+		Vector3 dir = glm::normalize(Vector3(Application::GetApplication()->GetInputManager()->GetMousePos(), 0.f) - GetOwner()->GetPosition());
+		m_bullets.back()->Attach(new ProjectileComponent(250.f, dir));
 	}
 
-	if (m_bullet != nullptr)
+	for each (GameObject* bullet in m_bullets)
 	{
-		/*Vector3 lerpVec = Vector3(Application::GetApplication()->GetDeltaTime());
-		Vector3 lerpedThing = glm::mix(m_bullet->GetPosition(), Vector3(Application::GetApplication()->GetInputManager()->GetMousePos(), 0.f), Application::GetApplication()->GetDeltaTime() * 3.f);
-		m_bullet->SetPosition(lerpedThing);*/
-
-
-		m_bullet->MovePosition(m_bulletDir * 0.1f);
+		bullet->Update(in_dt);
 	}
 }
