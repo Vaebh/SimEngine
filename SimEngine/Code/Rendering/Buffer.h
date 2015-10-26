@@ -31,9 +31,6 @@ protected:
 	GLenum m_target;
 
 private:
-	GLvoid* m_dataPtr;
-	GLsizeiptr m_dataSize;
-
 	std::vector<VertexAttribute> m_attributes;
 };
 

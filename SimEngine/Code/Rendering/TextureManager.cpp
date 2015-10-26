@@ -16,7 +16,7 @@ namespace
 
 TextureManager::TextureManager()
 {
-	LoadTextureAtlas("testTextureAtlas.xml");
+	LoadTextureAtlas("texAtlas1.xml");
 }
 
 TextureManager::~TextureManager()

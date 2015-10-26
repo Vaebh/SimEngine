@@ -21,7 +21,7 @@ m_visible(true)
 
 IRenderableComponent::~IRenderableComponent()
 {
-	
+
 }
 
 Image* IRenderableComponent::RequestImage(const char* in_imgName)
@@ -54,4 +54,9 @@ std::vector<Image*> IRenderableComponent::RequestImages(uint32_t in_numArgs, ...
 	va_end(args);
 
 	return requestedImages;
+}
+
+void IRenderableComponent::PreDraw()
+{
+
 }

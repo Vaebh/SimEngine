@@ -1,13 +1,17 @@
 #include "../Rendering/VertexArray.h"
 
-VertexArray::VertexArray() : m_vertexBuffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW)
+// Should allow you to set it to dynamic or static drawing
+VertexArray::VertexArray() : m_vertexBuffer(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW)
 {
 	Create();
 }
 
 VertexArray::~VertexArray()
 {
+	Bind();
 	Destroy();
+	m_vertexBuffer.Bind();
+	m_vertexBuffer.Destroy();
 }
 
 void VertexArray::Create()

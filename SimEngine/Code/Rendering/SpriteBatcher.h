@@ -4,16 +4,7 @@
 #include "../OpenGL/GLIncludes.h"
 #include "../Rendering/SpriteComponent.h"
 
-#include <list>
-
-/*
-Should a batch be something non Singleton-y, or should it be something that is passed batches of sprites
-either every frame or just until they're removed. Maybe batches are things you build and they're all stored by the renderSystem
-and then you call the drawBatch function on each one. Maybe DrawBatch accepts a shader? SpriteBatcher should accept a FrameBuffer anyway
-*/
-
-// TODO - Add removeSprite method
-// TODO - Rework the m_sprites datastructure to be less terrible
+class Batch;
 
 class SpriteBatcher
 {
@@ -27,23 +18,15 @@ public:
 
 	void AddSprite(SpriteComponent* in_newSpriteComp);
 
-	void DrawBatch();
+	void DrawBatchs();
+	void FlushBatchData();
 
 private:
-	Shader* m_activeShader;
-	Texture* m_activeTexture;
+	std::vector< SpriteComponent* > m_sprites;
 
-	VertexArray* m_activeVAO;
-	std::vector< std::pair<std::string, std::list<SpriteComponent*>> > m_sprites;
+	std::vector < Batch* > m_batchs;
 
-	VertexArray m_vao;
-	Buffer m_vertexBuffer;
-
-	Buffer m_modelMatBuffer;
-	Buffer m_uvBuffer;
-
-	// TEMPORARY UNTIL SHADER MANAGER IS DONE
-	Shader m_shader;
+	//bool m_batchsDirty;
 };
 
 #endif

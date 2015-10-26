@@ -20,10 +20,11 @@ public:
 	virtual ~IRenderableComponent();
 
 	virtual void Update(float in_dt) = 0;
+	virtual void PreDraw();
 	virtual void Draw() = 0;
 
 	inline VertexArray& GetVAO() {return m_vao;}
-	inline Shader& GetShader() {return m_shader;}
+	inline Shader* GetShader() {return &m_shader;}
 
 	inline void SetTextureManager(TextureManager* in_texManager) {m_texManager = in_texManager;}
 	Image* RequestImage(const char* in_imgName);
@@ -36,8 +37,6 @@ protected:
 	virtual void Initialise() = 0;
 	virtual void SetVertexData() = 0;
 	virtual void SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc) = 0;
-
-	virtual void AddUniforms() = 0;
 
 	virtual glm::mat4 CalculateModelMatrix() = 0;
 

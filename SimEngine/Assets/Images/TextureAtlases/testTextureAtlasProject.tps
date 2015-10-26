@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.6.0</string>
         <key>fileName</key>
-        <string>F:/OpenGL/SimEngine/trunk/SimEngine/Assets/Images/testTextureAtlasProject.tps</string>
+        <string>D:/OpenGL/SimEngine/SimEngine/Assets/Images/TextureAtlases/testTextureAtlasProject.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -188,13 +188,12 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>testAnim1.png</filename>
-            <filename>testAnim2.png</filename>
-            <filename>testAnim3.png</filename>
-            <filename>testAnim4.png</filename>
-            <filename>testAnim5.png</filename>
-            <filename>testAnim6.png</filename>
-            <filename>bros.png</filename>
+            <filename>../testAnim1.png</filename>
+            <filename>../testAnim2.png</filename>
+            <filename>../testAnim3.png</filename>
+            <filename>../testAnim4.png</filename>
+            <filename>../testAnim5.png</filename>
+            <filename>../testAnim6.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

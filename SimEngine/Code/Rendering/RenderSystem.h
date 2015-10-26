@@ -21,6 +21,7 @@ public:
 
 	virtual void Update(float in_dt);
 
+	void PreDraw();
 	void Draw();
 
 	inline TextureManager* GetTextureManager() {return &m_texManager;}

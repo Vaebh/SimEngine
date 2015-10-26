@@ -21,21 +21,28 @@
 
 namespace
 {
-	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefault.txt";
-	const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefault.txt";
+	const std::string DEFAULT_VERT_SHADER = "../SimEngine/Assets/Shaders/2DVertexShaderDefaultPacked.txt";
+	const std::string DEFAULT_FRAG_SHADER = "../SimEngine/Assets/Shaders/2DFragShaderDefaultPacked.txt";
 
-	const GLfloat VERTS[] =
-	{	// position				//texcoords
-		-1.0, 1.0, 0.0f, 1.0f, 0.0f, 0.0f,
-		1.0, 1.0, 0.0f, 1.0f, 1.0f, 0.0f,
-		1.0, -1.0, 0.0f, 1.0f, 1.0f, 1.0f,
-
-		1.0, -1.0, 0.0f, 1.0f, 1.0f, 1.0f,
-		-1.0, -1.0, 0.0f, 1.0f, 0.0f, 1.0f,
-		-1.0, 1.0, 0.0f, 1.0f, 0.0f, 0.0f
+	const std::vector<Vector4> vertPositions
+	{
+		Vector4(-1.0f, 1.0f, 0.0f, 1.f),
+		Vector4(1.0f, 1.0f, 0.0f, 1.f),
+		Vector4(1.0f, -1.0f, 0.0f, 1.f),
+		Vector4(1.0f, -1.0f, 0.0f, 1.f),
+		Vector4(-1.0f, -1.0f, 0.0f, 1.f), 
+		Vector4(-1.0f, 1.0f, 0.0f, 1.f)
 	};
 
-	float animTimer = 0.f;
+	const std::vector<Vector2> texPositions
+	{
+		Vector2(0.0f, 0.0f),
+		Vector2(1.0f, 0.0f),
+		Vector2(1.0f, 1.0f),
+		Vector2(1.0f, 1.0f),
+		Vector2(0.0f, 1.0f),
+		Vector2(0.0f, 0.0f)
+	};
 }
 
 SpriteComponent::SpriteComponent(const std::string in_imageName) :
@@ -61,7 +68,8 @@ void SpriteComponent::Initialise()
 	SetTextureManager(GetOwner()->GetRenderSystem()->GetTextureManager());
 	if (!SetImages())
 		return;
-	GetOwner()->GetRenderSystem()->AddSpriteToBatch(this);
+
+	GetOwner()->GetRenderSystem()->AddComponent(this);
 
 	SetVertexData();
 	SetShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
@@ -94,11 +102,8 @@ void SpriteComponent::SetImageScale()
 
 void SpriteComponent::SetVertexData()
 {
-	// Bind and send data to buffer
+	// Get buffer
 	m_vertexBuffer = &(m_vao.GetVertexBuffer());
-	m_vertexBuffer->Bind();
-
-	m_vertexBuffer->SetData(sizeof(VERTS), VERTS);
 }
 
 void SpriteComponent::SetShader(const std::string in_vertexShaderSrc, const std::string in_fragShaderSrc)
@@ -106,33 +111,9 @@ void SpriteComponent::SetShader(const std::string in_vertexShaderSrc, const std:
 	if(in_vertexShaderSrc.empty() || in_fragShaderSrc.empty())
 		return;
 
-	// Bind vertex array
-	m_vao.Bind();
-
-	// Bind vertex buffer
-    m_vertexBuffer->Bind();
-
 	// Create and activate shader
 	m_shader.CreateShaderProgram(in_vertexShaderSrc, in_fragShaderSrc);
 	m_shader.Use();
-
-	// Add vertex attributes
-	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("position"), 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0) );
-	m_vertexBuffer->AddAttribute( VertexAttribute(m_shader.GetAttributeLocation("texcoord"), 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(4 * sizeof(GLfloat))) );
-
-	m_vao.SetVertexAttributes();
-
-	// Add the uniforms
-	AddUniforms();
-
-	m_shader["textureSprite"]->Set(0);
-}
-
-void SpriteComponent::AddUniforms()
-{
-	m_shader.AddUniform("model");
-	m_shader.AddUniform("spriteFrame");
-	m_shader.AddUniform("textureSprite");
 }
 
 void SpriteComponent::OnAttached(GameObject* in_gameObject)
@@ -157,7 +138,7 @@ glm::mat4 SpriteComponent::CalculateModelMatrix()
 	adjustedPos *= Vector3(Application::GetApplication()->GetWindow()->GetSpriteScaler(), 1.f);
 	adjustedPos += Vector3(-1.f, 1.f, 0.f);
 
-	model = glm::translate(model, adjustedPos) * glm::scale(model, GetOwner()->GetScale()) * glm::scale(model, m_imageScale);
+	model = glm::translate(model, adjustedPos) * glm::mat4_cast(GetOwner()->GetRotation()) * glm::scale(model, GetOwner()->GetScale()) * glm::scale(model, m_imageScale);
 	return model;
 }
 
@@ -175,33 +156,43 @@ void SpriteComponent::Update(float in_dt)
 	}
 }
 
+void SpriteComponent::GetVertexInfo(std::vector<GLfloat>& out_vertInfo)
+{
+	Vector4 spriteInfo = GetFrameInfo();
+
+	for (int i = 0; i < vertPositions.size(); ++i)
+	{
+		Vector4 posVec = CalculateModelMatrix() * vertPositions[i];
+
+		out_vertInfo.push_back(posVec.x);
+		out_vertInfo.push_back(posVec.y);
+		out_vertInfo.push_back(posVec.z);
+		out_vertInfo.push_back(1.f); // w
+
+		out_vertInfo.push_back(texPositions[i].x);
+		out_vertInfo.push_back(texPositions[i].y);
+
+		out_vertInfo.push_back(spriteInfo.x);
+		out_vertInfo.push_back(spriteInfo.y);
+		out_vertInfo.push_back(spriteInfo.z);
+		out_vertInfo.push_back(spriteInfo.w);
+	}
+}
+
 glm::vec4 SpriteComponent::GetFrameInfo()
 {
 	glm::vec4 theFrameInfo = glm::vec4(m_activeImage->GetUVs(), m_activeImage->GetPercentOfTexture());
 	return theFrameInfo;
 }
 
-/* TODO
-Right now Sprites are being drawn as a square in the actual world. They should
-instead be drawn last of all on top of everything else, so objects in the world
-can't slice through them. This is done by disabling depth testing before drawing any sprites.
+void SpriteComponent::PreDraw()
+{
+	GetOwner()->GetRenderSystem()->AddSpriteToBatch(this);
+}
 
-Obviously this would be needlessly expensive if meshes and sprites were mixed
-up in the rendering order, so all sprites should be drawn last, in a batch.
-*/
 void SpriteComponent::Draw()
 {
-	//m_shader.Use();
-	//m_texture->Activate(GL_TEXTURE0);
-	//m_texture->Bind();
-
-	//m_vao.Bind();
-
-	// Set shader uniforms
-	m_shader["model"]->SetMatrix(CalculateModelMatrix(), 1, GL_FALSE);
-	m_shader["spriteFrame"]->SetVec(GetFrameInfo(), 1);
-
-	//glDrawArrays(GL_TRIANGLES, 0, 6);
+	
 }
 
 const std::string SpriteComponent::GetTextureName()
