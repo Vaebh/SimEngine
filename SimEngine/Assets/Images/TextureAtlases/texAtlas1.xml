@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:22301941c8d6c5f0c8297a3aabee5279:b835009ea70bd8e0494d30ac088025d9:9f6eecc599db241cbcc5ac9f09b5e571$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+pX => x pos of the pivot point (relative to sprite width)
+pY => y pos of the pivot point (relative to sprite height)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="texAtlas1.png" width="522" height="242">
+    <sprite n="black.png" x="2" y="2" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="blue.png" x="132" y="2" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="green.png" x="262" y="2" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="red.png" x="392" y="2" w="128" h="128" pX="0.5" pY="0.5"/>
+    <sprite n="testAnim1.png" x="2" y="132" w="83" h="108" pX="0.5" pY="0.5"/>
+    <sprite n="testAnim2.png" x="87" y="132" w="83" h="108" pX="0.5" pY="0.5"/>
+    <sprite n="testAnim3.png" x="172" y="132" w="83" h="108" pX="0.5" pY="0.5"/>
+    <sprite n="testAnim4.png" x="257" y="132" w="83" h="108" pX="0.5" pY="0.5"/>
+    <sprite n="testAnim5.png" x="342" y="132" w="83" h="108" pX="0.5" pY="0.5"/>
+    <sprite n="testAnim6.png" x="427" y="132" w="83" h="108" pX="0.5" pY="0.5"/>
+</TextureAtlas>

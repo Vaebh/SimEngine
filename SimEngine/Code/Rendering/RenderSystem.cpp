@@ -58,7 +58,7 @@ void RenderSystem::Draw()
 {
 	PreDraw();
 
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -86,7 +86,8 @@ void RenderSystem::Draw()
 	//}
 
 	// Draw sprites
-	glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	m_spriteBatcher.DrawBatchs();
 
 	glfwSwapBuffers(Application::GetApplication()->GetWindow()->GetGLFWWindow());

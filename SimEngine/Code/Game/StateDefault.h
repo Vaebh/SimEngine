@@ -16,6 +16,8 @@ public:
 
 private:
 	std::unique_ptr<GameObject> m_player;
+
+	std::vector< std::unique_ptr<GameObject> > m_blocks;
 };
 
 #endif

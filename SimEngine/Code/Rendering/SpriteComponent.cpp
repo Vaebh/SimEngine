@@ -138,7 +138,7 @@ glm::mat4 SpriteComponent::CalculateModelMatrix()
 	adjustedPos *= Vector3(Application::GetApplication()->GetWindow()->GetSpriteScaler(), 1.f);
 	adjustedPos += Vector3(-1.f, 1.f, 0.f);
 
-	model = glm::translate(model, adjustedPos) * glm::scale(model, GetOwner()->GetScale()) * glm::scale(model, m_imageScale);
+	model = glm::translate(model, adjustedPos) * glm::mat4_cast(GetOwner()->GetRotation()) * glm::scale(model, GetOwner()->GetScale()) * glm::scale(model, m_imageScale);
 	return model;
 }
 
